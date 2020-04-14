@@ -9,7 +9,6 @@ int main() {
     while(!thisGame->isFinished()) {
          thisGame->next_iteration();
     }
-    thisGame->end();
     return 0;
 }
 

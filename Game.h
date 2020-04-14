@@ -15,25 +15,26 @@ public:
     void end();
     void next_iteration();
     bool isFinished() const;
-    double getCookieAmount() const;
-    double getCps() const;
+    long double getCookieAmount() const;
+    long double getCps() const;
 
 private:
     bool finished {false};
-    double cps {0};
-    double cookieAmount {120};
+    long double cps {0};
+    long double cookieAmount {120};
+    long long totalcookies {static_cast<long long>(cookieAmount)};
     unsigned long long stepcount {0};
     void update();
     void render();
-    void incrementCps(double amount);
-    void incrementCookieAmount(double amount = 1);
+    void incrementCps(long double amount);
+    void incrementCookieAmount(long double amount = 1);
     void showInput() const;
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
     void showInventory() const;
     void handleInput();
     void incrementCookiesOnTime();
-    void buyCursor();
+    void buyCursor(int amount);
 };
 
 
