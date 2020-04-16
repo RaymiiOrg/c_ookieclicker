@@ -1,6 +1,5 @@
 #include "Game.h"
 #include <memory>
-#include <zconf.h>
 
 int main() {
     auto thisGame = std::make_unique<Game>();
