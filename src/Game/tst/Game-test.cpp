@@ -23,5 +23,4 @@ TEST_F(GameTestSuite, started)
     EXPECT_FALSE(game->isFinished());
     EXPECT_EQ(game->getCookieAmount(), 0);
     EXPECT_EQ(game->getCps(), 0.0);
-
 }
