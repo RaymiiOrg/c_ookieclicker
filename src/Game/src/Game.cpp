@@ -2,11 +2,8 @@
 // Created by remy on 14-04-20.
 //
 #include <algorithm>
-#include <csignal>
-#include <atomic>
 #include "Game.h"
 #include "Item.h"
-
 
 void Game::next_iteration() {
     render();

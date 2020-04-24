@@ -25,6 +25,7 @@ public:
     void next_iteration();
     bool isFinished() const;
     void endTurn();
+    friend class Gameloop;
 
 private:
     std::unique_ptr<Inventory> m_Inventory = std::make_unique<Inventory>();
