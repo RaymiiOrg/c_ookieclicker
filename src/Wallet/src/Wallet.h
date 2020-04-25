@@ -11,14 +11,14 @@ public:
     long double getCookieAmount() const;
     long double getCps() const;
     void incrementCookieAmount(long double amount = 1);
+    void decrementCookieAmount(long double amount);
     void incrementCps(long double amount);
-
+    unsigned long long getTotalcookies() const;
 private:
     long double cps {0};
     long double cookieAmount {0};
-    long long totalcookies {static_cast<long long>(cookieAmount)};
-public:
-    long long int getTotalcookies() const;
+    unsigned long long totalcookies {0};
+
 };
 
 

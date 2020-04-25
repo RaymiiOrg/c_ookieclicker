@@ -9,7 +9,6 @@ struct GameloopTestSuite : public ::testing::Test
     {
         game = std::make_unique<Gameloop>(false);
     }
-
 };
 
 TEST_F(GameloopTestSuite, incrementCps)

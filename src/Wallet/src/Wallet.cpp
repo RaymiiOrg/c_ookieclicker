@@ -19,9 +19,14 @@ long double Wallet::getCps() const {
 void Wallet::incrementCookieAmount(long double amount) {
     cookieAmount += amount;
     if (amount > 0)
-        totalcookies += static_cast<long long>(amount);
+        totalcookies += static_cast<unsigned long>(amount);
 }
 
-long long Wallet::getTotalcookies() const {
+void Wallet::decrementCookieAmount(long double amount) {
+    if (cookieAmount >= amount)
+        cookieAmount -= amount;
+}
+
+unsigned long long Wallet::getTotalcookies() const {
     return totalcookies;
 }

@@ -32,7 +32,7 @@ struct Item {
         return !(*this < rhs);
     }
 
-    double price {0};
+    int price {0};
     double cps {0};
     int percentIncreaseWhenBought {0};
 };

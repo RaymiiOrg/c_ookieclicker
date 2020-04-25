@@ -10,11 +10,11 @@ BuyItemCommand::BuyItemCommand(Item& item, int amount, Inventory& inventory, Wal
 }
 
 void BuyItemCommand::execute() {
-    auto price = m_Item.price * m_Amount;
+    int price = m_Item.price * m_Amount;
     auto cps = m_Item.cps * m_Amount;
     if (m_Wallet.getCookieAmount() >= price) {
         m_Inventory.addItem(m_Item, m_Amount);
-        m_Wallet.incrementCookieAmount(-price);
+        m_Wallet.decrementCookieAmount(price);
         m_Wallet.incrementCps(cps);
     }
 }

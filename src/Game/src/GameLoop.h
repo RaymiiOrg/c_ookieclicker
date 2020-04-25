@@ -12,6 +12,7 @@
 #include <mutex>
 #include <chrono>
 #include <atomic>
+#include <limits>
 #include <iomanip>
 #include "Wallet.h"
 #include "Inventory.h"
@@ -23,7 +24,7 @@
 
 class Gameloop {
 
-    std::atomic<bool> running;
+    std::atomic<bool> running {false};
     std::mutex inputMutex;
     std::mutex gameStepMutex;
     std::thread gameStepThread;
@@ -44,17 +45,19 @@ class Gameloop {
     static void cleanTerminal();
     static std::string currentTime(const std::string& formatString = "%H:%M");
     void renderText();
-    std::unique_ptr<Inventory> m_Inventory = std::make_unique<Inventory>();
-    std::unique_ptr<Wallet> m_Wallet = std::make_unique<Wallet>();
+
+    Inventory m_Inventory;
+    Wallet m_Wallet;
+
     Items m_Items;
     std::string failed_to_buy_item;
-    void showInput() const;
+    void showInput();
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
-    void showStatus() const;
+    void showStatus();
     void incrementCookiesOnTime();
     void buyItem(int amountToBuy, Item &item);
-    bool canPayForItem(int amountToBuy, Item &item) const;
+    bool canPayForItem(int amountToBuy, Item &item);
     void handleChoice(const std::string &input);
     void showFinalScore();
     void setMessageTime(const std::string& timeString = "%H:%M");
@@ -65,11 +68,13 @@ public:
     Gameloop();
     explicit Gameloop(bool isRunning);
     ~Gameloop();
+    void start();
     inline void quit();
     void setMessage(notifyMessages msg);
     void input();
     void gameStep();
-    Wallet &getWallet() const;
+    Wallet &getWallet();
+    Inventory &getInventory();
 };
 
 
