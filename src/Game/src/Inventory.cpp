@@ -13,6 +13,8 @@ void Inventory::addItem(const Item& item, unsigned int amountToAdd) {
     {
         m_Inventory.insert(std::pair<Item, unsigned int>(item, amountToAdd));
     }
+    last_item_added_amount = amountToAdd;
+    last_item_added = item.name;
 }
 
 void Inventory::removeItem(const Item &item, unsigned int amountToRemove) {
@@ -33,14 +35,10 @@ unsigned int Inventory::getItemCount(const Item &item) {
     }
 }
 
-void Inventory::printInventory() {
-    if (!m_Inventory.empty()) {
-        for (const auto &item : m_Inventory) {
-            std::cout << std::setprecision(1) << std::fixed <<
-                      "Item: " << item.first.name << "; price: " << item.first.price <<
-                      "; cps: " << item.first.cps << "; Amount: " << item.second << "\n";
-        }
-    } else {
-        std::cout << "Inventory empty\n";
-    }
+unsigned int Inventory::getLastItemAddedAmount() const {
+    return last_item_added_amount;
+}
+
+const std::string &Inventory::getLastItemAdded() const {
+    return last_item_added;
 }

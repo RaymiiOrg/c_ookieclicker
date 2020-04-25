@@ -13,11 +13,15 @@
 class Inventory {
 private:
     std::map<Item, unsigned int> m_Inventory;
+    std::string last_item_added;
+    unsigned int last_item_added_amount;
+
 public:
     void addItem(const Item& item, unsigned int amountToAdd);
     void removeItem(const Item& item, unsigned int amountToRemove);
     unsigned int getItemCount(const Item &item);
-    void printInventory();
+    unsigned int getLastItemAddedAmount() const;
+    const std::string &getLastItemAdded() const;
 };
 
 

@@ -40,8 +40,10 @@ struct Item {
 struct Items {
     Item Cursor {"Cursor", "c", "C", 10, 0.1, 1};
     Item Grandma {"Grandma", "g", "G", 100, 1, 5};
+    Item Farm {"Farm", "f", "F", 1000, 10, 7};
+    Item Mine {"Mine", "m", "M", 5000, 50, 10};
 
-    std::vector<Item> allItems {Cursor, Grandma};
+    std::vector<Item> allItems {Cursor, Grandma, Farm, Mine};
 };
 
 

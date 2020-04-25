@@ -13,14 +13,15 @@
 #include <chrono>
 #include <atomic>
 #include <iomanip>
-#include "Game.h"
+#include "Wallet.h"
+#include "Inventory.h"
+#include "BuyItemCommand.h"
+#include "UpdateCpsCommand.h"
+#include "UpdateCookiesCommand.h"
 
 class Gameloop {
 
-    std::unique_ptr<Game> thisGame = std::make_unique<Game>();
-
     std::atomic<bool> running;
-    std::atomic<int> score;
 
     std::mutex inputMutex;
     std::mutex gameStepMutex;
@@ -33,23 +34,38 @@ class Gameloop {
     enum notifyMessages
     {
         NO_MSG,
-        SCORE_DOUBLED,
-        THE_ANSWER,
+        NOT_ENOUGH_MONEY_FOR_ITEM,
+        BOUGHT_ITEM,
+        MAGIC,
         LAST_MSG,
     };
     std::atomic<notifyMessages> notifyMessage;
 
-    static std::string notifyEnumToMsg(notifyMessages msg);
-    void cleanTerminal();
+    std::string notifyEnumToMsg(notifyMessages msg);
+    static void cleanTerminal();
     static std::string currentTime(const std::string& formatString = "%H:%M");
     void renderText();
-    void updateScore();
+    std::unique_ptr<Inventory> m_Inventory = std::make_unique<Inventory>();
+    std::unique_ptr<Wallet> m_Wallet = std::make_unique<Wallet>();
+    Items m_Items;
+    std::string failed_to_buy_item;
+    void showInput() const;
+    std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
+    void showStatus() const;
+    void incrementCookiesOnTime();
+    void buyItem(int amountToBuy, Item &item);
+    bool canPayForItem(int amountToBuy, Item &item) const;
+    void handleChoice(const std::string &input);
+    void showFinalScore();
+    void setMessageTime(const std::string& timeString = "%H:%M");
+    std::string lastMessageTime;
 
 public:
     Gameloop();
     ~Gameloop();
     inline void quit();
-    void handleInput();
+    void setMessage(notifyMessages msg);
     void input();
     void gameStep();
 

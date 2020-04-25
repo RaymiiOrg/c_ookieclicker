@@ -6,7 +6,7 @@
 #define C_OOKIECLIKER_UpdateCpsCommand_H
 
 #include "Command.h"
-#include "Game.h"
+#include "Wallet.h"
 
 class UpdateCpsCommand : public Command {
 public:
