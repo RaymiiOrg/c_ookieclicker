@@ -10,7 +10,9 @@ target_link_libraries(${LIBRARY} PUBLIC
         ${CURSES_LIBRARY}
         Commands
         Wallet
-        gtest)
+        gtest
+        ${Boost_LIBRARIES}
+        )
 
 target_include_directories(${LIBRARY} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

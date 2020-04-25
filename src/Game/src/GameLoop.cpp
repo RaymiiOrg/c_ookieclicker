@@ -108,8 +108,7 @@ void Gameloop::gameStep() {
 }
 
 void Gameloop::showFinalScore() {
-    std::cout << "Well done. Final score: " << std::setprecision(15) <<
-    getWallet().getTotalcookies() << "\n";
+    std::cout << "Well done. Final score: " << getWallet().getTotalcookies().str(0) << "\n";
 }
 
 void Gameloop::showInput()
@@ -123,7 +122,7 @@ void Gameloop::showInput()
                       std::fixed << std::setprecision(0) << item.price << "; +" <<
                       std::fixed << std::setprecision(1) << item.cps << " cps; max: " <<
                       std::fixed << std::setprecision(15) <<
-                      (unsigned long long) getWallet().getCookieAmount() / (unsigned long long) item.price
+                      getWallet().getCookieAmount().convert_to<int>() / item.price
                       << "; have: " << getInventory().getItemCount(item) << ")\n";
     }
     std::cout << "q\t:\t quit\n";
@@ -136,7 +135,7 @@ void Gameloop::handleChoice(const std::string &input) {
         if (input == item.buyOneKey) {
             buyItem(1, item);
         } else if (input == item.buyAllKey) {
-            buyItem(getWallet().getCookieAmount() / item.price, item);
+            buyItem(getWallet().getCookieAmount().convert_to<int>() / item.price, item);
         }
     }
     if (input.empty()) {
@@ -144,7 +143,7 @@ void Gameloop::handleChoice(const std::string &input) {
         cmd->execute();
     }
     else if (input == "4") {
-        getWallet().incrementCookieAmount(4242424242);
+        getWallet().incrementCookieAmount(424242424242424242);
         setMessage(MAGIC);
     }
     else if (input == "1") {
@@ -158,14 +157,9 @@ void Gameloop::handleChoice(const std::string &input) {
 void Gameloop::showStatus() {
     std::cout << "\n===== Stats ====\n";
     std::cout << "Cookies\t:\t" <<
-    std::setprecision(std::numeric_limits<unsigned long long>::max_digits10) <<
-    getWallet().getCookieAmount() << "\n";
+    getWallet().getCookieAmount().str(0) << "\n";
     std::cout << "cps\t:\t";
-    if (getWallet().getCps() < 10)
-        std::cout << std::setprecision(1);
-    else
-        std::cout << std::setprecision(0);
-    std::cout << std::fixed << getWallet().getCps() << "\n";
+    std::cout << getWallet().getCps().str(0) << "\n";
 }
 
 void Gameloop::incrementCookiesOnTime() {
