@@ -17,6 +17,8 @@ TEST_F(InventoryTestSuite, getEmptyInventory)
 {
     Item testItem = items.Cursor;
     ASSERT_EQ(inventory->getItemCount(testItem), 0);
+    ASSERT_EQ(inventory->getLastItemAdded().empty(), true);
+    ASSERT_EQ(inventory->getLastItemAddedAmount(), 0);
 }
 
 TEST_F(InventoryTestSuite, addItems)
@@ -33,6 +35,8 @@ TEST_F(InventoryTestSuite, addItems)
     //assert
     ASSERT_EQ(inventory->getItemCount(testItem1), 12);
     ASSERT_EQ(inventory->getItemCount(testItem2), 1);
+    ASSERT_EQ(inventory->getLastItemAdded(), testItem2.name);
+    ASSERT_EQ(inventory->getLastItemAddedAmount(), 1);
 }
 
 
@@ -53,4 +57,6 @@ TEST_F(InventoryTestSuite, removeItems)
     //assert
     ASSERT_EQ(inventory->getItemCount(testItem1), 3);
     ASSERT_EQ(inventory->getItemCount(testItem2), 0);
+    ASSERT_EQ(inventory->getLastItemAdded(), testItem2.name);
+    ASSERT_EQ(inventory->getLastItemAddedAmount(), 1);
 }

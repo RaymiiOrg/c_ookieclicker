@@ -4,10 +4,10 @@
 
 struct UpdateCookiesCommandTestSuite : public ::testing::Test
 {
-    std::unique_ptr<Game> game;
+    std::unique_ptr<Wallet> wallet;
     UpdateCookiesCommandTestSuite()
     {
-        game = std::make_unique<Game>();
+        wallet = std::make_unique<Wallet>();
     }
 
 };
@@ -15,25 +15,25 @@ struct UpdateCookiesCommandTestSuite : public ::testing::Test
 TEST_F(UpdateCookiesCommandTestSuite, before)
 {
     //assert
-    ASSERT_EQ(game->getCookieAmount(), 0);
+    ASSERT_EQ(wallet->getCookieAmount(), 0);
 }
 
 TEST_F(UpdateCookiesCommandTestSuite, execute)
 {
     //arrange
-    auto buyCmd = std::make_unique<UpdateCookiesCommand>(10, game.get());
+    auto buyCmd = std::make_unique<UpdateCookiesCommand>(10, *wallet);
 
     //act
     buyCmd->execute();
 
     //assert
-    ASSERT_EQ(game->getCookieAmount(), 10);
+    ASSERT_EQ(wallet->getCookieAmount(), 10);
 }
 
 TEST_F(UpdateCookiesCommandTestSuite, undo)
 {
     //arrange
-    auto buyCmd = std::make_unique<UpdateCookiesCommand>(3, game.get());
+    auto buyCmd = std::make_unique<UpdateCookiesCommand>(3, *wallet);
 
     //act
     buyCmd->execute();
@@ -41,5 +41,5 @@ TEST_F(UpdateCookiesCommandTestSuite, undo)
     buyCmd->undo();
 
     //assert
-    ASSERT_EQ(game->getCookieAmount(), 3);
+    ASSERT_EQ(wallet->getCookieAmount(), 3);
 }

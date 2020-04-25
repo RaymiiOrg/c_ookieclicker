@@ -1,13 +1,14 @@
 #include "UpdateCpsCommand.h"
+#include "Wallet.h"
 #include <memory>
 #include "gtest/gtest.h"
 
 struct UpdateCpsCommandTestSuite : public ::testing::Test
 {
-    std::unique_ptr<Game> game;
+    std::unique_ptr<Wallet> wallet;
     UpdateCpsCommandTestSuite()
     {
-        game = std::make_unique<Game>();
+        wallet = std::make_unique<Wallet>();
     }
 
 };
@@ -15,25 +16,25 @@ struct UpdateCpsCommandTestSuite : public ::testing::Test
 TEST_F(UpdateCpsCommandTestSuite, before)
 {
     //assert
-    ASSERT_EQ(game->getCps(), 0);
+    ASSERT_EQ(wallet->getCps(), 0);
 }
 
 TEST_F(UpdateCpsCommandTestSuite, execute)
 {
     //arrange
-    auto buyCmd = std::make_unique<UpdateCpsCommand>(.34, game.get());
+    auto buyCmd = std::make_unique<UpdateCpsCommand>(.34, *wallet);
 
     //act
     buyCmd->execute();
 
     //assert
-    ASSERT_EQ(game->getCps(), .34);
+    ASSERT_EQ(wallet->getCps(), .34);
 }
 
 TEST_F(UpdateCpsCommandTestSuite, undo)
 {
     //arrange
-    auto buyCmd = std::make_unique<UpdateCpsCommand>(8.3, game.get());
+    auto buyCmd = std::make_unique<UpdateCpsCommand>(8.3, *wallet);
 
     //act
     buyCmd->execute();
@@ -41,5 +42,5 @@ TEST_F(UpdateCpsCommandTestSuite, undo)
     buyCmd->undo();
 
     //assert
-    ASSERT_EQ(game->getCps(), 8.3);
+    ASSERT_EQ(wallet->getCps(), 8.3);
 }

@@ -19,13 +19,13 @@
 #include "UpdateCpsCommand.h"
 #include "UpdateCookiesCommand.h"
 
+#include <gtest/gtest_prod.h>
+
 class Gameloop {
 
     std::atomic<bool> running;
-
     std::mutex inputMutex;
     std::mutex gameStepMutex;
-
     std::thread gameStepThread;
     std::thread inputThread;
 
@@ -39,8 +39,7 @@ class Gameloop {
         MAGIC,
         LAST_MSG,
     };
-    std::atomic<notifyMessages> notifyMessage;
-
+    std::atomic<notifyMessages> notifyMessage{};
     std::string notifyEnumToMsg(notifyMessages msg);
     static void cleanTerminal();
     static std::string currentTime(const std::string& formatString = "%H:%M");
@@ -60,15 +59,17 @@ class Gameloop {
     void showFinalScore();
     void setMessageTime(const std::string& timeString = "%H:%M");
     std::string lastMessageTime;
+    FRIEND_TEST(GameloopTestSuite, incrementCps);
 
 public:
     Gameloop();
+    explicit Gameloop(bool isRunning);
     ~Gameloop();
     inline void quit();
     void setMessage(notifyMessages msg);
     void input();
     void gameStep();
-
+    Wallet &getWallet() const;
 };
 
 

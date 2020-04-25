@@ -58,9 +58,15 @@ Gameloop::Gameloop() : running(true),
                        inputThread(&Gameloop::input, this), notifyMessage(NO_MSG) {
 }
 
+Gameloop::Gameloop(bool isRunning) : running(isRunning)
+{
+}
+
 Gameloop::~Gameloop() {
-    inputThread.join();
-    gameStepThread.join();
+    if (inputThread.joinable())
+        inputThread.join();
+    if (gameStepThread.joinable())
+        gameStepThread.join();
 }
 
 inline void Gameloop::quit() {
@@ -172,4 +178,8 @@ bool Gameloop::canPayForItem(int amountToBuy, Item &item) const
 
 void Gameloop::setMessageTime(const std::string &timeString) {
     lastMessageTime = timeString;
+}
+
+Wallet &Gameloop::getWallet() const {
+    return *m_Wallet;
 }
