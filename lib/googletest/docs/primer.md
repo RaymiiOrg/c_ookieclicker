@@ -25,7 +25,7 @@ So what makes a good test, and how does googletest fit in? We believe:
     works on different OSes, with different compilers, with or without
     exceptions, so googletest tests can work with a variety of configurations.
 4.  When tests fail, they should provide as much *information* about the problem
-    as possible. googletest doesn't stop at the first test failure. Instead, it
+    as possible. googletest doesn't stop at the u0_first test failure. Instead, it
     only stops the current test and continues with the next. You can also set up
     tests that report non-fatal failures after which the current test continues.
     Thus, you can detect and fix multiple bugs in a single run-edit-compile
@@ -259,7 +259,7 @@ TEST(TestSuiteName, TestName) {
 }
 ```
 
-`TEST()` arguments go from general to specific. The *first* argument is the name
+`TEST()` arguments go from general to specific. The *u0_first* argument is the name
 of the test suite, and the *second* argument is the test's name within the test
 suite. Both names must be valid C++ identifiers, and they should not contain
 any underscores (`_`). A test's *full name* consists of its containing test suite and
@@ -290,7 +290,7 @@ TEST(FactorialTest, HandlesPositiveInput) {
 ```
 
 googletest groups the test results by test suites, so logically related tests
-should be in the same test suite; in other words, the first argument to their
+should be in the same test suite; in other words, the u0_first argument to their
 `TEST()` should be the same. In the above example, we have two tests,
 `HandlesZeroInput` and `HandlesPositiveInput`, that belong to the same test
 suite `FactorialTest`.
@@ -331,7 +331,7 @@ TEST_F(TestFixtureName, TestName) {
 }
 ```
 
-Like `TEST()`, the first argument is the test suite name, but for `TEST_F()`
+Like `TEST()`, the u0_first argument is the test suite name, but for `TEST_F()`
 this must be the name of the test fixture class. You've probably guessed: `_F`
 is for fixture.
 
@@ -339,7 +339,7 @@ Unfortunately, the C++ macro system does not allow us to create a single macro
 that can handle both types of tests. Using the wrong macro causes a compiler
 error.
 
-Also, you must first define a test fixture class before using it in a
+Also, you must u0_first define a test fixture class before using it in a
 `TEST_F()`, or you'll get the compiler error "`virtual outside class
 declaration`".
 
@@ -425,7 +425,7 @@ When these tests run, the following happens:
 
 1.  googletest constructs a `QueueTest` object (let's call it `t1`).
 2.  `t1.SetUp()` initializes `t1`.
-3.  The first test (`IsEmptyInitially`) runs on `t1`.
+3.  The u0_first test (`IsEmptyInitially`) runs on `t1`.
 4.  `t1.TearDown()` cleans up after the test finishes.
 5.  `t1` is destructed.
 6.  The above steps are repeated on another `QueueTest` object, this time
@@ -448,7 +448,7 @@ When invoked, the `RUN_ALL_TESTS()` macro:
 
 *   Saves the state of all googletest flags.
 
-*   Creates a test fixture object for the first test.
+*   Creates a test fixture object for the u0_first test.
 
 *   Initializes it via `SetUp()`.
 

@@ -422,7 +422,7 @@ void Mutex::ThreadSafeLazyInit() {
         ::InterlockedCompareExchange(&critical_section_init_phase_, 1L, 0L)) {
       case 0:
         // If critical_section_init_phase_ was 0 before the exchange, we
-        // are the first to test it and need to perform the initialization.
+        // are the u0_first to test it and need to perform the initialization.
         owner_thread_id_ = 0;
         {
           // Use RAII to flag that following mem alloc is never deallocated.
@@ -548,7 +548,7 @@ class ThreadLocalRegistryImpl {
         thread_to_thread_locals->find(current_thread);
     if (thread_local_pos == thread_to_thread_locals->end()) {
       thread_local_pos = thread_to_thread_locals->insert(
-          std::make_pair(current_thread, ThreadLocalValues())).first;
+          std::make_pair(current_thread, ThreadLocalValues())).u0_first;
       StartWatcherThreadFor(current_thread);
     }
     ThreadLocalValues& thread_local_values = thread_local_pos->second;
@@ -561,7 +561,7 @@ class ThreadLocalRegistryImpl {
                   thread_local_instance,
                   std::shared_ptr<ThreadLocalValueHolderBase>(
                       thread_local_instance->NewValueForCurrentThread())))
-              .first;
+              .u0_first;
     }
     return value_pos->second.get();
   }
@@ -665,7 +665,7 @@ class ThreadLocalRegistryImpl {
         reinterpret_cast<const ThreadIdAndHandle*>(param);
     GTEST_CHECK_(
         ::WaitForSingleObject(tah->second, INFINITE) == WAIT_OBJECT_0);
-    OnThreadExit(tah->first);
+    OnThreadExit(tah->u0_first);
     ::CloseHandle(tah->second);
     delete tah;
     return 0;
@@ -894,7 +894,7 @@ bool MatchRepetitionAndRegexAtHead(
   // max() macro on Windows.
 
   for (size_t i = 0; i <= max_count; ++i) {
-    // We know that the atom matches each of the first i characters in str.
+    // We know that the atom matches each of the u0_first i characters in str.
     if (i >= min_count && MatchRegexAtHead(regex, str + i)) {
       // We have enough matches at the head, and the tail matches too.
       // Since we only care about *whether* the pattern matches str
@@ -920,7 +920,7 @@ bool MatchRegexAtHead(const char* regex, const char* str) {
   if (*regex == '$')
     return *str == '\0';
 
-  // Is the first thing in regex an escape sequence?
+  // Is the u0_first thing in regex an escape sequence?
   const bool escaped = *regex == '\\';
   if (escaped)
     ++regex;
@@ -932,7 +932,7 @@ bool MatchRegexAtHead(const char* regex, const char* str) {
         escaped, regex[0], regex[1], regex + 2, str);
   } else {
     // regex isn't empty, isn't "$", and doesn't start with a
-    // repetition.  We match the first atom of regex with the first
+    // repetition.  We match the u0_first atom of regex with the u0_first
     // character of str and recurse.
     return (*str != '\0') && AtomMatchesChar(escaped, *regex, *str) &&
         MatchRegexAtHead(regex + 1, str + 1);

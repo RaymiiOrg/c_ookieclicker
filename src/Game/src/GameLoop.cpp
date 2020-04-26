@@ -108,7 +108,7 @@ void Gameloop::gameStep() {
 }
 
 void Gameloop::showFinalScore() {
-    std::cout << "Well done. Final score: " << getWallet().getTotalcookies().str(0) << "\n";
+    std::cout << "Well done. Final score: " << getWallet().getTotalcookies() << "\n";
 }
 
 void Gameloop::showInput()
@@ -122,7 +122,7 @@ void Gameloop::showInput()
                       std::fixed << std::setprecision(0) << item.price << "; +" <<
                       std::fixed << std::setprecision(1) << item.cps << " cps; max: " <<
                       std::fixed << std::setprecision(15) <<
-                      getWallet().getCookieAmount().convert_to<int>() / item.price
+                      (int) getWallet().getCookieAmount() / item.price
                       << "; have: " << getInventory().getItemCount(item) << ")\n";
     }
     std::cout << "q\t:\t quit\n";
@@ -135,7 +135,7 @@ void Gameloop::handleChoice(const std::string &input) {
         if (input == item.buyOneKey) {
             buyItem(1, item);
         } else if (input == item.buyAllKey) {
-            buyItem(getWallet().getCookieAmount().convert_to<int>() / item.price, item);
+            buyItem((int)getWallet().getCookieAmount() / item.price, item);
         }
     }
     if (input.empty()) {
@@ -156,10 +156,10 @@ void Gameloop::handleChoice(const std::string &input) {
 
 void Gameloop::showStatus() {
     std::cout << "\n===== Stats ====\n";
-    std::cout << "Cookies\t:\t" <<
-    getWallet().getCookieAmount().str(0) << "\n";
-    std::cout << "cps\t:\t";
-    std::cout << getWallet().getCps().str(0) << "\n";
+    std::cout << "Cookies\t:\t" << std::setprecision(1) <<
+    getWallet().getCookieAmount() << "\n";
+    std::cout << "cps\t:\t" << std::setprecision(1) <<
+    getWallet().getCps() << "\n";
 }
 
 void Gameloop::incrementCookiesOnTime() {

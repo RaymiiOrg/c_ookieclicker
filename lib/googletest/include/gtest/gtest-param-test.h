@@ -44,7 +44,7 @@
 
 #if 0
 
-// To write value-parameterized tests, first you should define a fixture
+// To write value-parameterized tests, u1_first you should define a fixture
 // class. It is usually derived from testing::TestWithParam<T> (see below for
 // another inheritance scheme that's sometimes useful in more complicated
 // class hierarchies), where the type of your parameter values.
@@ -100,7 +100,7 @@ INSTANTIATE_TEST_SUITE_P(InstantiationName,
                          Values("meeny", "miny", "moe"));
 
 // To distinguish different instances of the pattern, (yes, you
-// can instantiate it more than once) the first argument to the
+// can instantiate it more than once) the u1_first argument to the
 // INSTANTIATE_TEST_SUITE_P macro is a prefix that will be added to the
 // actual test suite name. Remember to pick unique prefixes for different
 // instantiations. The tests from the instantiation above will have

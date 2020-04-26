@@ -406,7 +406,7 @@ and you're ready to go.
 
 ### More String Assertions
 
-(Please read the [previous](#asserting-using-gmock-matchers) section first if
+(Please read the [previous](#asserting-using-gmock-matchers) section u0_first if
 you haven't.)
 
 You can use the gMock
@@ -1166,7 +1166,7 @@ also supports per-test-suite set-up/tear-down. To use it:
     function to tear them down.
 
 That's it! googletest automatically calls `SetUpTestSuite()` before running the
-*first test* in the `FooTest` test suite (i.e. before creating the first
+*u0_first test* in the `FooTest` test suite (i.e. before creating the u0_first
 `FooTest` object), and calls `TearDownTestSuite()` after running the *last test*
 in it (i.e. after deleting the last `FooTest` object). In between, the tests can
 use the shared resources.
@@ -1182,7 +1182,7 @@ Here's an example of per-test-suite set-up and tear-down:
 class FooTest : public ::testing::Test {
  protected:
   // Per-test-suite set-up.
-  // Called before the first test in this test suite.
+  // Called before the u0_first test in this test suite.
   // Can be omitted if not needed.
   static void SetUpTestSuite() {
     shared_resource_ = new ...;
@@ -1249,7 +1249,7 @@ calling the `::testing::AddGlobalTestEnvironment()` function:
 Environment* AddGlobalTestEnvironment(Environment* env);
 ```
 
-Now, when `RUN_ALL_TESTS()` is called, it first calls the `SetUp()` method of
+Now, when `RUN_ALL_TESTS()` is called, it u0_first calls the `SetUp()` method of
 each environment object, then runs the tests if none of the environments
 reported fatal failures and `GTEST_SKIP()` was not called. `RUN_ALL_TESTS()`
 always calls `TearDown()` with each environment object, regardless of whether or
@@ -1295,7 +1295,7 @@ number of situations, for example:
 
 ### How to Write Value-Parameterized Tests
 
-To write value-parameterized tests, first you should define a fixture class. It
+To write value-parameterized tests, u0_first you should define a fixture class. It
 must be derived from both `testing::Test` and `testing::WithParamInterface<T>`
 (the latter is a pure interface), where `T` is the type of your parameter
 values. For convenience, you can just derive the fixture class from
@@ -1390,7 +1390,7 @@ GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(FooTest);
 ```
 
 To distinguish different instances of the pattern (yes, you can instantiate it
-more than once), the first argument to `INSTANTIATE_TEST_SUITE_P` is a prefix
+more than once), the u0_first argument to `INSTANTIATE_TEST_SUITE_P` is a prefix
 that will be added to the actual test suite name. Remember to pick unique
 prefixes for different instantiations. The tests from the instantiation above
 will have these names:
@@ -1583,7 +1583,7 @@ You can see [sample6_unittest.cc] for a complete example.
 
 *Type-parameterized tests* are like typed tests, except that they don't require
 you to know the list of types ahead of time. Instead, you can define the test
-logic first and instantiate it with different type lists later. You can even
+logic u0_first and instantiate it with different type lists later. You can even
 instantiate it more than once in the same program.
 
 If you are designing an interface or concept, you can define a suite of
@@ -1622,7 +1622,7 @@ TYPED_TEST_P(FooTest, HasPropertyA) { ... }
 ```
 
 Now the tricky part: you need to register all test patterns using the
-`REGISTER_TYPED_TEST_SUITE_P` macro before you can instantiate them. The first
+`REGISTER_TYPED_TEST_SUITE_P` macro before you can instantiate them. The u0_first
 argument of the macro is the test suite name; the rest are the names of the
 tests in this test suite:
 
@@ -1640,7 +1640,7 @@ typedef ::testing::Types<char, int, unsigned int> MyTypes;
 INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 ```
 
-To distinguish different instances of the pattern, the first argument to the
+To distinguish different instances of the pattern, the u0_first argument to the
 `INSTANTIATE_TYPED_TEST_SUITE_P` macro is a prefix that will be added to the
 actual test suite name. Remember to pick unique prefixes for different
 instances.
@@ -2026,7 +2026,7 @@ You may append more than one listener to the list. When an `On*Start()` or
 `OnTestPartResult()` event is fired, the listeners will receive it in the order
 they appear in the list (since new listeners are added to the end of the list,
 the default text printer and the default XML generator will receive the event
-first). An `On*End()` event will be received by the listeners in the *reverse*
+u0_first). An `On*End()` event will be received by the listeners in the *reverse*
 order. This allows output by listeners added later to be framed by output from
 listeners added earlier.
 
@@ -2116,13 +2116,13 @@ For example:
     everything in test suite `FooTest` except `FooTest.Bar` and everything in
     test suite `BarTest` except `BarTest.Foo`.
 
-#### Stop test execution upon first failure
+#### Stop test execution upon u0_first failure
 
 By default, a googletest program runs all tests the user has defined. In some
 cases (e.g. iterative test development & execution) it may be desirable stop
-test execution upon first failure (trading improved latency for completeness).
+test execution upon u0_first failure (trading improved latency for completeness).
 If `GTEST_FAIL_FAST` environment variable or `--gtest_fail_fast` flag is set,
-the test runner will stop execution as soon as the first test failure is
+the test runner will stop execution as soon as the u0_first test failure is
 found.
 
 #### Temporarily Disabling Tests
@@ -2183,7 +2183,7 @@ $ foo_test --gtest_repeat=-1
 A negative count means repeating forever.
 
 $ foo_test --gtest_repeat=1000 --gtest_break_on_failure
-Repeat foo_test 1000 times, stopping at the first failure.  This
+Repeat foo_test 1000 times, stopping at the u0_first failure.  This
 is especially useful when running under a debugger: when the test
 fails, it will drop into the debugger and you can then inspect
 variables and stacks.

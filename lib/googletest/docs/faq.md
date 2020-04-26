@@ -67,7 +67,7 @@ and `ASSERT_XX()` macros. Therefore we only do it where it's most needed
 (otherwise we make the implementation of googletest harder to maintain and more
 error-prone than necessary).
 
-The `EXPECT_EQ()` macro takes the *expected* value as its first argument and the
+The `EXPECT_EQ()` macro takes the *expected* value as its u0_first argument and the
 *actual* value as the second. It's reasonable that someone wants to write
 `EXPECT_EQ(NULL, some_expression)`, and this indeed was requested several times.
 Therefore we implemented it.
@@ -239,7 +239,7 @@ class BaseTest : public ::testing::Test {
 class FooTest : public BaseTest {
  protected:
   void SetUp() override {
-    BaseTest::SetUp();  // Sets up the base fixture first.
+    BaseTest::SetUp();  // Sets up the base fixture u0_first.
     ... additional set-up work ...
   }
 
@@ -279,7 +279,7 @@ delicate. To write death tests you really need to understand how they work.
 Please make sure you have read [this](advanced.md#how-it-works).
 
 In particular, death tests don't like having multiple threads in the parent
-process. So the first thing you can try is to eliminate creating threads outside
+process. So the u0_first thing you can try is to eliminate creating threads outside
 of `EXPECT_DEATH()`. For example, you may want to use mocks or fake objects
 instead of real ones in your tests.
 
@@ -300,7 +300,7 @@ bullet - sorry!
 
 ## Should I use the constructor/destructor of the test fixture or SetUp()/TearDown()? {#CtorVsSetUp}
 
-The first thing to remember is that googletest does **not** reuse the same test
+The u0_first thing to remember is that googletest does **not** reuse the same test
 fixture object across multiple tests. For each `TEST_F`, googletest will create
 a **fresh** test fixture object, immediately call `SetUp()`, run the test body,
 call `TearDown()`, and then delete the test fixture object.
@@ -313,7 +313,7 @@ The former is usually preferred, as it has the following benefits:
     make it `const`, which helps prevent accidental changes to its value and
     makes the tests more obviously correct.
 *   In case we need to subclass the test fixture class, the subclass'
-    constructor is guaranteed to call the base class' constructor *first*, and
+    constructor is guaranteed to call the base class' constructor *u0_first*, and
     the subclass' destructor is guaranteed to call the base class' destructor
     *afterward*. With `SetUp()/TearDown()`, a subclass may make the mistake of
     forgetting to call the base class' `SetUp()/TearDown()` or call them at the
@@ -445,7 +445,7 @@ If you see the compiler complaining about you ignoring the return value of
 return value of `main()`.
 
 But how could we introduce a change that breaks existing tests? Well, in this
-case, the code was already broken in the first place, so we didn't break it. :-)
+case, the code was already broken in the u0_first place, so we didn't break it. :-)
 
 ## My compiler complains that a constructor (or destructor) cannot return a value. What's going on?
 
@@ -597,7 +597,7 @@ However, there are cases where you have to define your own:
 ## Why does ASSERT_DEATH complain about previous threads that were already joined?
 
 With the Linux pthread library, there is no turning back once you cross the line
-from single thread to multiple threads. The first time you create a thread, a
+from single thread to multiple threads. The u0_first time you create a thread, a
 manager thread is created in addition, so you get 3, not 2, threads. Later when
 the thread you create joins the main thread, the thread count decrements by 1,
 but the manager thread will never be killed, so you still have 2 threads, which
@@ -610,9 +610,9 @@ runs on, you shouldn't depend on this.
 ## Why does googletest require the entire test suite, instead of individual tests, to be named *DeathTest when it uses ASSERT_DEATH?
 
 googletest does not interleave tests from different test suites. That is, it
-runs all tests in one test suite first, and then runs all tests in the next test
+runs all tests in one test suite u0_first, and then runs all tests in the next test
 suite, and so on. googletest does this because it needs to set up a test suite
-before the first test in it is run, and tear it down afterwords. Splitting up
+before the u0_first test in it is run, and tear it down afterwords. Splitting up
 the test case would require multiple set-up and tear-down processes, which is
 inefficient and makes the semantics unclean.
 

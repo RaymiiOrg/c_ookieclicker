@@ -4,29 +4,29 @@
 
 #include "Wallet.h"
 
-void Wallet::incrementCps(boost::multiprecision::cpp_dec_float_100 amount) {
+void Wallet::incrementCps(long double amount) {
     cps += amount;
 }
 
-boost::multiprecision::cpp_dec_float_100 Wallet::getCookieAmount() const {
+long double Wallet::getCookieAmount() const {
     return cookieAmount;
 }
 
-boost::multiprecision::cpp_dec_float_100 Wallet::getCps() const {
+long double Wallet::getCps() const {
     return cps;
 }
 
-void Wallet::incrementCookieAmount(boost::multiprecision::cpp_dec_float_100 amount) {
+void Wallet::incrementCookieAmount(long double amount) {
     cookieAmount += amount;
     if (amount > 0.0)
-        totalcookies += amount;
+        totalcookies += static_cast<unsigned long long>(amount);
 }
 
-void Wallet::decrementCookieAmount(boost::multiprecision::cpp_dec_float_100 amount) {
+void Wallet::decrementCookieAmount(long double amount) {
     if (cookieAmount >= amount)
         cookieAmount -= amount;
 }
 
-boost::multiprecision::cpp_dec_float_100 Wallet::getTotalcookies() const {
+unsigned long long Wallet::getTotalcookies() const {
     return totalcookies;
 }

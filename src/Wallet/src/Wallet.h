@@ -4,22 +4,21 @@
 
 #ifndef C_OOKIECLIKER_WALLET_H
 #define C_OOKIECLIKER_WALLET_H
-#include "boost/multiprecision/cpp_dec_float.hpp"
 
 class Wallet {
 public:
-    boost::multiprecision::cpp_dec_float_100 getCookieAmount() const;
-    boost::multiprecision::cpp_dec_float_100 getCps() const;
-    void incrementCookieAmount(boost::multiprecision::cpp_dec_float_100 amount);
-    void decrementCookieAmount(boost::multiprecision::cpp_dec_float_100 amount);
-    void incrementCps(boost::multiprecision::cpp_dec_float_100 amount);
-    boost::multiprecision::cpp_dec_float_100 getTotalcookies() const;
+    long double getCookieAmount() const;
+    long double getCps() const;
+    void incrementCookieAmount(long double amount);
+    void decrementCookieAmount(long double amount);
+    void incrementCps(long double amount);
+    unsigned long long  getTotalcookies() const;
 private:
-    boost::multiprecision::cpp_dec_float_100 cps ;
-    boost::multiprecision::cpp_dec_float_100 cookieAmount ;
-    boost::multiprecision::cpp_dec_float_100 totalcookies ;
+    long double cps ;
+    long double cookieAmount ;
+    unsigned long long totalcookies ;
 
 };
 
 
-#endif //C_OOKIECLIKER_WALLET_H
+#endif //C_OOKIECLIKER_COOKIENUMBER_H
