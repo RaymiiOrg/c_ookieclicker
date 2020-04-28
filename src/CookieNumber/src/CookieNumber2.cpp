@@ -2,13 +2,11 @@
 // Created by remy on 26-04-20.
 //
 
-#include <tuple>
-#include <utility>
+#include <iostream>
 #include "CookieNumber2.h"
 
 bool CookieNumber2::operator==(const CookieNumber2 &rhs) const {
-    return std::tie(cookieUnits.at(0), cookieUnits.at(1), cookieUnits.at(2), cookieUnits.at(3), cookieUnits.at(4), cookieUnits.at(5), cookieUnits.at(6), cookieUnits.at(7), cookieUnits.at(8)) ==
-           std::tie(rhs.cookieUnits.at(0), rhs.cookieUnits.at(1), rhs.cookieUnits.at(2), rhs.cookieUnits.at(3), rhs.cookieUnits.at(4), rhs.cookieUnits.at(5), rhs.cookieUnits.at(6), rhs.cookieUnits.at(7), rhs.cookieUnits.at(8));
+    return cookieUnits == rhs.cookieUnits;
 }
 
 bool CookieNumber2::operator!=(const CookieNumber2 &rhs) const {
@@ -16,8 +14,7 @@ bool CookieNumber2::operator!=(const CookieNumber2 &rhs) const {
 }
 
 bool CookieNumber2::operator<(const CookieNumber2 &rhs) const {
-    return std::tie(cookieUnits.at(0), cookieUnits.at(1), cookieUnits.at(2), cookieUnits.at(3), cookieUnits.at(4), cookieUnits.at(5), cookieUnits.at(6), cookieUnits.at(7), cookieUnits.at(8)) <
-           std::tie(rhs.cookieUnits.at(0), rhs.cookieUnits.at(1), rhs.cookieUnits.at(2), rhs.cookieUnits.at(3), rhs.cookieUnits.at(4), rhs.cookieUnits.at(5), rhs.cookieUnits.at(6), rhs.cookieUnits.at(7), rhs.cookieUnits.at(8));
+    return cookieUnits < rhs.cookieUnits;
 }
 
 bool CookieNumber2::operator>(const CookieNumber2 &rhs) const {
@@ -33,36 +30,27 @@ bool CookieNumber2::operator>=(const CookieNumber2 &rhs) const {
 }
 
 std::ostream &operator<<(std::ostream &os, const CookieNumber2 &number) {
-    os << "first: " << number.cookieUnits.at(0) << " kilo: " << number.cookieUnits.at(1) << " mega: " << number.cookieUnits.at(2) << " giga: " << number.cookieUnits.at(3)
-       << " tera: " << number.cookieUnits.at(4) << " peta: " << number.cookieUnits.at(5) << " exa: " << number.cookieUnits.at(6) << " zetta: " << number.cookieUnits.at(7)
-       << " yotta: " << number.cookieUnits.at(8);
+    for (size_t i = 0; i < number.cookieUnits.size(); ++i)
+        os << std::to_string(i) << "_" << number.cookieUnits.at(i) << "; ";
+
     return os;
 }
 
 CookieNumber2 operator+(const CookieNumber2 &c1, const CookieNumber2 &c2) {
-    CookieNumber2 c;
-    size_t cUnits = c.cookieUnits.size();
-    for(size_t i = 0; i < cUnits; i++) {
-        int unit_sum = c1.cookieUnits.at(i) + c2.cookieUnits.at(i);
-        while (unit_sum > 0) {
-            if (unit_sum > 999)
-            {
-                if (c.cookieUnits.at(i) > 999)
-                    c.cookieUnits.at(i) -= 999;
-                if (i != (cUnits-1))
-                    c.cookieUnits.at(i + 1) += 1;
-                unit_sum -= 999;
-            } else {
-                c.cookieUnits.at(i) += unit_sum;
-                break;
-            }
-        }
+    CookieNumber2 c(c1);
+    if (c.cookieUnits.size() < c2.cookieUnits.size())
+        c.cookieUnits.resize(c2.cookieUnits.size());
+    for(size_t i = 0; i < c.cookieUnits.size(); ++i) {
+        c.cookieUnits.at(i) += c2.cookieUnits.at(i);
     }
+    c.redistributeUnitsUp();
     return c;
 }
 
+
+
 CookieNumber2::CookieNumber2(int first, int kilo, int mega, int giga, int tera, int peta, int exa, int zetta,
-                             int yotta) {
+                             int yotta) : CookieNumber2() {
     cookieUnits.at(0) = first;
     cookieUnits.at(1) = kilo;
     cookieUnits.at(2) = mega;
@@ -72,6 +60,7 @@ CookieNumber2::CookieNumber2(int first, int kilo, int mega, int giga, int tera, 
     cookieUnits.at(6) = exa;
     cookieUnits.at(7) = zetta;
     cookieUnits.at(8) = yotta;
+    redistributeUnitsUp();
 }
 
 int CookieNumber2::getCookieUnits(int unit) {
@@ -81,6 +70,28 @@ int CookieNumber2::getCookieUnits(int unit) {
         return 0;
 }
 
-CookieNumber2::CookieNumber2() = default;
+bool CookieNumber2::redistributeUnitsUp() {
+    int limit = 1000;
+    for (size_t i = 0; i < cookieUnits.size(); ++i) {
+        auto modulus = cookieUnits.at(i) % limit;
+        auto fitsInTimes = (double)(cookieUnits.at(i) - modulus) / limit;
+        if (fitsInTimes > 0) {
+//            std::cout << "mod: " << modulus << "; times: " << fitsInTimes << "; " << std::endl;
+//            std::cout << fitsInTimes << "*" << limit << "==" << fitsInTimes * limit << std::endl;
+//            std::cout << "keep: " << cookieUnits.at(i) - (fitsInTimes * limit) << std::endl;
+            if(i == cookieUnits.size()-1) {
+                cookieUnits.push_back(fitsInTimes);
+            } else {
+                cookieUnits.at(i + 1) += fitsInTimes;
+            }
+            cookieUnits.at(i) -= (fitsInTimes * limit);
+        }
+    }
+    return true;
+}
 
-CookieNumber2::CookieNumber2(const CookieNumber2 &c) = default;//: first(c.first), kilo(c.kilo), mega(c.mega), giga(c.giga), tera(c.tera), peta(c.peta), exa(c.exa), zetta(c.zetta),yotta(c.yotta) {}
+int CookieNumber2::getAmountOfUnits() {
+    return cookieUnits.size();
+}
+
+CookieNumber2::CookieNumber2(const CookieNumber2 &c) = default;
