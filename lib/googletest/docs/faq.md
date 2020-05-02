@@ -260,7 +260,7 @@ TEST_F(FooTest, Baz) { ... }
 ```
 
 If necessary, you can continue to derive test fixtures from a derived fixture.
-googletest has no limit on how deep the hierarchy can be.
+googletest has no limitPerUnit on how deep the hierarchy can be.
 
 For a complete example using derived test fixtures, see
 [sample5_unittest.cc](../samples/sample5_unittest.cc).
