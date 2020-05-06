@@ -61,7 +61,6 @@ TEST(CookieNumber2TestSuite, additionResize)
     auto c1 = CookieNumber2(999,999,999,999,999,999,999,999,999);
     auto c2 = CookieNumber2(1);
     auto c3 = c1 + c2;
-    std::cout << c3;
     ASSERT_EQ(c1 + c2, c3);
     ASSERT_EQ(c3.getCookieUnits(0), 0);
     ASSERT_EQ(c3.getCookieUnits(1), 0);
@@ -84,7 +83,6 @@ TEST(CookieNumber2TestSuite, additionINTMAX)
     auto c2 = CookieNumber2(1);
     auto c3 = c1 + c2;
     auto c4 = c1 + c1;
-    std::cout << c1;
     //INT_MAX==2147483647
     ASSERT_EQ(c1.getCookieUnits(0), 647);
     ASSERT_EQ(c1.getCookieUnits(1), 483);
@@ -178,29 +176,136 @@ TEST(CookieNumber2TestSuite, constructorResize)
     ASSERT_EQ(c1.getCookieUnits(9), 1);
     ASSERT_EQ(c1.getAmountOfUnits(), 10);
 }
-//
-//TEST(CookieNumber2TestSuite, multiplicationIntRhs) {
-//    auto c1 = CookieNumber2(5);
-//    auto c2 = c1 * 2;
-//    auto c3 = c1 * 999;
-//    ASSERT_EQ(c2.getCookieUnits(0), 10);
-//    ASSERT_EQ(c2.getCookieUnits(1), 0);
-//    ASSERT_EQ(c3.getCookieUnits(0), 995);
-//    ASSERT_EQ(c3.getCookieUnits(1), 4);
-//}
-//
-//TEST(CookieNumber2TestSuite, largeMultiplicationIntRhs) {
-//    auto c1 = CookieNumber2(std::numeric_limits<int>::max(),
-//                            std::numeric_limits<int>::max(),
-//                            std::numeric_limits<int>::max(),
-//                            std::numeric_limits<int>::max(),
-//                            std::numeric_limits<int>::max(),
-//                            std::numeric_limits<int>::max(),
-//                            std::numeric_limits<int>::max(),
-//                            std::numeric_limits<int>::max(),
-//                            std::numeric_limits<int>::max());
-//    auto c2 = c1 * (2);
-//    ASSERT_EQ(c2.getCookieUnits(0), 10);
-//    ASSERT_EQ(c2.getCookieUnits(1), 0);
-//
-//}
+
+TEST(CookieNumber2TestSuite, multiplicationIntRhs) {
+    auto c1 = CookieNumber2(5);
+    auto c2 = c1 * 2;
+    auto c3 = c1 * 999;
+    ASSERT_EQ(c2.getCookieUnits(0), 10);
+    ASSERT_EQ(c2.getCookieUnits(1), 0);
+    ASSERT_EQ(c3.getCookieUnits(0), 995);
+    ASSERT_EQ(c3.getCookieUnits(1), 4);
+}
+
+TEST(CookieNumber2TestSuite, multiplication) {
+    auto c1 = CookieNumber2(5);
+    auto c2 = CookieNumber2(2);
+    auto c3 = c1 * c2;
+    auto c4 = CookieNumber2(999);
+    auto c5 = CookieNumber2(5);
+    auto c6 = c4 * c5;
+    ASSERT_EQ(c3.getCookieUnits(0), 10);
+    ASSERT_EQ(c3.getCookieUnits(1), 0);
+    ASSERT_EQ(c6.getCookieUnits(0), 995);
+    ASSERT_EQ(c6.getCookieUnits(1), 4);
+}
+
+TEST(CookieNumber2TestSuite, largeMultiplicationIntRhs) {
+    auto c1 = CookieNumber2(std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max());
+    auto c2 = c1 * 2;
+    ASSERT_EQ(c2.getCookieUnits(0), 294);
+    ASSERT_EQ(c2.getCookieUnits(1), 261);
+    ASSERT_EQ(c2.getCookieUnits(2), 556);
+    ASSERT_EQ(c2.getCookieUnits(3), 560);
+    ASSERT_EQ(c2.getCookieUnits(4), 560);
+    ASSERT_EQ(c2.getCookieUnits(5), 560);
+    ASSERT_EQ(c2.getCookieUnits(6), 560);
+    ASSERT_EQ(c2.getCookieUnits(7), 560);
+    ASSERT_EQ(c2.getCookieUnits(8), 560);
+    ASSERT_EQ(c2.getCookieUnits(9), 266);
+    ASSERT_EQ(c2.getCookieUnits(10), 299);
+    ASSERT_EQ(c2.getCookieUnits(11), 4);
+}
+
+TEST(CookieNumber2TestSuite, largeMultiplication) {
+    auto c1 = CookieNumber2(std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max());
+    auto c2 = c1 * c1;
+    auto c3 = c2 * c2;
+    auto c4 = c3 * c3;
+    auto c5 = c4 * c4;
+    std::cout << "c5: " << c5 << std::endl;
+    ASSERT_EQ(c1.getCookieUnits(0),647);
+    ASSERT_EQ(c1.getCookieUnits(1),130);
+    ASSERT_EQ(c1.getCookieUnits(2),278);
+    ASSERT_EQ(c1.getCookieUnits(3),280);
+    ASSERT_EQ(c1.getCookieUnits(4),280);
+    ASSERT_EQ(c1.getCookieUnits(5),280);
+    ASSERT_EQ(c1.getCookieUnits(6),280);
+    ASSERT_EQ(c1.getCookieUnits(7),280);
+    ASSERT_EQ(c1.getCookieUnits(8),280);
+    ASSERT_EQ(c1.getCookieUnits(9),633);
+    ASSERT_EQ(c1.getCookieUnits(10),149);
+    ASSERT_EQ(c1.getCookieUnits(11),2);
+
+    ASSERT_EQ(c2.getCookieUnits(0),609);
+    ASSERT_EQ(c2.getCookieUnits(1),318);
+    ASSERT_EQ(c2.getCookieUnits(2),301);
+    ASSERT_EQ(c2.getCookieUnits(3),477);
+    ASSERT_EQ(c2.getCookieUnits(4),478);
+    ASSERT_EQ(c2.getCookieUnits(5),478);
+    ASSERT_EQ(c2.getCookieUnits(6),478);
+    ASSERT_EQ(c2.getCookieUnits(7),478);
+    ASSERT_EQ(c2.getCookieUnits(8),478);
+    ASSERT_EQ(c2.getCookieUnits(9),767);
+    ASSERT_EQ(c2.getCookieUnits(10),601);
+    ASSERT_EQ(c2.getCookieUnits(11),26);
+
+    ASSERT_EQ(c3.getCookieUnits(0),881);
+    ASSERT_EQ(c3.getCookieUnits(1),494);
+    ASSERT_EQ(c3.getCookieUnits(2),702);
+    ASSERT_EQ(c3.getCookieUnits(3),619);
+    ASSERT_EQ(c3.getCookieUnits(4),711);
+    ASSERT_EQ(c3.getCookieUnits(5),712);
+    ASSERT_EQ(c3.getCookieUnits(6),712);
+    ASSERT_EQ(c3.getCookieUnits(7),712);
+    ASSERT_EQ(c3.getCookieUnits(8),712);
+    ASSERT_EQ(c3.getCookieUnits(9),517);
+    ASSERT_EQ(c3.getCookieUnits(10),789);
+    ASSERT_EQ(c3.getCookieUnits(11),37);
+    ASSERT_EQ(c3.getCookieUnits(12),1);
+
+    ASSERT_EQ(c4.getCookieUnits(0),161);
+    ASSERT_EQ(c4.getCookieUnits(1),812);
+    ASSERT_EQ(c4.getCookieUnits(2),48);
+    ASSERT_EQ(c4.getCookieUnits(3),654);
+    ASSERT_EQ(c4.getCookieUnits(4),904);
+    ASSERT_EQ(c4.getCookieUnits(5),449);
+    ASSERT_EQ(c4.getCookieUnits(6),451);
+    ASSERT_EQ(c4.getCookieUnits(7),451);
+    ASSERT_EQ(c4.getCookieUnits(8),451);
+    ASSERT_EQ(c4.getCookieUnits(9),796);
+    ASSERT_EQ(c4.getCookieUnits(10),788);
+    ASSERT_EQ(c4.getCookieUnits(11),991);
+    ASSERT_EQ(c4.getCookieUnits(12),2);
+
+    ASSERT_EQ(c5.getCookieUnits(0),921);
+    ASSERT_EQ(c5.getCookieUnits(1),369);
+    ASSERT_EQ(c5.getCookieUnits(2),963);
+    ASSERT_EQ(c5.getCookieUnits(3),718);
+    ASSERT_EQ(c5.getCookieUnits(4),643);
+    ASSERT_EQ(c5.getCookieUnits(5),418);
+    ASSERT_EQ(c5.getCookieUnits(6),603);
+    ASSERT_EQ(c5.getCookieUnits(7),604);
+    ASSERT_EQ(c5.getCookieUnits(8),604);
+    ASSERT_EQ(c5.getCookieUnits(9),819);
+    ASSERT_EQ(c5.getCookieUnits(10),577);
+    ASSERT_EQ(c5.getCookieUnits(11),702);
+    ASSERT_EQ(c5.getCookieUnits(12),986);
+
+}

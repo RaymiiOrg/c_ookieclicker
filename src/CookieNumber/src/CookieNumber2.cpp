@@ -32,13 +32,28 @@ bool CookieNumber2::operator>=(const CookieNumber2 &rhs) const {
 /**
  * return the number in a human-readable format. (last element
  * as the first number, since it's probably the highest unit).
+ * Example: 0: 382, 1: 222, 2: 9 will return the string
+ * 9222382.
  */
 std::ostream &operator<<(std::ostream &os, const CookieNumber2 &number) {
+    bool nonZeroNumberPrinted = false;
     for (auto it = number.cookieUnits.rbegin(); it != number.cookieUnits.rend(); ++it ) {
-        if (*it != 0)
+        if (*it != 0 and !nonZeroNumberPrinted) {
+            os << *it;
+            nonZeroNumberPrinted = true;
+            continue;
+        }
+        /** If we have a number like 0: 0, 1: 0, 2: 0, 3: 1
+         * then without this check it would print just 1. **/
+        if (nonZeroNumberPrinted)
             os << *it;
     }
-
+//    os << "\n\n";
+//    for (auto it = number.cookieUnits.begin(); it != number.cookieUnits.end(); ++it ) {
+//        auto i = std::distance(number.cookieUnits.begin(), it);
+//        os << "ASSERT_EQ(c5.getCookieUnits("<<i << ")," << *it << "); \n";
+//    }
+//    os << "\n\n";
     return os;
 }
 
@@ -76,8 +91,8 @@ int CookieNumber2::getCookieUnits(int unit) {
 
 bool CookieNumber2::redistributeUnitsUp() {
     for (auto it = cookieUnits.begin(); it != cookieUnits.end(); ++it) {
-        auto rest = *it % limitPerUnit;
-        auto fitsInTimes = (*it - rest) / limitPerUnit;
+        auto remainder = *it % limitPerUnit;
+        auto fitsInTimes = (*it - remainder) / limitPerUnit;
         if (fitsInTimes > 0) {
             if (std::next(it) == cookieUnits.end()) {
                 cookieUnits.push_back(0); // iterator pointers are now invalid
@@ -85,7 +100,7 @@ bool CookieNumber2::redistributeUnitsUp() {
                 it = std::next(cookieUnits.begin(), cookieUnits.size() - 2);
             }
             *std::next(it) += fitsInTimes;
-            *it = rest;
+            *it = remainder;
         }
     }
     return true;
@@ -103,6 +118,36 @@ CookieNumber2 operator+(const CookieNumber2 &lhs, int rhs) {
 CookieNumber2 operator+(int lhs, const CookieNumber2 &rhs) {
     CookieNumber2 l(lhs);
     return l + rhs;
+}
+
+CookieNumber2 operator*(const CookieNumber2 &lhs, int rhs) {
+    CookieNumber2 c(lhs);
+    for(int i = 1; i < rhs; ++i)
+    {
+        c = c + CookieNumber2(lhs);
+    }
+    return c;
+}
+
+CookieNumber2 operator*(const CookieNumber2 &lhs, const CookieNumber2 &rhs) {
+    CookieNumber2 c(lhs);
+    if (c.cookieUnits.size() < rhs.cookieUnits.size())
+        c.cookieUnits.resize(rhs.cookieUnits.size());
+
+    for(auto it = lhs.cookieUnits.begin(); it != lhs.cookieUnits.end(); ++it)
+    {
+        auto i = std::distance(lhs.cookieUnits.begin(), it);
+        if (rhs.cookieUnits.size() > i)
+            c.cookieUnits.at(i) = lhs.cookieUnits.at(i) * rhs.cookieUnits.at(i);
+        else
+            c.cookieUnits.at(i) = lhs.cookieUnits.at(i);
+    }
+    c.redistributeUnitsUp();
+    return c;
+}
+
+CookieNumber2 operator*(int lhs, const CookieNumber2 &rhs) {
+    return CookieNumber2();
 }
 
 CookieNumber2::CookieNumber2(const CookieNumber2 &c) = default;
