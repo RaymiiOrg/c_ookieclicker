@@ -5,6 +5,23 @@
 
 #include "CookieNumber2.h"
 
+/* Constructor */
+CookieNumber2::CookieNumber2(int first, int kilo, int mega, int giga, int tera, int peta, int exa, int zetta,
+                             int yotta) {
+    cookieUnits.at(0) = first;
+    cookieUnits.at(1) = kilo;
+    cookieUnits.at(2) = mega;
+    cookieUnits.at(3) = giga;
+    cookieUnits.at(4) = tera;
+    cookieUnits.at(5) = peta;
+    cookieUnits.at(6) = exa;
+    cookieUnits.at(7) = zetta;
+    cookieUnits.at(8) = yotta;
+    redistributeUnitsUp();
+}
+
+/* Comparison */
+
 bool CookieNumber2::operator==(const CookieNumber2 &rhs) const {
     return cookieUnits == rhs.cookieUnits;
 }
@@ -28,6 +45,8 @@ bool CookieNumber2::operator<=(const CookieNumber2 &rhs) const {
 bool CookieNumber2::operator>=(const CookieNumber2 &rhs) const {
     return !(*this < rhs);
 }
+
+/* Output */
 
 /**
  * return the number in a human-readable format. (last element
@@ -57,6 +76,9 @@ std::ostream &operator<<(std::ostream &os, const CookieNumber2 &number) {
     return os;
 }
 
+
+/* Addition */
+
 CookieNumber2 operator+(const CookieNumber2 &lhs, const CookieNumber2 &rhs) {
     CookieNumber2 c(lhs);
     if (c.cookieUnits.size() < rhs.cookieUnits.size())
@@ -66,48 +88,6 @@ CookieNumber2 operator+(const CookieNumber2 &lhs, const CookieNumber2 &rhs) {
     }
     c.redistributeUnitsUp();
     return c;
-}
-
-CookieNumber2::CookieNumber2(int first, int kilo, int mega, int giga, int tera, int peta, int exa, int zetta,
-                             int yotta) {
-    cookieUnits.at(0) = first;
-    cookieUnits.at(1) = kilo;
-    cookieUnits.at(2) = mega;
-    cookieUnits.at(3) = giga;
-    cookieUnits.at(4) = tera;
-    cookieUnits.at(5) = peta;
-    cookieUnits.at(6) = exa;
-    cookieUnits.at(7) = zetta;
-    cookieUnits.at(8) = yotta;
-    redistributeUnitsUp();
-}
-
-int CookieNumber2::getCookieUnits(int unit) {
-    if (unit <= cookieUnits.size())
-        return static_cast<int>(cookieUnits.at(unit));
-    else
-        return 0;
-}
-
-bool CookieNumber2::redistributeUnitsUp() {
-    for (auto it = cookieUnits.begin(); it != cookieUnits.end(); ++it) {
-        auto remainder = *it % limitPerUnit;
-        auto fitsInTimes = (*it - remainder) / limitPerUnit;
-        if (fitsInTimes > 0) {
-            if (std::next(it) == cookieUnits.end()) {
-                cookieUnits.push_back(0); // iterator pointers are now invalid
-                // make sure iterator pointers are valid again:
-                it = std::next(cookieUnits.begin(), cookieUnits.size() - 2);
-            }
-            *std::next(it) += fitsInTimes;
-            *it = remainder;
-        }
-    }
-    return true;
-}
-
-int CookieNumber2::getAmountOfUnits() {
-    return cookieUnits.size();
 }
 
 CookieNumber2 operator+(const CookieNumber2 &lhs, int rhs) {
@@ -120,11 +100,22 @@ CookieNumber2 operator+(int lhs, const CookieNumber2 &rhs) {
     return l + rhs;
 }
 
+/* Multiplication */
+
 CookieNumber2 operator*(const CookieNumber2 &lhs, int rhs) {
     CookieNumber2 c(lhs);
     for(int i = 1; i < rhs; ++i)
     {
         c = c + CookieNumber2(lhs);
+    }
+    return c;
+}
+
+CookieNumber2 operator*(int lhs, const CookieNumber2 &rhs) {
+    CookieNumber2 c(rhs);
+    for(int i = 1; i < lhs; ++i)
+    {
+        c = c + CookieNumber2(rhs);
     }
     return c;
 }
@@ -146,8 +137,59 @@ CookieNumber2 operator*(const CookieNumber2 &lhs, const CookieNumber2 &rhs) {
     return c;
 }
 
-CookieNumber2 operator*(int lhs, const CookieNumber2 &rhs) {
-    return CookieNumber2();
+/* Substraction */
+CookieNumber2 operator-(const CookieNumber2 &lhs, const CookieNumber2 &rhs) {
+    CookieNumber2 c(lhs);
+    if (c.cookieUnits.size() < rhs.cookieUnits.size())
+        c.cookieUnits.resize(rhs.cookieUnits.size()+1);
+    for(size_t i = 0; i < c.cookieUnits.size(); ++i) {
+        c.cookieUnits.at(i) -= rhs.cookieUnits.at(i);
+    }
+    c.redistributeUnitsDown();
 }
 
-CookieNumber2::CookieNumber2(const CookieNumber2 &c) = default;
+/* Helpers */
+bool CookieNumber2::redistributeUnitsUp() {
+    for (auto it = cookieUnits.begin(); it != cookieUnits.end(); ++it) {
+        auto remainder = *it % limitPerUnit;
+        auto fitsInTimes = (*it - remainder) / limitPerUnit;
+        if (fitsInTimes > 0) {
+            if (std::next(it) == cookieUnits.end()) {
+                cookieUnits.push_back(0); // iterator pointers are now invalid
+                // make sure iterator pointers are valid again:
+                it = std::next(cookieUnits.begin(), cookieUnits.size() - 2);
+            }
+            *std::next(it) += fitsInTimes;
+            *it = remainder;
+        }
+    }
+    return true;
+}
+
+
+bool CookieNumber2::redistributeUnitsDown() {
+    for (auto it = cookieUnits.rbegin(); it != cookieUnits.rend(); ++it) {
+        if (*it < 0) {
+            if (std::next(it) == cookieUnits.rend()) {
+                cookieUnits.insert(cookieUnits.begin(), 0);
+                // make sure iterator pointers are valid again:
+                it = std::next(cookieUnits.rbegin(), cookieUnits.size() - 2);
+            }
+            std::next(it) -= 1;
+            *it = 0;
+        }
+    }
+    return true;
+}
+
+
+int CookieNumber2::getCookieUnits(int unit) {
+    if (unit <= cookieUnits.size())
+        return static_cast<int>(cookieUnits.at(unit));
+    else
+        return 0;
+}
+
+int CookieNumber2::getAmountOfUnits() {
+    return cookieUnits.size();
+}

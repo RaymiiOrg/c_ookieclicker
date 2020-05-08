@@ -17,7 +17,7 @@ public:
     explicit CookieNumber2(int first = 0, int kilo = 0, int mega = 0, int giga = 0, int tera = 0, int peta = 0,
             int exa = 0, int zetta = 0, int yotta = 0);
     /* Copy Constructor */
-    CookieNumber2(const CookieNumber2 &c);
+    CookieNumber2(const CookieNumber2 &c) = default;
 
     /* getters */
     int getCookieUnits(int unit);
@@ -40,7 +40,9 @@ public:
     friend CookieNumber2 operator+(int lhs, const CookieNumber2 &rhs);
 
     /* Substract */
-
+    friend CookieNumber2 operator-(const CookieNumber2 &lhs, const CookieNumber2 &rhs);
+    friend CookieNumber2 operator-(const CookieNumber2 &lhs, int rhs);
+    friend CookieNumber2 operator-(int lhs, const CookieNumber2 &rhs);
 
     /* Division */
 
@@ -54,6 +56,8 @@ protected:
     int limitPerUnit = 1000;
 //  const int limitPerUnit = 1000;
     bool redistributeUnitsUp();
+    bool redistributeUnitsDown();
+
 
 
 };
