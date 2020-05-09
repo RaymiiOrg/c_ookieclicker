@@ -70,7 +70,7 @@ std::ostream &operator<<(std::ostream &os, const CookieNumber2 &number) {
 //    os << "\n\n";
 //    for (auto it = number.cookieUnits.begin(); it != number.cookieUnits.end(); ++it ) {
 //        auto i = std::distance(number.cookieUnits.begin(), it);
-//        os << "ASSERT_EQ(c5.getCookieUnits("<<i << ")," << *it << "); \n";
+//        os << "i: " << i << " " << *it << " ";
 //    }
 //    os << "\n\n";
     return os;
@@ -141,11 +141,18 @@ CookieNumber2 operator*(const CookieNumber2 &lhs, const CookieNumber2 &rhs) {
 CookieNumber2 operator-(const CookieNumber2 &lhs, const CookieNumber2 &rhs) {
     CookieNumber2 c(lhs);
     if (c.cookieUnits.size() < rhs.cookieUnits.size())
-        c.cookieUnits.resize(rhs.cookieUnits.size()+1);
-    for(size_t i = 0; i < c.cookieUnits.size(); ++i) {
-        c.cookieUnits.at(i) -= rhs.cookieUnits.at(i);
+        c.cookieUnits.resize(rhs.cookieUnits.size());
+    std::cout << "before: " << c <<  "\n";
+    for(auto it = c.cookieUnits.begin(); it != c.cookieUnits.end(); ++it) {
+        auto i = std::distance(c.cookieUnits.begin(), it);
+        auto left =  lhs.cookieUnits.at(i);
+        auto right =  rhs.cookieUnits.at(i);
+        auto minus = left - right;
+        c.cookieUnits.at(i) = minus;
     }
-    c.redistributeUnitsDown();
+
+    std::cout << c <<  "\n";
+    return c;
 }
 
 /* Helpers */
@@ -167,20 +174,20 @@ bool CookieNumber2::redistributeUnitsUp() {
 }
 
 
-bool CookieNumber2::redistributeUnitsDown() {
-    for (auto it = cookieUnits.rbegin(); it != cookieUnits.rend(); ++it) {
-        if (*it < 0) {
-            if (std::next(it) == cookieUnits.rend()) {
-                cookieUnits.insert(cookieUnits.begin(), 0);
-                // make sure iterator pointers are valid again:
-                it = std::next(cookieUnits.rbegin(), cookieUnits.size() - 2);
-            }
-            std::next(it) -= 1;
-            *it = 0;
-        }
-    }
-    return true;
-}
+//bool CookieNumber2::redistributeUnitsDown() {
+//    for (auto it = cookieUnits.rbegin(); it != cookieUnits.rend(); ++it) {
+//        if (*it < 0) {
+//            if (std::next(it) == cookieUnits.rend()) {
+//                cookieUnits.insert(cookieUnits.begin(), 0);
+//                // make sure iterator pointers are valid again:
+//                it = std::next(cookieUnits.rbegin(), cookieUnits.size() - 2);
+//            }
+//            std::next(it) -= 1;
+//            *it = 0;
+//        }
+//    }
+//    return true;
+//}
 
 
 int CookieNumber2::getCookieUnits(int unit) {

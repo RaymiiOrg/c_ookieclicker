@@ -239,7 +239,7 @@ TEST(CookieNumber2TestSuite, largeMultiplication) {
     auto c3 = c2 * c2;
     auto c4 = c3 * c3;
     auto c5 = c4 * c4;
-    std::cout << "c5: " << c5 << std::endl;
+
     ASSERT_EQ(c1.getCookieUnits(0),647);
     ASSERT_EQ(c1.getCookieUnits(1),130);
     ASSERT_EQ(c1.getCookieUnits(2),278);
@@ -308,4 +308,35 @@ TEST(CookieNumber2TestSuite, largeMultiplication) {
     ASSERT_EQ(c5.getCookieUnits(11),702);
     ASSERT_EQ(c5.getCookieUnits(12),986);
 
+}
+
+TEST(CookieNumber2TestSuite, substract) {
+
+    auto c1 = CookieNumber2(5000);
+    std::cout << c1;
+    auto c2 = CookieNumber2(2500);
+    auto c3 = c1 - c2;
+
+    //std::cout << "c3: " << c3 << std::endl;
+    ASSERT_EQ(c3.getCookieUnits(0), 500);
+    ASSERT_EQ(c3.getCookieUnits(1), 500);
+
+}
+
+TEST(CookieNumber2TestSuite, output) {
+    testing::internal::CaptureStdout();
+
+    std::cout << CookieNumber2(1234);
+    std::string o1 = testing::internal::GetCapturedStdout();
+
+    ASSERT_EQ(o1, "1234");
+}
+
+TEST(CookieNumber2TestSuite, output_zeros) {
+    testing::internal::CaptureStdout();
+
+    std::cout << CookieNumber2(5000);
+    std::string o1 = testing::internal::GetCapturedStdout();
+
+    ASSERT_EQ(o1, "5000");
 }
