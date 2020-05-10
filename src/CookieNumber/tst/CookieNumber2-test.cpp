@@ -1,15 +1,15 @@
-#include "CookieNumber2.h"
+#include "CookieNumber.h"
 #include <memory>
 #include <numeric>
 #include "gtest/gtest.h"
 
-TEST(CookieNumber2TestSuite, additionSameUnit)
+TEST(CookieNumberTestSuite, additionSameUnit)
 {
-    auto c1 = CookieNumber2(1,1);
-    auto c2 = CookieNumber2(1,0);
+    auto c1 = CookieNumber(1,1);
+    auto c2 = CookieNumber(1,0);
     auto c3 = c1 + c2;
-    auto c5 = CookieNumber2(998, 0);
-    auto c6 = CookieNumber2(1, 1);
+    auto c5 = CookieNumber(998, 0);
+    auto c6 = CookieNumber(1, 1);
     auto c7 = c5 + c6;
     auto c8 = c6 + c5;
     ASSERT_EQ(c1 + c2, c3);
@@ -30,14 +30,14 @@ TEST(CookieNumber2TestSuite, additionSameUnit)
     ASSERT_EQ(c8.getAmountOfUnits(), 9);
 }
 
-TEST(CookieNumber2TestSuite, additionToNextUnit)
+TEST(CookieNumberTestSuite, additionToNextUnit)
 {
-    auto c1 = CookieNumber2(999);
-    auto c2 = CookieNumber2(1);
+    auto c1 = CookieNumber(999);
+    auto c2 = CookieNumber(1);
     auto c3 = c1 + c2;
     auto c4 = c2 + c1;
-    auto c5 = CookieNumber2(1,1,1,1,999,1);
-    auto c6 = CookieNumber2(0,0,0,0,1,1);
+    auto c5 = CookieNumber(1,1,1,1,999,1);
+    auto c6 = CookieNumber(0,0,0,0,1,1);
     auto c7 = c5 + c6;
     ASSERT_EQ(c1 + c2, c3);
     ASSERT_EQ(c2 + c1, c4);
@@ -56,10 +56,10 @@ TEST(CookieNumber2TestSuite, additionToNextUnit)
     ASSERT_EQ(c7.getCookieUnits(5), 3);
 }
 
-TEST(CookieNumber2TestSuite, additionResize)
+TEST(CookieNumberTestSuite, additionResize)
 {
-    auto c1 = CookieNumber2(999,999,999,999,999,999,999,999,999);
-    auto c2 = CookieNumber2(1);
+    auto c1 = CookieNumber(999,999,999,999,999,999,999,999,999);
+    auto c2 = CookieNumber(1);
     auto c3 = c1 + c2;
     ASSERT_EQ(c1 + c2, c3);
     ASSERT_EQ(c3.getCookieUnits(0), 0);
@@ -77,10 +77,10 @@ TEST(CookieNumber2TestSuite, additionResize)
     ASSERT_EQ(c3.getAmountOfUnits(), 10);
 }
 
-TEST(CookieNumber2TestSuite, additionINTMAX)
+TEST(CookieNumberTestSuite, additionINTMAX)
 {
-    auto c1 = CookieNumber2(std::numeric_limits<int>::max());
-    auto c2 = CookieNumber2(1);
+    auto c1 = CookieNumber(std::numeric_limits<int>::max());
+    auto c2 = CookieNumber(1);
     auto c3 = c1 + c2;
     auto c4 = c1 + c1;
     //INT_MAX==2147483647
@@ -100,8 +100,8 @@ TEST(CookieNumber2TestSuite, additionINTMAX)
     ASSERT_EQ(c4.getCookieUnits(3), 4);
 }
 
-TEST(CookieNumber2TestSuite, additionIntRhs) {
-    auto c1 = CookieNumber2(998);
+TEST(CookieNumberTestSuite, additionIntRhs) {
+    auto c1 = CookieNumber(998);
     auto c2 = c1 + 2;
     auto c3 = 1 + c1;
     ASSERT_EQ(c2.getCookieUnits(0), 0);
@@ -110,8 +110,8 @@ TEST(CookieNumber2TestSuite, additionIntRhs) {
     ASSERT_EQ(c3.getCookieUnits(1), 0);
 }
 
-TEST(CookieNumber2TestSuite, constructorEnormous) {
-    auto c1 = CookieNumber2(std::numeric_limits<int>::max(),
+TEST(CookieNumberTestSuite, constructorEnormous) {
+    auto c1 = CookieNumber(std::numeric_limits<int>::max(),
             std::numeric_limits<int>::max(),
             std::numeric_limits<int>::max(),
             std::numeric_limits<int>::max(),
@@ -135,10 +135,10 @@ TEST(CookieNumber2TestSuite, constructorEnormous) {
     ASSERT_EQ(c1.getAmountOfUnits(), 12);
 }
 
-TEST(CookieNumber2TestSuite, constructor)
+TEST(CookieNumberTestSuite, constructor)
 {
-    auto justFits = CookieNumber2(999);
-    auto tooLarge = CookieNumber2(1000);
+    auto justFits = CookieNumber(999);
+    auto tooLarge = CookieNumber(1000);
     ASSERT_EQ(justFits.getCookieUnits(0), 999);
     ASSERT_EQ(justFits.getCookieUnits(1), 0);
     ASSERT_EQ(tooLarge.getCookieUnits(0), 0);
@@ -146,9 +146,9 @@ TEST(CookieNumber2TestSuite, constructor)
 
 }
 
-TEST(CookieNumber2TestSuite, constructorLarge)
+TEST(CookieNumberTestSuite, constructorLarge)
 {
-    auto c1 = CookieNumber2(1000, 999,999,999,999,999,999, 999, 0);
+    auto c1 = CookieNumber(1000, 999,999,999,999,999,999, 999, 0);
     ASSERT_EQ(c1.getCookieUnits(0), 0);
     ASSERT_EQ(c1.getCookieUnits(1), 0);
     ASSERT_EQ(c1.getCookieUnits(2), 0);
@@ -161,9 +161,9 @@ TEST(CookieNumber2TestSuite, constructorLarge)
     ASSERT_EQ(c1.getAmountOfUnits(), 9);
 }
 
-TEST(CookieNumber2TestSuite, constructorResize)
+TEST(CookieNumberTestSuite, constructorResize)
 {
-    auto c1 = CookieNumber2(1000, 999,999,999,999,999,999,999,999);
+    auto c1 = CookieNumber(1000, 999,999,999,999,999,999,999,999);
     ASSERT_EQ(c1.getCookieUnits(0), 0);
     ASSERT_EQ(c1.getCookieUnits(1), 0);
     ASSERT_EQ(c1.getCookieUnits(2), 0);
@@ -177,8 +177,8 @@ TEST(CookieNumber2TestSuite, constructorResize)
     ASSERT_EQ(c1.getAmountOfUnits(), 10);
 }
 
-TEST(CookieNumber2TestSuite, multiplicationIntRhs) {
-    auto c1 = CookieNumber2(5);
+TEST(CookieNumberTestSuite, multiplicationIntRhs) {
+    auto c1 = CookieNumber(5);
     auto c2 = c1 * 2;
     auto c3 = c1 * 999;
     ASSERT_EQ(c2.getCookieUnits(0), 10);
@@ -187,12 +187,12 @@ TEST(CookieNumber2TestSuite, multiplicationIntRhs) {
     ASSERT_EQ(c3.getCookieUnits(1), 4);
 }
 
-TEST(CookieNumber2TestSuite, multiplication) {
-    auto c1 = CookieNumber2(5);
-    auto c2 = CookieNumber2(2);
+TEST(CookieNumberTestSuite, multiplication) {
+    auto c1 = CookieNumber(5);
+    auto c2 = CookieNumber(2);
     auto c3 = c1 * c2;
-    auto c4 = CookieNumber2(999);
-    auto c5 = CookieNumber2(5);
+    auto c4 = CookieNumber(999);
+    auto c5 = CookieNumber(5);
     auto c6 = c4 * c5;
     ASSERT_EQ(c3.getCookieUnits(0), 10);
     ASSERT_EQ(c3.getCookieUnits(1), 0);
@@ -200,8 +200,8 @@ TEST(CookieNumber2TestSuite, multiplication) {
     ASSERT_EQ(c6.getCookieUnits(1), 4);
 }
 
-TEST(CookieNumber2TestSuite, largeMultiplicationIntRhs) {
-    auto c1 = CookieNumber2(std::numeric_limits<int>::max(),
+TEST(CookieNumberTestSuite, largeMultiplicationIntRhs) {
+    auto c1 = CookieNumber(std::numeric_limits<int>::max(),
                             std::numeric_limits<int>::max(),
                             std::numeric_limits<int>::max(),
                             std::numeric_limits<int>::max(),
@@ -225,8 +225,8 @@ TEST(CookieNumber2TestSuite, largeMultiplicationIntRhs) {
     ASSERT_EQ(c2.getCookieUnits(11), 4);
 }
 
-TEST(CookieNumber2TestSuite, largeMultiplication) {
-    auto c1 = CookieNumber2(std::numeric_limits<int>::max(),
+TEST(CookieNumberTestSuite, largeMultiplication) {
+    auto c1 = CookieNumber(std::numeric_limits<int>::max(),
                             std::numeric_limits<int>::max(),
                             std::numeric_limits<int>::max(),
                             std::numeric_limits<int>::max(),
@@ -310,10 +310,10 @@ TEST(CookieNumber2TestSuite, largeMultiplication) {
 
 }
 
-TEST(CookieNumber2TestSuite, substract) {
+TEST(CookieNumberTestSuite, substract) {
 
-    auto c1 = CookieNumber2(5000);
-    auto c2 = CookieNumber2(2500);
+    auto c1 = CookieNumber(5000);
+    auto c2 = CookieNumber(2500);
     auto c3 = c1 - c2;
 
     auto c4 = c2 - c1;
@@ -332,28 +332,28 @@ TEST(CookieNumber2TestSuite, substract) {
 
 }
 
-TEST(CookieNumber2TestSuite, output) {
+TEST(CookieNumberTestSuite, output) {
     testing::internal::CaptureStdout();
 
-    std::cout << CookieNumber2(1234);
+    std::cout << CookieNumber(1234);
     std::string o1 = testing::internal::GetCapturedStdout();
 
     ASSERT_EQ(o1, "1234");
 }
 
-TEST(CookieNumber2TestSuite, output_zeros) {
+TEST(CookieNumberTestSuite, output_zeros) {
     testing::internal::CaptureStdout();
 
-    std::cout << CookieNumber2(5000);
+    std::cout << CookieNumber(5000);
     std::string o1 = testing::internal::GetCapturedStdout();
 
     ASSERT_EQ(o1, "5000");
 }
 
-TEST(CookieNumber2TestSuite, operators) {
+TEST(CookieNumberTestSuite, operators) {
 
-    auto c1 = CookieNumber2(5000);
-    auto c2 = CookieNumber2(1234);
+    auto c1 = CookieNumber(5000);
+    auto c2 = CookieNumber(1234);
     bool lt1 = c1 < c2;
     bool gt1 = c1 > c2;
     bool ne1 = c1 != c2;

@@ -5,6 +5,8 @@
 #ifndef C_OOKIECLIKER_WALLET_H
 #define C_OOKIECLIKER_WALLET_H
 
+#include "CookieNumber.h"
+
 class Wallet {
 public:
     long double getCookieAmount() const;
