@@ -2,7 +2,6 @@
 // Created by remy on 26-04-20.
 //
 
-
 #include "CookieNumber2.h"
 
 /* Constructor */
@@ -31,7 +30,28 @@ bool CookieNumber2::operator!=(const CookieNumber2 &rhs) const {
 }
 
 bool CookieNumber2::operator<(const CookieNumber2 &rhs) const {
-    return cookieUnits < rhs.cookieUnits;
+    if (cookieUnits.size() > rhs.cookieUnits.size())
+        return false;
+    bool seenLt = false;
+    for (auto it = cookieUnits.rbegin(); it != cookieUnits.rend(); ++it)
+    {
+        auto reverse_i = (cookieUnits.size() - 1) - (it - cookieUnits.rbegin());
+        auto i = std::distance(cookieUnits.rbegin(), it);
+        auto left = *it;
+        auto right = rhs.cookieUnits.at(reverse_i);
+        if (left == right)
+            continue;
+
+        if (left > right)
+        {
+            if (!seenLt)
+                return seenLt;
+        } else {
+
+                seenLt = true;
+        }
+    }
+    return seenLt;
 }
 
 bool CookieNumber2::operator>(const CookieNumber2 &rhs) const {

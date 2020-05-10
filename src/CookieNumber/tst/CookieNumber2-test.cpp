@@ -340,3 +340,18 @@ TEST(CookieNumber2TestSuite, output_zeros) {
 
     ASSERT_EQ(o1, "5000");
 }
+
+TEST(CookieNumber2TestSuite, operators) {
+
+    auto c1 = CookieNumber2(5000);
+    auto c2 = CookieNumber2(1234);
+    bool lt1 = c1 < c2;
+    bool gt1 = c1 > c2;
+    bool ne1 = c1 != c2;
+    bool eq1 = c1 == c2;
+
+    ASSERT_EQ(lt1, false);
+    ASSERT_EQ(gt1, true);
+    ASSERT_EQ(ne1, true);
+    ASSERT_EQ(eq1, false);
+}
