@@ -76,7 +76,7 @@ bool CookieNumber2::operator>=(const CookieNumber2 &rhs) const {
  */
 std::ostream &operator<<(std::ostream &os, const CookieNumber2 &number) {
     bool nonZeroNumberPrinted = false;
-    for (auto it = number.cookieUnits.rbegin(); it != number.cookieUnits.rend(); ++it ) {
+    for (auto it = number.cookieUnits.rbegin(); it != number.cookieUnits.rend(); ++it) {
         if (*it != 0 and !nonZeroNumberPrinted) {
             os << *it;
             nonZeroNumberPrinted = true;
@@ -85,14 +85,8 @@ std::ostream &operator<<(std::ostream &os, const CookieNumber2 &number) {
         /** If we have a number like 0: 0, 1: 0, 2: 0, 3: 1
          * then without this check it would print just 1. **/
         if (nonZeroNumberPrinted)
-            os << *it;
+            os << std::setw(3) << std::setfill('0') << *it;
     }
-//    os << "\n\n";
-//    for (auto it = number.cookieUnits.begin(); it != number.cookieUnits.end(); ++it ) {
-//        auto i = std::distance(number.cookieUnits.begin(), it);
-//        os << "i: " << i << " " << *it << " ";
-//    }
-//    os << "\n\n";
     return os;
 }
 
@@ -214,23 +208,6 @@ bool CookieNumber2::redistributeUnitsUp() {
     return true;
 }
 
-
-//bool CookieNumber2::redistributeUnitsDown() {
-//    for (auto it = cookieUnits.rbegin(); it != cookieUnits.rend(); ++it) {
-//        if (*it < 0) {
-//            if (std::next(it) == cookieUnits.rend()) {
-//                cookieUnits.insert(cookieUnits.begin(), 0);
-//                // make sure iterator pointers are valid again:
-//                it = std::next(cookieUnits.rbegin(), cookieUnits.size() - 2);
-//            }
-//            std::next(it) -= 1;
-//            *it = 0;
-//        }
-//    }
-//    return true;
-//}
-
-
 int CookieNumber2::getCookieUnits(int unit) {
     if (unit <= cookieUnits.size())
         return static_cast<int>(cookieUnits.at(unit));
@@ -241,3 +218,17 @@ int CookieNumber2::getCookieUnits(int unit) {
 int CookieNumber2::getAmountOfUnits() {
     return cookieUnits.size();
 }
+
+std::string CookieNumber2::printArray() {
+    std::string result;
+    for (auto it = cookieUnits.begin(); it != cookieUnits.end(); ++it) {
+        auto i = std::distance(cookieUnits.begin(), it);
+        result += std::to_string(i) + "=" + std::to_string(*it) + "; ";
+    }
+    return result;
+}
+
+CookieNumber2 operator-(int lhs, const CookieNumber2 &rhs) {
+    return CookieNumber2();
+}
+

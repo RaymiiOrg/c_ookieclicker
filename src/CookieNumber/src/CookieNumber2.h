@@ -26,6 +26,7 @@ public:
 
     /* output */
     friend std::ostream &operator<<(std::ostream &os, const CookieNumber2 &number);
+    std::string printArray();
 
     /* comparison */
     bool operator==(const CookieNumber2 &rhs) const;
@@ -55,9 +56,7 @@ public:
 protected:
     std::vector<long long int> cookieUnits {0,0,0,0,0,0,0,0,0};
     int limitPerUnit = 1000;
-//  const int limitPerUnit = 1000;
     bool redistributeUnitsUp();
-    bool redistributeUnitsDown();
 
 
 
