@@ -142,17 +142,38 @@ CookieNumber2 operator-(const CookieNumber2 &lhs, const CookieNumber2 &rhs) {
     CookieNumber2 c(lhs);
     if (c.cookieUnits.size() < rhs.cookieUnits.size())
         c.cookieUnits.resize(rhs.cookieUnits.size());
-    std::cout << "before: " << c <<  "\n";
-    for(auto it = c.cookieUnits.begin(); it != c.cookieUnits.end(); ++it) {
+
+    for (auto it = c.cookieUnits.begin(); it != c.cookieUnits.end(); ++it) {
         auto i = std::distance(c.cookieUnits.begin(), it);
-        auto left =  lhs.cookieUnits.at(i);
-        auto right =  rhs.cookieUnits.at(i);
+        auto left = c.cookieUnits.at(i);
+        auto right = rhs.cookieUnits.at(i);
+        if ((left == 0 and right == 0) or (right == 0))
+            continue;
+
         auto minus = left - right;
-        c.cookieUnits.at(i) = minus;
+        if (minus < 0) {
+            if (std::next(it) != c.cookieUnits.end()) {
+                if (*std::next(it) > 0) {
+                    *std::next(it) -= 1;
+                    *it += c.limitPerUnit;
+                } else {
+                    c = CookieNumber2(-1);
+                    return c;
+                }
+            } else {
+                c = CookieNumber2(-1);
+                return c;
+            }
+        }
+        *it -= std::abs(minus);
     }
 
-    std::cout << c <<  "\n";
     return c;
+}
+
+
+CookieNumber2 operator-(const CookieNumber2 &lhs, int rhs) {
+    return lhs - CookieNumber2(rhs);
 }
 
 /* Helpers */

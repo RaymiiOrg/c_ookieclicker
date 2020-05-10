@@ -9,6 +9,7 @@
 #include <ostream>
 #include <vector>
 #include <map>
+#include <iomanip>
 #include <iostream>
 
 class CookieNumber2 {
