@@ -9,6 +9,8 @@ cookieclicker game [by ortiel][1]. A clone of a game is simple enough to get up 
 
 Class which allows storing of a large number (score, prices, inventory amount). Positive integers only. Supports comparison operators and has basic arithmetic (addition, substract, divide, multiply).  
 
+If you substract too much so the number would become negative, lets say, `2500-5000`, the cookienumber will become invalid and return `-1`, since negative numbers are not supported. 
+
 ## Inventory
 
 ### Items

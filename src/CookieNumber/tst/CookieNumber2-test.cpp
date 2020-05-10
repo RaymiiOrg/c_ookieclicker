@@ -313,13 +313,22 @@ TEST(CookieNumber2TestSuite, largeMultiplication) {
 TEST(CookieNumber2TestSuite, substract) {
 
     auto c1 = CookieNumber2(5000);
-    std::cout << c1;
     auto c2 = CookieNumber2(2500);
     auto c3 = c1 - c2;
 
-    //std::cout << "c3: " << c3 << std::endl;
+    auto c4 = c2 - c1;
+
+    auto c5 = c1 * 2;
+    auto c6 = c5 + c5;
+
+    auto c7 = c6 - c5;
+
     ASSERT_EQ(c3.getCookieUnits(0), 500);
-    ASSERT_EQ(c3.getCookieUnits(1), 500);
+    ASSERT_EQ(c3.getCookieUnits(1), 2);
+
+    ASSERT_EQ(c4.getCookieUnits(0), -1);
+
+    ASSERT_EQ(c5, c7);
 
 }
 
