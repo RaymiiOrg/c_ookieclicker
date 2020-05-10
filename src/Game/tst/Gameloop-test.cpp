@@ -13,8 +13,8 @@ struct GameloopTestSuite : public ::testing::Test
 
 TEST_F(GameloopTestSuite, incrementCps)
 {
-    game->getWallet().incrementCps(1);
+    game->getWallet().incrementCps(CookieNumber(1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     game->incrementCookiesOnTime();
-    ASSERT_NEAR(game->getWallet().getCookieAmount(), 1, .1);
+    ASSERT_EQ(game->getWallet().getCookieAmount(), CookieNumber(1));
 }

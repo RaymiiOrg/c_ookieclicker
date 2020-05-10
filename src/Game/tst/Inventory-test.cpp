@@ -16,9 +16,9 @@ struct InventoryTestSuite : public ::testing::Test
 TEST_F(InventoryTestSuite, getEmptyInventory)
 {
     Item testItem = items.Cursor;
-    ASSERT_EQ(inventory->getItemCount(testItem), 0);
+    ASSERT_EQ(inventory->getItemCount(testItem), CookieNumber(0));
     ASSERT_EQ(inventory->getLastItemAdded().empty(), true);
-    ASSERT_EQ(inventory->getLastItemAddedAmount(), 0);
+    ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
 }
 
 TEST_F(InventoryTestSuite, addItems)
@@ -28,15 +28,15 @@ TEST_F(InventoryTestSuite, addItems)
     Item testItem2 = items.Grandma;
 
     //act
-    inventory->addItem(testItem1, 10);
-    inventory->addItem(testItem1, 2);
-    inventory->addItem(testItem2, 1);
+    inventory->addItem(testItem1, CookieNumber(10));
+    inventory->addItem(testItem1, CookieNumber(2));
+    inventory->addItem(testItem2, CookieNumber(1));
 
     //assert
-    ASSERT_EQ(inventory->getItemCount(testItem1), 12);
-    ASSERT_EQ(inventory->getItemCount(testItem2), 1);
+    ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(12));
+    ASSERT_EQ(inventory->getItemCount(testItem2), CookieNumber(1));
     ASSERT_EQ(inventory->getLastItemAdded(), testItem2.name);
-    ASSERT_EQ(inventory->getLastItemAddedAmount(), 1);
+    ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
 }
 
 
@@ -47,16 +47,16 @@ TEST_F(InventoryTestSuite, removeItems)
     Item testItem2 = items.Grandma;
 
     //act
-    inventory->addItem(testItem1, 10);
-    inventory->addItem(testItem1, 1);
-    inventory->addItem(testItem2, 1);
-    inventory->removeItem(testItem1, 7);
-    inventory->removeItem(testItem1, 1);
-    inventory->removeItem(testItem2, 7);
+    inventory->addItem(testItem1, CookieNumber(10));
+    inventory->addItem(testItem1, CookieNumber(1));
+    inventory->addItem(testItem2, CookieNumber(1));
+    inventory->removeItem(testItem1, CookieNumber(7));
+    inventory->removeItem(testItem1, CookieNumber(1));
+    inventory->removeItem(testItem2, CookieNumber(7));
 
     //assert
-    ASSERT_EQ(inventory->getItemCount(testItem1), 3);
-    ASSERT_EQ(inventory->getItemCount(testItem2), 0);
+    ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(3));
+    ASSERT_EQ(inventory->getItemCount(testItem2), CookieNumber(0));
     ASSERT_EQ(inventory->getLastItemAdded(), testItem2.name);
-    ASSERT_EQ(inventory->getLastItemAddedAmount(), 1);
+    ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
 }

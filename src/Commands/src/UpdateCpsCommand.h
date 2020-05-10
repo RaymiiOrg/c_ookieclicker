@@ -10,13 +10,13 @@
 
 class UpdateCpsCommand : public Command {
 public:
-    UpdateCpsCommand(long double amount, Wallet &wallet);
+    UpdateCpsCommand(const CookieNumber& amount, Wallet &wallet);
     void execute() override;
     void undo() override;
 
 private:
     Wallet &m_Wallet;
-    long double m_Amount = 0;
+    CookieNumber m_Amount;
 };
 
 

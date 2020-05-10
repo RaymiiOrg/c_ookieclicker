@@ -9,12 +9,13 @@
 
 class Wallet {
     public:
-    CookieNumber getCookieAmount() const;
-    CookieNumber getCps() const;
-    void incrementCookieAmount(CookieNumber amount);
-    void decrementCookieAmount(CookieNumber amount);
-    void incrementCps(CookieNumber amount);
-    CookieNumber  getTotalcookies() const;
+    const CookieNumber& getCookieAmount();
+    const CookieNumber& getCps();
+    void incrementCookieAmount(const CookieNumber& amount);
+    void decrementCookieAmount(const CookieNumber& amount);
+    void incrementCps(const CookieNumber& amount);
+    void decrementCps(const CookieNumber& amount);
+    const CookieNumber& getTotalcookies();
 private:
     CookieNumber cps ;
     CookieNumber cookieAmount ;

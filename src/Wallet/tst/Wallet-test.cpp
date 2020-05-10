@@ -14,8 +14,8 @@ struct WalletTestSuite : public ::testing::Test
 
 TEST_F(WalletTestSuite, getEmptyWallet)
 {
-    ASSERT_EQ(wallet->getCookieAmount(), 0);
-    ASSERT_EQ(wallet->getCps(), 0);
+    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
+    ASSERT_EQ(wallet->getCps(), CookieNumber(0));
 }
 
 TEST_F(WalletTestSuite, incrementCookies)
@@ -23,10 +23,10 @@ TEST_F(WalletTestSuite, incrementCookies)
     //arrange
 
     //act
-    wallet->incrementCookieAmount(10);
-    wallet->incrementCookieAmount(100);
+    wallet->incrementCookieAmount(CookieNumber(10));
+    wallet->incrementCookieAmount(CookieNumber(100));
 
     //assert
-    ASSERT_EQ(wallet->getCookieAmount(), 110);
+    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(110));
 }
 

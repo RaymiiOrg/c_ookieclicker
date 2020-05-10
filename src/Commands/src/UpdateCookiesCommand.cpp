@@ -4,7 +4,7 @@
 
 #include "UpdateCookiesCommand.h"
 
-UpdateCookiesCommand::UpdateCookiesCommand(long double amount, Wallet& wallet)
+UpdateCookiesCommand::UpdateCookiesCommand(const CookieNumber& amount, Wallet& wallet)
 : m_Amount(amount), m_Wallet(wallet)
 {
 }
@@ -14,5 +14,5 @@ void UpdateCookiesCommand::execute() {
 }
 
 void UpdateCookiesCommand::undo() {
-    m_Wallet.incrementCookieAmount(-m_Amount);
+    m_Wallet.decrementCookieAmount(m_Amount);
 }

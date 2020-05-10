@@ -16,25 +16,25 @@ struct UpdateCpsCommandTestSuite : public ::testing::Test
 TEST_F(UpdateCpsCommandTestSuite, before)
 {
     //assert
-    ASSERT_EQ(wallet->getCps(), 0);
+    ASSERT_EQ(wallet->getCps(), CookieNumber(0));
 }
 
 TEST_F(UpdateCpsCommandTestSuite, execute)
 {
     //arrange
-    auto buyCmd = std::make_unique<UpdateCpsCommand>(.34, *wallet);
+    auto buyCmd = std::make_unique<UpdateCpsCommand>(CookieNumber(34), *wallet);
 
     //act
     buyCmd->execute();
 
     //assert
-    ASSERT_EQ(wallet->getCps(), .34);
+    ASSERT_EQ(wallet->getCps(), CookieNumber(34));
 }
 
 TEST_F(UpdateCpsCommandTestSuite, undo)
 {
     //arrange
-    auto buyCmd = std::make_unique<UpdateCpsCommand>(8.3, *wallet);
+    auto buyCmd = std::make_unique<UpdateCpsCommand>(CookieNumber(83), *wallet);
 
     //act
     buyCmd->execute();
@@ -42,5 +42,5 @@ TEST_F(UpdateCpsCommandTestSuite, undo)
     buyCmd->undo();
 
     //assert
-    ASSERT_EQ(wallet->getCps(), 8.3);
+    ASSERT_EQ(wallet->getCps(), CookieNumber(83));
 }

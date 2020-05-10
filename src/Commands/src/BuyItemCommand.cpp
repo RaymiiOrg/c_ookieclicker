@@ -4,13 +4,13 @@
 
 #include "BuyItemCommand.h"
 
-BuyItemCommand::BuyItemCommand(Item& item, int amount, Inventory& inventory, Wallet &wallet)
+BuyItemCommand::BuyItemCommand(Item& item, const CookieNumber& amount, Inventory& inventory, Wallet &wallet)
 : m_Item(item), m_Amount(amount), m_Inventory(inventory), m_Wallet(wallet)
 {
 }
 
 void BuyItemCommand::execute() {
-    int price = m_Item.price * m_Amount;
+    CookieNumber price = m_Item.price * m_Amount;
     auto cps = m_Item.cps * m_Amount;
     if (m_Wallet.getCookieAmount() >= price) {
         m_Inventory.addItem(m_Item, m_Amount);
@@ -24,5 +24,5 @@ void BuyItemCommand::undo() {
     auto cps = m_Item.cps * m_Amount;
     m_Inventory.removeItem(m_Item, m_Amount);
     m_Wallet.incrementCookieAmount(price);
-    m_Wallet.incrementCps(-cps);
+    m_Wallet.decrementCps(cps);
 }

@@ -76,18 +76,31 @@ bool CookieNumber::operator>=(const CookieNumber &rhs) const {
  */
 std::ostream &operator<<(std::ostream &os, const CookieNumber &number) {
     bool nonZeroNumberPrinted = false;
+    bool printedAnything = false;
     for (auto it = number.cookieUnits.rbegin(); it != number.cookieUnits.rend(); ++it) {
         if (*it != 0 and !nonZeroNumberPrinted) {
             os << *it;
             nonZeroNumberPrinted = true;
+            printedAnything = true;
             continue;
         }
         /** If we have a number like 0: 0, 1: 0, 2: 0, 3: 1
          * then without this check it would print just 1. **/
-        if (nonZeroNumberPrinted)
+        if (nonZeroNumberPrinted) {
             os << std::setw(3) << std::setfill('0') << *it;
+            printedAnything = true;
+        }
     }
+    if (!printedAnything)
+        os << "0";
+
     return os;
+}
+
+std::string CookieNumber::str() const {
+    std::stringstream output;
+    output << *this;
+    return output.str();
 }
 
 
@@ -96,9 +109,9 @@ std::ostream &operator<<(std::ostream &os, const CookieNumber &number) {
 CookieNumber operator+(const CookieNumber &lhs, const CookieNumber &rhs) {
     CookieNumber c(lhs);
     if (c.cookieUnits.size() < rhs.cookieUnits.size())
-        c.cookieUnits.resize(rhs.cookieUnits.size()+1);
-    for(size_t i = 0; i < c.cookieUnits.size(); ++i) {
-        c.cookieUnits.at(i) += rhs.cookieUnits.at(i);
+        c.cookieUnits.resize(rhs.cookieUnits.size());
+    for(size_t i = 0; i < c.cookieUnits.size() && i < rhs.cookieUnits.size(); ++i) {
+            c.cookieUnits.at(i) += rhs.cookieUnits.at(i);
     }
     c.redistributeUnitsUp();
     return c;
@@ -128,10 +141,6 @@ CookieNumber operator*(const CookieNumber &lhs, const CookieNumber &rhs) {
     CookieNumber c(lhs);
     for(auto i = CookieNumber(1); i < rhs; ++i)
     {
-        std::cout << i << "\n";
-        i.printArray();
-        if (i == CookieNumber(998))
-            std::cout << "a";
         c += lhs;
     }
     return c;
@@ -173,6 +182,7 @@ CookieNumber operator-(const CookieNumber &lhs, const CookieNumber &rhs) {
                 if (*std::next(it) > 0) {
                     *std::next(it) -= 1;
                     *it += c.limitPerUnit;
+                    *it -= std::abs(minus);
                 } else {
                     c = CookieNumber(-1);
                     return c;
@@ -181,11 +191,13 @@ CookieNumber operator-(const CookieNumber &lhs, const CookieNumber &rhs) {
                 c = CookieNumber(-1);
                 return c;
             }
+
         }
-        if (minus == 0)
+        else if (minus == 0)
             *it = 0;
         else
-            *it -= std::abs(minus);
+            *it = std::abs(minus);
+
     }
 
     return c;
@@ -229,7 +241,7 @@ int CookieNumber::getAmountOfUnits() {
     return cookieUnits.size();
 }
 
-void CookieNumber::printArray() {
+void CookieNumber::printArray() const {
     std::string result;
     for (auto it = cookieUnits.begin(); it != cookieUnits.end(); ++it) {
         auto i = std::distance(cookieUnits.begin(), it);

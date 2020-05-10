@@ -12,15 +12,15 @@
 
 class Inventory {
 private:
-    std::map<Item, unsigned int> m_Inventory;
+    std::map<Item, CookieNumber> m_Inventory;
     std::string last_item_added;
-    unsigned int last_item_added_amount;
+    CookieNumber last_item_added_amount;
 
 public:
-    void addItem(const Item& item, unsigned int amountToAdd);
-    void removeItem(const Item& item, unsigned int amountToRemove);
-    unsigned int getItemCount(const Item &item);
-    unsigned int getLastItemAddedAmount() const;
+    void addItem(const Item& item, const CookieNumber& amountToAdd);
+    void removeItem(const Item& item, const CookieNumber& amountToRemove);
+    CookieNumber getItemCount(const Item &item);
+    CookieNumber getLastItemAddedAmount() const;
     const std::string &getLastItemAdded() const;
 };
 

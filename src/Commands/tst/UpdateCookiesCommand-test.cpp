@@ -15,25 +15,25 @@ struct UpdateCookiesCommandTestSuite : public ::testing::Test
 TEST_F(UpdateCookiesCommandTestSuite, before)
 {
     //assert
-    ASSERT_EQ(wallet->getCookieAmount(), 0);
+    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
 }
 
 TEST_F(UpdateCookiesCommandTestSuite, execute)
 {
     //arrange
-    auto buyCmd = std::make_unique<UpdateCookiesCommand>(10, *wallet);
+    auto buyCmd = std::make_unique<UpdateCookiesCommand>(CookieNumber(10), *wallet);
 
     //act
     buyCmd->execute();
 
     //assert
-    ASSERT_EQ(wallet->getCookieAmount(), 10);
+    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(10));
 }
 
 TEST_F(UpdateCookiesCommandTestSuite, undo)
 {
     //arrange
-    auto buyCmd = std::make_unique<UpdateCookiesCommand>(3, *wallet);
+    auto buyCmd = std::make_unique<UpdateCookiesCommand>(CookieNumber(3), *wallet);
 
     //act
     buyCmd->execute();
@@ -41,5 +41,5 @@ TEST_F(UpdateCookiesCommandTestSuite, undo)
     buyCmd->undo();
 
     //assert
-    ASSERT_EQ(wallet->getCookieAmount(), 3);
+    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(3));
 }

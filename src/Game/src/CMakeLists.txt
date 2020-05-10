@@ -10,8 +10,8 @@ target_link_libraries(${LIBRARY} PUBLIC
         ${CURSES_LIBRARY}
         Commands
         Wallet
+        CookieNumber
         gtest
-        ${Boost_LIBRARIES}
         )
 
 target_include_directories(${LIBRARY} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -20,7 +20,8 @@ add_executable(${LIBRARY}.exe ${SOURCES})
 target_link_libraries(${LIBRARY}.exe PUBLIC
         ${CURSES_LIBRARY}
         Commands
-        Wallet)
+        Wallet
+        CookieNumber)
 target_include_directories(${LIBRARY}.exe PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 MESSAGE("Loaded ${LIBRARY}")

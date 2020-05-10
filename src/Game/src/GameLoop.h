@@ -25,12 +25,13 @@
 class Gameloop {
 
     std::atomic<bool> running {false};
+    std::atomic<int> cookieStepIncrement {0};
     std::mutex inputMutex;
     std::mutex gameStepMutex;
     std::thread gameStepThread;
     std::thread inputThread;
 
-    const unsigned int _maxFrameTimeMs{25};
+    const unsigned int _maxFrameTimeMs{200};
 
     enum notifyMessages
     {
@@ -38,6 +39,7 @@ class Gameloop {
         NOT_ENOUGH_MONEY_FOR_ITEM,
         BOUGHT_ITEM,
         MAGIC,
+        DEBUG,
         LAST_MSG,
     };
     std::atomic<notifyMessages> notifyMessage{};
@@ -56,8 +58,9 @@ class Gameloop {
     std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
     void showStatus();
     void incrementCookiesOnTime();
-    void buyItem(int amountToBuy, Item &item);
-    bool canPayForItem(int amountToBuy, Item &item);
+    void buyItem(CookieNumber amountToBuy, Item &item);
+    bool canPayForItem(const CookieNumber& amountToBuy, Item &item);
+    int maxItemAmount(Item &item);
     void handleChoice(const std::string &input);
     void showFinalScore();
     void setMessageTime(const std::string& timeString = "%H:%M");
