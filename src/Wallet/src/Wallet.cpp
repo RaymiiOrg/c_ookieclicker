@@ -4,7 +4,7 @@
 
 #include "Wallet.h"
 
-void Wallet::incrementCps(long double amount) {
+void Wallet::incrementCps(CookieNumber amount) {
     cps += amount;
 }
 

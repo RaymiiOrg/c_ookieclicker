@@ -8,19 +8,19 @@
 #include "CookieNumber.h"
 
 class Wallet {
-public:
-    long double getCookieAmount() const;
-    long double getCps() const;
-    void incrementCookieAmount(long double amount);
-    void decrementCookieAmount(long double amount);
-    void incrementCps(long double amount);
-    unsigned long long  getTotalcookies() const;
+    public:
+    CookieNumber getCookieAmount() const;
+    CookieNumber getCps() const;
+    void incrementCookieAmount(CookieNumber amount);
+    void decrementCookieAmount(CookieNumber amount);
+    void incrementCps(CookieNumber amount);
+    CookieNumber  getTotalcookies() const;
 private:
-    long double cps ;
-    long double cookieAmount ;
-    unsigned long long totalcookies ;
+    CookieNumber cps ;
+    CookieNumber cookieAmount ;
+    CookieNumber totalcookies ;
 
 };
 
 
-#endif //C_OOKIECLIKER_COOKIENUMBER_H
+#endif

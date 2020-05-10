@@ -194,6 +194,11 @@ TEST(CookieNumberTestSuite, multiplication) {
     auto c4 = CookieNumber(999);
     auto c5 = CookieNumber(5);
     auto c6 = c4 * c5;
+
+    auto c7 = CookieNumber(2525);
+    auto c8 = c7 * 5;
+    c8.printArray();
+
     ASSERT_EQ(c3.getCookieUnits(0), 10);
     ASSERT_EQ(c3.getCookieUnits(1), 0);
     ASSERT_EQ(c6.getCookieUnits(0), 995);
@@ -350,7 +355,7 @@ TEST(CookieNumberTestSuite, output_zeros) {
     ASSERT_EQ(o1, "5000");
 }
 
-TEST(CookieNumberTestSuite, operators) {
+TEST(CookieNumberTestSuite, compariosonoperators) {
 
     auto c1 = CookieNumber(5000);
     auto c2 = CookieNumber(1234);
@@ -363,4 +368,61 @@ TEST(CookieNumberTestSuite, operators) {
     ASSERT_EQ(gt1, true);
     ASSERT_EQ(ne1, true);
     ASSERT_EQ(eq1, false);
+}
+
+TEST(CookieNumberTestSuite, assignmentoperator) {
+    auto c1 = CookieNumber(5000);
+    auto c2 = c1;
+    ASSERT_EQ(c1, c2);
+}
+
+TEST(CookieNumberTestSuite, additionAssignmentoperator) {
+    auto c1 = CookieNumber(5000);
+    auto c2 = CookieNumber(10);
+    c2 += c1;
+    auto c3 = CookieNumber(1);
+    c3 += 1;
+    auto c4 = CookieNumber(1);
+    c4 += 1000;
+
+    ASSERT_EQ(c2.getCookieUnits(0), 10);
+    ASSERT_EQ(c2.getCookieUnits(1), 5);
+    ASSERT_EQ(c3.getCookieUnits(0), 2);
+    ASSERT_EQ(c4.getCookieUnits(0), 1);
+    ASSERT_EQ(c4.getCookieUnits(1), 1);
+}
+
+TEST(CookieNumberTestSuite, substractionAssignmentoperator) {
+    auto c1 = CookieNumber(5);
+    auto c2 = CookieNumber(10);
+    c2 -= c1;
+
+    auto c3 = CookieNumber(2);
+    c3 -= 1;
+
+    auto c4 = CookieNumber(1001);
+    c4 -= 1000;
+
+    ASSERT_EQ(c2.getCookieUnits(0), 5);
+    ASSERT_EQ(c3.getCookieUnits(0), 1);
+    ASSERT_EQ(c4.getCookieUnits(0), 1);
+    ASSERT_EQ(c4.getCookieUnits(1), 0);
+}
+
+TEST(CookieNumberTestSuite, multiplyAssignmentoperator) {
+    auto c1 = CookieNumber(5);
+    auto c2 = CookieNumber(10);
+    c2 *= c1;
+
+    auto c3 = CookieNumber(2);
+    c3 *= 8;
+
+    auto c4 = CookieNumber(1001);
+    c4 *= 1000;
+
+    ASSERT_EQ(c2.getCookieUnits(0), 50);
+    ASSERT_EQ(c3.getCookieUnits(0), 16);
+    ASSERT_EQ(c4.getCookieUnits(0), 0);
+    ASSERT_EQ(c4.getCookieUnits(1), 1);
+    ASSERT_EQ(c4.getCookieUnits(2), 1);
 }

@@ -26,7 +26,7 @@ public:
 
     /* output */
     friend std::ostream &operator<<(std::ostream &os, const CookieNumber &number);
-    std::string printArray();
+    void printArray();
 
     /* comparison */
     bool operator==(const CookieNumber &rhs) const;
@@ -52,6 +52,25 @@ public:
     friend CookieNumber operator*(const CookieNumber &lhs, const CookieNumber &rhs);
     friend CookieNumber operator*(const CookieNumber &lhs, int rhs);
     friend CookieNumber operator*(int lhs, const CookieNumber &rhs);
+
+
+    /* Increment & Decrement */
+    CookieNumber& operator++(); // prefix
+    CookieNumber& operator--(); // prefix
+    CookieNumber operator++(int); // postfix
+    CookieNumber operator--(int); // postfix
+
+
+    /* asssignment */
+    // default assignment operator= is provided by compiler.
+    CookieNumber& operator+= (const CookieNumber &rhs);
+    CookieNumber& operator-= (const CookieNumber &rhs);
+    CookieNumber& operator*= (const CookieNumber &rhs);
+    //CookieNumber& operator/= (const CookieNumber &rhs);
+    CookieNumber& operator+= (int rhs);
+    CookieNumber& operator-= (int rhs);
+    CookieNumber& operator*= (int rhs);
+    //CookieNumber& operator/= (const CookieNumber &rhs);
 
 protected:
     std::vector<long long int> cookieUnits {0,0,0,0,0,0,0,0,0};
