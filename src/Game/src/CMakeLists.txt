@@ -11,6 +11,7 @@ target_link_libraries(${LIBRARY} PUBLIC
         Commands
         Wallet
         CookieNumber
+        Store
         gtest
         )
 
@@ -21,7 +22,8 @@ target_link_libraries(${LIBRARY}.exe PUBLIC
         ${CURSES_LIBRARY}
         Commands
         Wallet
-        CookieNumber)
+        CookieNumber
+        Store)
 target_include_directories(${LIBRARY}.exe PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 MESSAGE("Loaded ${LIBRARY}")
