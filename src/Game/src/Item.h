@@ -6,7 +6,9 @@
 #define C_OOKIECLIKER_ITEM_H
 #include <string>
 #include <vector>
-typedef int CookieNumber;
+#include <boost/multiprecision/cpp_int.hpp>
+typedef boost::multiprecision::cpp_int CookieNumber;
+
 struct Item {
     std::string name;
     std::string buyOneKey;

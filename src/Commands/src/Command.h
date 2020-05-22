@@ -5,7 +5,6 @@
 #ifndef C_OOKIECLIKER_COMMAND_H
 #define C_OOKIECLIKER_COMMAND_H
 
-
 class Command {
 public:
     virtual void execute() = 0;

@@ -5,7 +5,10 @@
 #ifndef C_OOKIECLIKER_WALLET_H
 #define C_OOKIECLIKER_WALLET_H
 
-typedef int CookieNumber;
+#include <boost/multiprecision/cpp_int.hpp>
+#include <boost/multiprecision/gmp.hpp>
+
+typedef boost::multiprecision::cpp_int CookieNumber;
 
 class Wallet {
     public:

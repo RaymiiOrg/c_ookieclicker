@@ -9,7 +9,7 @@ std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
         case NOT_ENOUGH_MONEY_FOR_ITEM:
             return "Not enough money to buy " + failed_to_buy_item;
         case BOUGHT_ITEM:
-            return "You bought " + std::to_string(getInventory().getLastItemAddedAmount()) + " " +
+            return "You bought " + getInventory().getLastItemAddedAmount().str() + " " +
                    getInventory().getLastItemAdded() + "(s).";
         case MAGIC:
             return "The answer to life, the universe and everything!";
