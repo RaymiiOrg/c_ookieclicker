@@ -8,6 +8,12 @@ add_library(${LIBRARY} STATIC ${SOURCES})
 
 target_include_directories(${LIBRARY} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries(${LIBRARY} PUBLIC Game Commands CookieNumber)
+target_link_libraries(${LIBRARY} PUBLIC Game Commands)
 
-MESSAGE("Loaded ${LIBRARY}")
+if(Boost_FOUND)
+    target_link_libraries (${LIBRARY} ${Boost_LIBRARIES})
+else()
+    message(FATAL_ERROR "Boost not found!")
+endif()
+
+MESSAGE("-- Loaded ${LIBRARY}")

@@ -5,8 +5,6 @@
 #ifndef C_OOKIECLIKER_Store_H
 #define C_OOKIECLIKER_Store_H
 
-#include "CookieNumber.h"
-
 class Store {
 public:
     bool a() {return true;};

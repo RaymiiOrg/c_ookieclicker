@@ -9,7 +9,7 @@ std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
         case NOT_ENOUGH_MONEY_FOR_ITEM:
             return "Not enough money to buy " + failed_to_buy_item;
         case BOUGHT_ITEM:
-            return "You bought " + getInventory().getLastItemAddedAmount().str() + " " +
+            return "You bought " + std::to_string(getInventory().getLastItemAddedAmount()) + " " +
                    getInventory().getLastItemAdded() + "(s).";
         case MAGIC:
             return "The answer to life, the universe and everything!";
@@ -159,7 +159,7 @@ void Gameloop::handleChoice(const std::string &input) {
         quit();
     }
     else if (input == "4") {
-        getWallet().incrementCookieAmount(CookieNumber(42424242, 42424242));
+        getWallet().incrementCookieAmount(CookieNumber(42424242));
         setMessage(MAGIC);
     }
     else if (input == "1") {

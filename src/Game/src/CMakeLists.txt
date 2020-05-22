@@ -10,7 +10,6 @@ target_link_libraries(${LIBRARY} PUBLIC
         ${CURSES_LIBRARY}
         Commands
         Wallet
-        CookieNumber
         Store
         gtest
         )
@@ -22,9 +21,16 @@ target_link_libraries(${LIBRARY}.exe PUBLIC
         ${CURSES_LIBRARY}
         Commands
         Wallet
-        CookieNumber
         Store)
 target_include_directories(${LIBRARY}.exe PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-MESSAGE("Loaded ${LIBRARY}")
-MESSAGE("Executable: ${LIBRARY}.exe")
+
+if(Boost_FOUND)
+    target_link_libraries (${LIBRARY} ${Boost_LIBRARIES})
+    target_link_libraries (${LIBRARY}.exe ${Boost_LIBRARIES})
+else()
+    message(FATAL_ERROR "Boost not found!")
+endif()
+
+MESSAGE("-- Loaded ${LIBRARY}")
+MESSAGE("-- Executable: ${LIBRARY}.exe")

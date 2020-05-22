@@ -6,8 +6,7 @@
 #define C_OOKIECLIKER_ITEM_H
 #include <string>
 #include <vector>
-#include "CookieNumber.h"
-
+typedef int CookieNumber;
 struct Item {
     std::string name;
     std::string buyOneKey;
