@@ -8,4 +8,4 @@ add_executable(${BINARY} ${TEST_SOURCES})
 
 add_test(NAME ${BINARY} COMMAND ${BINARY})
 
-target_link_libraries(${BINARY} PUBLIC Game Wallet Commands CookieNumber gtest)
+target_link_libraries(${BINARY} PUBLIC Game Wallet Commands gtest)

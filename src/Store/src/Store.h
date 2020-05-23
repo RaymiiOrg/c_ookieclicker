@@ -4,10 +4,16 @@
 
 #ifndef C_OOKIECLIKER_Store_H
 #define C_OOKIECLIKER_Store_H
+#include "Item.h"
 
 class Store {
 public:
-    bool a() {return true;};
+    bool a() { return true; }
+    std::vector<Item> getStoreInventory() { return storeInventory; };
+
+private:
+    Items m_baseItems;
+    std::vector<Item> storeInventory = m_baseItems.getAllItems();
 };
 
 

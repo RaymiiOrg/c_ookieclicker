@@ -123,7 +123,7 @@ void Gameloop::showInput()
 {
     std::cout << "\n===== Options ====\n";
     std::cout << "c\t:\t get cookie\n";
-    for (auto &item : m_Items.allItems) {
+    for (auto &item : getStore().getStoreInventory()) {
         if (getWallet().getCookieAmount() >= item.price) {
             std::cout << item.buyOneKey << "/" << item.buyMaxKey <<
                       "\t:\t buy " << item.name << " (cost 1: " <<
@@ -144,7 +144,7 @@ void Gameloop::showInput()
 
 
 void Gameloop::handleChoice(const std::string &input) {
-    for (Item &item : m_Items.allItems) {
+    for (Item &item : getStore().getStoreInventory()) {
         if (input == item.buyOneKey) {
             buyItem(CookieNumber(1), item);
         } else if (input == item.buyMaxKey) {
@@ -168,16 +168,21 @@ void Gameloop::handleChoice(const std::string &input) {
     }
     else if (input == "2") {
         getWallet().incrementCookieAmount(getWallet().getCookieAmount() * 2);
+        getWallet().incrementCps(getWallet().getCps() * 2);
         setMessage(DEBUG);
     }
 }
 
 void Gameloop::showStatus() {
     std::cout << "\n===== Stats ====\n";
-    std::cout << "Cookies\t:\t" << std::setprecision(1) <<
-    getWallet().getCookieAmount() << "\n";
-    std::cout << "cps\t:\t" << std::setprecision(1) <<
-    getWallet().getCps() << "\n";
+    std::cout << "Cookies\t:\t";
+    if (getWallet().getCookieAmount() > 0)
+        std::cout << getWallet().getCookieAmount();
+    std::cout << "\n";
+    std::cout << "cps\t:\t";
+    if (getWallet().getCps() > 0)
+        std::cout << getWallet().getCps();
+    std::cout << "\n";
 }
 
 void Gameloop::incrementCookiesOnTime() {
@@ -189,7 +194,7 @@ void Gameloop::incrementCookiesOnTime() {
 
 void Gameloop::buyItem(CookieNumber amountToBuy, Item &item) {
     if(canPayForItem(amountToBuy, item)) {
-        auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, getInventory(), getWallet());
+        auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, getInventory(), getWallet(), getStore());
         buyCommand->execute();
         setMessage(BOUGHT_ITEM);
     } else {
@@ -213,6 +218,10 @@ Inventory &Gameloop::getInventory() {
 
 Wallet &Gameloop::getWallet() {
     return m_Wallet;
+}
+
+Store &Gameloop::getStore() {
+    return m_Store;
 }
 
 int Gameloop::maxItemAmount(Item &item) {

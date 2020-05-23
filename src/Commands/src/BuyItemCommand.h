@@ -8,10 +8,12 @@
 #include "Command.h"
 #include "Wallet.h"
 #include "Inventory.h"
+#include "Store.h"
+#include <utility>
 
 class BuyItemCommand : public Command {
 public:
-    BuyItemCommand(Item& item, const CookieNumber &amount, Inventory& inventory, Wallet &wallet);
+    BuyItemCommand(Item& item, CookieNumber amount, Inventory& inventory, Wallet &wallet, Store &store);
     void execute() override;
     void undo() override;
 
@@ -20,6 +22,7 @@ private:
     Wallet &m_Wallet;
     CookieNumber m_Amount;
     Item& m_Item;
+    Store& m_Store;
 
 };
 

@@ -7,11 +7,12 @@ struct BuyItemCommandTestSuite : public ::testing::Test
 {
     std::unique_ptr<Inventory> inventory;
     std::unique_ptr<Wallet> wallet;
-    Items items;
+    std::unique_ptr<Store> store;
     BuyItemCommandTestSuite()
     {
         inventory = std::make_unique<Inventory>();
         wallet = std::make_unique<Wallet>();
+        store = std::make_unique<Store>();
     }
 
 };
@@ -19,7 +20,7 @@ struct BuyItemCommandTestSuite : public ::testing::Test
 TEST_F(BuyItemCommandTestSuite, before)
 {
     //arrange
-    Item testItem1 = items.Cursor;
+    Item testItem1 = store->getStoreInventory().at(0);
     //assert
     ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(0));
     ASSERT_TRUE(inventory->getLastItemAdded().empty());
@@ -27,17 +28,18 @@ TEST_F(BuyItemCommandTestSuite, before)
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
     ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(0));
     ASSERT_EQ(wallet->getCps(), CookieNumber(0));
+    ASSERT_EQ(store->getStoreInventory().at(0).price, 10);
 }
 
 TEST_F(BuyItemCommandTestSuite, withoutMoney)
 {
     //arrange
-    Item testItem1 = items.Cursor;
+    Item testItem1 = store->getStoreInventory().at(0);
 
     //act
-    auto buyCmd = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(2), *inventory, *wallet);
+    auto buyCmd = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(2), *inventory, *wallet, *store);
     buyCmd->execute();
-    auto buyCmd2 = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(1), *inventory, *wallet);
+    auto buyCmd2 = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(1), *inventory, *wallet, *store);
     buyCmd2->execute();
 
     //assert
@@ -47,18 +49,19 @@ TEST_F(BuyItemCommandTestSuite, withoutMoney)
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
     ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(0));
     ASSERT_EQ(wallet->getCps(), CookieNumber(0));
+    ASSERT_EQ(store->getStoreInventory().at(0).price, 10);
 }
 
 TEST_F(BuyItemCommandTestSuite, withMoney)
 {
     //arrange
-    Item testItem1 = items.Cursor;
+    Item testItem1 = store->getStoreInventory().at(0);
     wallet->incrementCookieAmount(CookieNumber(300));
 
     //act
-    auto buyCmd = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(2), *inventory, *wallet);
+    auto buyCmd = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(2), *inventory, *wallet, *store);
     buyCmd->execute();
-    auto buyCmd2 = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(1), *inventory, *wallet);
+    auto buyCmd2 = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(1), *inventory, *wallet, *store);
     buyCmd2->execute();
 
     //assert
@@ -68,17 +71,18 @@ TEST_F(BuyItemCommandTestSuite, withMoney)
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(270));
     ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(300));
     ASSERT_EQ(wallet->getCps(), CookieNumber(3));
+    ASSERT_EQ(store->getStoreInventory().at(0).price, 18);
 }
 
 
 TEST_F(BuyItemCommandTestSuite, undo)
 {
     //arrange
-    Item testItem1 = items.Cursor;
+    Item testItem1 = store->getStoreInventory().at(0);
     wallet->incrementCookieAmount(CookieNumber(300));
 
     //act
-    auto buyCmd = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(2), *inventory, *wallet);
+    auto buyCmd = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(2), *inventory, *wallet, *store);
     buyCmd->execute();
     buyCmd->execute();
     buyCmd->undo();
@@ -90,4 +94,5 @@ TEST_F(BuyItemCommandTestSuite, undo)
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(280));
     ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(320));
     ASSERT_EQ(wallet->getCps(), CookieNumber(2));
+    ASSERT_EQ(store->getStoreInventory().at(0).price, 13);
 }

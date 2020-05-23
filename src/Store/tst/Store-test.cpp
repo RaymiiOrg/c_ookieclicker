@@ -4,15 +4,15 @@
 
 struct StoreTestSuite : public ::testing::Test
 {
-    std::unique_ptr<Store> Store;
+    std::unique_ptr<Store> m_store;
     StoreTestSuite()
     {
-        Store = std::make_unique<Store>();
+        m_store = std::make_unique<Store>();
     }
 
 };
 
 TEST_F(StoreTestSuite, getEmptyStore)
 {
-    ASSERT_EQ(Store->a(), true);
+    ASSERT_EQ(m_store->a(), true);
 }

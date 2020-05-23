@@ -19,7 +19,7 @@
 #include "BuyItemCommand.h"
 #include "UpdateCpsCommand.h"
 #include "UpdateCookiesCommand.h"
-
+#include "Store.h"
 #include <gtest/gtest_prod.h>
 
 class Gameloop {
@@ -50,14 +50,16 @@ class Gameloop {
 
     Inventory m_Inventory;
     Wallet m_Wallet;
+    Store m_Store;
 
-    Items m_Items;
     std::string failed_to_buy_item;
+
     void showInput();
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
     void showStatus();
     void incrementCookiesOnTime();
+
     void buyItem(CookieNumber amountToBuy, Item &item);
     bool canPayForItem(const CookieNumber& amountToBuy, Item &item);
     int maxItemAmount(Item &item);
@@ -78,6 +80,7 @@ public:
     void gameStep();
     Wallet &getWallet();
     Inventory &getInventory();
+    Store &getStore();
 };
 
 
