@@ -11,6 +11,7 @@ public:
     std::vector<Item>& getStoreInventory() { return storeInventory; };
     static CookieNumber getPrice(Item& item, const CookieNumber& amount = 1);
     static void increasePrice(Item& item, const CookieNumber& amountBought = 1);
+    Item& getItemByName(const std::string& name);
 
 private:
     static CookieNumber calcPriceIncrease(Item& item, const CookieNumber& amount = 1);

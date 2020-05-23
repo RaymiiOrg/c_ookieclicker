@@ -23,6 +23,7 @@ public:
     CookieNumber getItemCount(Item &item);
     CookieNumber getLastItemAddedAmount();
     const std::string& getLastItemAdded();
+    std::map<Item, CookieNumber>& getInventory() { return m_Inventory; };
 };
 
 

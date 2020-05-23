@@ -19,6 +19,7 @@ TEST_F(InventoryTestSuite, getEmptyInventory)
     ASSERT_EQ(inventory->getItemCount(cursor), CookieNumber(0));
     ASSERT_EQ(inventory->getLastItemAdded().empty(), true);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
+    ASSERT_EQ(inventory->getInventory().empty(), true);
 }
 
 TEST_F(InventoryTestSuite, addItems)
@@ -37,6 +38,7 @@ TEST_F(InventoryTestSuite, addItems)
     ASSERT_EQ(inventory->getItemCount(testItem2), CookieNumber(1));
     ASSERT_EQ(inventory->getLastItemAdded(), testItem2.name);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
+    ASSERT_EQ(inventory->getInventory().size(), 2);
 }
 
 
@@ -59,4 +61,5 @@ TEST_F(InventoryTestSuite, removeItems)
     ASSERT_EQ(inventory->getItemCount(testItem2), CookieNumber(0));
     ASSERT_EQ(inventory->getLastItemAdded(), testItem2.name);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
+    ASSERT_EQ(inventory->getInventory().size(), 2);
 }

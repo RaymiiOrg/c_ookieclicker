@@ -64,12 +64,13 @@ class Gameloop {
 
     void buyItem(CookieNumber amountToBuy, Item &item);
     bool canPayForItem(const CookieNumber& amountToBuy, Item &item);
-    int maxItemAmount(Item &item);
+    CookieNumber maxItemAmount(Item &item);
     void handleChoice(const std::string &input);
     void showFinalScore();
     void setMessageTime(const std::string& timeString = "%H:%M");
     std::string lastMessageTime;
     FRIEND_TEST(GameloopTestSuite, incrementCps);
+    FRIEND_TEST(GameloopTestSuite, maxItemAmount);
 
 public:
     Gameloop();
@@ -94,6 +95,8 @@ struct escapeCodes {
     const std::string eraseCurrentLine {"\033[A\\"};
     const std::string cursorUpOneLine {"\33[2K"};
     const std::string cursorToBeginningOfLine {"\r"};
+    const std::string terminalBold {"\033[1m"};
+    const std::string terminalReset {"\033[0m"};
 };
 
 /* global variable holding the escapecodes */

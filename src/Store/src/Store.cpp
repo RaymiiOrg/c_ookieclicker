@@ -25,3 +25,12 @@ CookieNumber Store::calcPriceIncrease(Item &item, const CookieNumber& amount) {
     auto result = resultFloat.convert_to<CookieNumber>() + 1; // +1 because conversion rounds down;
     return result;
 }
+
+Item &Store::getItemByName(const std::string& name) {
+    for (auto& item : getStoreInventory()) {
+        if (item.name == name) {
+            return item;
+        }
+    }
+    throw std::logic_error("Item not found");
+}

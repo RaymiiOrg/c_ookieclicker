@@ -33,9 +33,9 @@ struct Item {
         return !(*this < rhs);
     }
 
-    CookieNumber price {0};
-    CookieNumber cps {0};
-    double percentIncreaseWhenBought {0};
+    CookieNumber price {1};
+    CookieNumber cps {1};
+    CookieFloater percentIncreaseWhenBought {1};
 };
 
 class Items {
@@ -52,13 +52,13 @@ private:
     std::vector<Item> allItems {
         Cursor,
         Grandma,
-//        Farm,
-//        Mine,
-//        Factory,
-//        Bank,
-//        Temple,
-//        WizardTower,
-//        Shipment,
+        Farm,
+        Mine,
+        Factory,
+        Bank,
+        Temple,
+        WizardTower,
+        Shipment,
     };
 
 public:

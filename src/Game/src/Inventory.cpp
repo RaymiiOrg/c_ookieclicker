@@ -45,11 +45,6 @@ CookieNumber Inventory::getItemCount(Item &item) {
         }
     }
     return CookieNumber(0);
-//    if ( m_Inventory.find(item) != m_Inventory.end() ) {
-//        return m_Inventory.at(item);
-//    } else {
-//        return CookieNumber(0);
-//    }
 }
 
 CookieNumber Inventory::getLastItemAddedAmount() {
