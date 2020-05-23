@@ -15,8 +15,8 @@ struct InventoryTestSuite : public ::testing::Test
 
 TEST_F(InventoryTestSuite, getEmptyInventory)
 {
-    Item testItem = items.Cursor;
-    ASSERT_EQ(inventory->getItemCount(testItem), CookieNumber(0));
+    Item cursor = items.getAllItems().at(0);
+    ASSERT_EQ(inventory->getItemCount(cursor), CookieNumber(0));
     ASSERT_EQ(inventory->getLastItemAdded().empty(), true);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
 }
@@ -24,8 +24,8 @@ TEST_F(InventoryTestSuite, getEmptyInventory)
 TEST_F(InventoryTestSuite, addItems)
 {
     //arrange
-    Item testItem1 = items.Cursor;
-    Item testItem2 = items.Grandma;
+    Item testItem1 = items.getAllItems().at(0);
+    Item testItem2 = items.getAllItems().at(1);
 
     //act
     inventory->addItem(testItem1, CookieNumber(10));
@@ -43,8 +43,8 @@ TEST_F(InventoryTestSuite, addItems)
 TEST_F(InventoryTestSuite, removeItems)
 {
     //arrange
-    Item testItem1 = items.Cursor;
-    Item testItem2 = items.Grandma;
+    Item testItem1 = items.getAllItems().at(0);
+    Item testItem2 = items.getAllItems().at(1);
 
     //act
     inventory->addItem(testItem1, CookieNumber(10));

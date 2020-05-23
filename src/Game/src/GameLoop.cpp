@@ -116,7 +116,9 @@ void Gameloop::gameStep() {
 }
 
 void Gameloop::showFinalScore() {
-    std::cout << "Well done. Final score: " << getWallet().getTotalcookies() << " cookies.\n";
+    std::cout << "Well done.\n";
+    std::cout << "Ended with " << getWallet().getCookieAmount() << " cookies.\n";
+    std::cout << "Total cookies earned: " << getWallet().getTotalcookies() << "\n";
 }
 
 void Gameloop::showInput()
@@ -124,17 +126,19 @@ void Gameloop::showInput()
     std::cout << "\n===== Options ====\n";
     std::cout << "c\t:\t get cookie\n";
     for (auto &item : getStore().getStoreInventory()) {
-        if (getWallet().getCookieAmount() >= item.price) {
-            std::cout << item.buyOneKey << "/" << item.buyMaxKey <<
-                      "\t:\t buy " << item.name << " (cost 1: " <<
-                      item.price << "; +" <<
-                      item.cps << " cps); ";
+        if (getWallet().getCookieAmount() >= Store::getPrice(item)) {
+            std::cout << item.buyOneKey << "\t:\t buy 1 " << item.name <<
+                         " (cost: " << Store::getPrice(item) << "; +" <<
+                         item.cps << " cps); ";
+            std::cout << "have: " << getInventory().getItemCount(item);
             if (maxItemAmount(item) > 0) {
-                std::cout << item.buyMaxKey << ": buy " <<
+                std::cout << "\n";
+                std::cout << item.buyMaxKey << "\t:\t buy " <<
                   std::to_string(maxItemAmount(item)) <<
-                  "; ";
+                  " " << item.name << "'s (cost: " << Store::getPrice(item, maxItemAmount(item)) <<
+                  ").";
             }
-            //std::cout << "have: " << getInventory().getItemCount(item) << "\n";
+
             std::cout << "\n";
         }
     }
@@ -152,7 +156,7 @@ void Gameloop::handleChoice(const std::string &input) {
         }
     }
     if (input == "c") {
-        auto cmd = std::make_unique<UpdateCookiesCommand>(CookieNumber(1), getWallet());
+        auto cmd = std::make_unique<UpdateCookiesCommand>(1, getWallet());
         cmd->execute();
     }
     else if (input == "q" or input == "Q") {
@@ -205,7 +209,7 @@ void Gameloop::buyItem(CookieNumber amountToBuy, Item &item) {
 
 bool Gameloop::canPayForItem(const CookieNumber& amountToBuy, Item &item)
 {
-    return getWallet().getCookieAmount() >= (amountToBuy * item.price);
+    return getWallet().getCookieAmount() >= Store::getPrice(item, amountToBuy);
 }
 
 void Gameloop::setMessageTime(const std::string &timeString) {

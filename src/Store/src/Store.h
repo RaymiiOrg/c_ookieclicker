@@ -8,10 +8,12 @@
 
 class Store {
 public:
-    bool a() { return true; }
-    std::vector<Item> getStoreInventory() { return storeInventory; };
+    std::vector<Item>& getStoreInventory() { return storeInventory; };
+    static CookieNumber getPrice(Item& item, const CookieNumber& amount = 1);
+    static void increasePrice(Item& item, const CookieNumber& amountBought = 1);
 
 private:
+    static CookieNumber calcPriceIncrease(Item& item, const CookieNumber& amount = 1);
     Items m_baseItems;
     std::vector<Item> storeInventory = m_baseItems.getAllItems();
 };

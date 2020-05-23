@@ -6,6 +6,7 @@
 #define C_OOKIECLIKER_INVENTORY_H
 
 #include "Item.h"
+#include "CookieNumbers.h"
 #include <iostream>
 #include <iomanip>
 #include <map>
@@ -17,11 +18,11 @@ private:
     CookieNumber last_item_added_amount;
 
 public:
-    void addItem(const Item& item, const CookieNumber& amountToAdd);
-    void removeItem(const Item& item, const CookieNumber& amountToRemove);
-    CookieNumber getItemCount(const Item &item);
-    CookieNumber getLastItemAddedAmount() const;
-    const std::string &getLastItemAdded() const;
+    void addItem(Item& item, CookieNumber amountToAdd);
+    void removeItem(Item& item, CookieNumber amountToRemove);
+    CookieNumber getItemCount(Item &item);
+    CookieNumber getLastItemAddedAmount();
+    const std::string& getLastItemAdded();
 };
 
 

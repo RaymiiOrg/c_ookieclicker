@@ -20,6 +20,7 @@
 #include "UpdateCpsCommand.h"
 #include "UpdateCookiesCommand.h"
 #include "Store.h"
+#include "CookieNumbers.h"
 #include <gtest/gtest_prod.h>
 
 class Gameloop {
@@ -31,7 +32,8 @@ class Gameloop {
     std::thread gameStepThread;
     std::thread inputThread;
 
-    const unsigned int _maxFrameTimeMs{200};
+    const unsigned int _maxFrameTimeMs{200}; // 0.2 sec
+    //const unsigned int _maxFrameTimeMs{1000}; // 1 sec
 
     enum notifyMessages
     {

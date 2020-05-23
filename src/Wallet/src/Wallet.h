@@ -4,13 +4,7 @@
 
 #ifndef C_OOKIECLIKER_WALLET_H
 #define C_OOKIECLIKER_WALLET_H
-
-#include <boost/multiprecision/cpp_int.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-
-typedef boost::multiprecision::cpp_int CookieNumber;
-typedef boost::multiprecision::cpp_dec_float<0> CookieFloater;
-
+#include "CookieNumbers.h"
 class Wallet {
     public:
     const CookieNumber getCookieAmount();
