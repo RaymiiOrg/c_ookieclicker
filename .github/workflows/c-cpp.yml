@@ -23,4 +23,11 @@ jobs:
       run: cmake --build build/ --target all
     - name: game test
       run: build/src/Game/tst/Game_tst
+    - name: commands test
+      run: build/src/Commands/tst/Commands_tst
+    - name: store test
+      run: build/src/Store/tst/Store_tst
+    - name: Wallet test
+      run: build/src/Wallet/tst/Wallet_tst
+      
     
