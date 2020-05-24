@@ -16,14 +16,14 @@ TEST_F(StoreTestSuite, getPriceNothingBought)
 {
     auto cursor = m_store->getStoreInventory().at(0);
     ASSERT_EQ(m_store->getPrice(cursor),CookieNumber(10));
-    ASSERT_EQ(m_store->getPrice(cursor, 5),CookieNumber(65));
-    ASSERT_EQ(m_store->getPrice(cursor, 10),CookieNumber(130));
+    ASSERT_EQ(m_store->getPrice(cursor, 5),CookieNumber(66));
+    ASSERT_EQ(m_store->getPrice(cursor, 10),CookieNumber(131));
 }
 
 TEST_F(StoreTestSuite, priceIncrease)
 {
     auto cursor = m_store->getStoreInventory().at(0);
     m_store->increasePrice(cursor, 1);
-    ASSERT_EQ(m_store->getPrice(cursor),CookieNumber(13));
+    ASSERT_EQ(m_store->getPrice(cursor),CookieNumber(14));
 
 }

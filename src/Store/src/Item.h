@@ -40,7 +40,7 @@ struct Item {
 
 class Items {
 private:
-    Item Cursor {"Cursor", "x", "X", CookieNumber(10), CookieNumber(1), 30};
+    Item Key {"Key", "k", "K", CookieNumber(10), CookieNumber(1), 30};
     Item Grandma {"Grandma", "g", "G", CookieNumber(100), CookieNumber(10), 35};
     Item Farm {"Farm", "f", "F", CookieNumber(1000), CookieNumber(20), 40};
     Item Mine {"Mine", "m", "M", CookieNumber(5000), CookieNumber(50), 45};
@@ -50,7 +50,7 @@ private:
     Item WizardTower {"Wizard Tower", "w", "W", CookieNumber(300000), CookieNumber(2000), 60};
     Item Shipment {"Shipment", "s", "S", CookieNumber(4500000), CookieNumber(2500), 65};
     std::vector<Item> allItems {
-        Cursor,
+        Key,
         Grandma,
         Farm,
         Mine,

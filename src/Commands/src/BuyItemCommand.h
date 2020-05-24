@@ -13,14 +13,14 @@
 
 class BuyItemCommand : public Command {
 public:
-    BuyItemCommand(Item& itemName, CookieNumber& amount, Inventory& inventory, Wallet &wallet, Store &store);
+    BuyItemCommand(Item& itemName, CookieNumber amount, Inventory& inventory, Wallet &wallet, Store &store);
     void execute() override;
     void undo() override;
 
 private:
     Inventory &m_Inventory;
     Wallet &m_Wallet;
-    CookieNumber& m_Amount;
+    CookieNumber m_Amount;
     Store& m_Store;
     Item& m_Item;
 

@@ -32,10 +32,10 @@ TEST_F(GameloopTestSuite, maxItemAmount)
     game4->getWallet().incrementCookieAmount(CookieNumber(100));
 
 
-    auto result = game1->maxItemAmount(game1->getStore().getItemByName("Cursor"));
-    auto result2 = game2->maxItemAmount(game2->getStore().getItemByName("Cursor"));
-    auto result3 = game3->maxItemAmount(game3->getStore().getItemByName("Cursor"));
-    auto result4 = game4->maxItemAmount(game4->getStore().getItemByName("Cursor"));
+    auto result = game1->maxItemAmount(game1->getStore().getItemByName("Key"));
+    auto result2 = game2->maxItemAmount(game2->getStore().getItemByName("Key"));
+    auto result3 = game3->maxItemAmount(game3->getStore().getItemByName("Key"));
+    auto result4 = game4->maxItemAmount(game4->getStore().getItemByName("Key"));
 
     ASSERT_EQ(result, 1);
     ASSERT_EQ(result2, 1);

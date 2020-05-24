@@ -68,10 +68,10 @@ TEST_F(BuyItemCommandTestSuite, withMoney)
     ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(3));
     ASSERT_EQ(inventory->getLastItemAdded(), testItem1.name);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
-    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(270));
+    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(256));
     ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(300));
     ASSERT_EQ(wallet->getCps(), CookieNumber(3));
-    ASSERT_EQ(store->getStoreInventory().at(0).price, 18);
+    ASSERT_EQ(store->getPrice(testItem1), 23);
 }
 
 
@@ -91,8 +91,8 @@ TEST_F(BuyItemCommandTestSuite, undo)
     ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(2));
     ASSERT_EQ(inventory->getLastItemAdded(), testItem1.name);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(2));
-    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(280));
-    ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(320));
+    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(301));
+    ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(373));
     ASSERT_EQ(wallet->getCps(), CookieNumber(2));
-    ASSERT_EQ(store->getStoreInventory().at(0).price, 13);
+    ASSERT_EQ(store->getPrice(testItem1), 28);
 }
