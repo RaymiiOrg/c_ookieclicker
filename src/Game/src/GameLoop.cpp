@@ -9,7 +9,7 @@ std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
         case NOT_ENOUGH_MONEY_FOR_ITEM:
             return "Not enough money to buy " + failed_to_buy_item;
         case BOUGHT_ITEM:
-            return "You bought " + getInventory().getLastItemAddedAmount().str() + " " +
+            return "You bought " + cp.print(getInventory().getLastItemAddedAmount()) + " " +
                    getInventory().getLastItemAdded() + "(s).";
         case MAGIC:
             return "The answer to life, the universe and everything!";
@@ -116,11 +116,16 @@ void Gameloop::gameStep() {
 
 void Gameloop::showFinalScore() {
     std::cout << "Well done.\n";
-    std::cout << "Ended with " << getWallet().getCookieAmount() << " cookies.\n";
-    std::cout << "Total cookies earned: " << getWallet().getTotalcookies() << "\n";
+    std::cout << "Ended with " << cp.print(getWallet().getCookieAmount()) << " cookies.\n";
+    std::cout << "Total cookies earned: " << cp.print(getWallet().getTotalcookies()) << "\n";
     std::cout << "Thank you for playing!\n";
-    std::cout << "c_ookieclicker version: " << std::to_string(gameVersion);
+    std::cout << "c_ookieclicker version: " << std::to_string(game::gameVersion);
     std::cout << " by Remy, https://raymii.org\n";
+    if (getWallet().getCookieAmount().str().length() > 13)
+        std::cout << cp.print(getWallet().getCookieAmount()) << " cookies is: " << getWallet().getCookieAmount() << "\n";
+    if (getWallet().getCps().str().length() > 13)
+        std::cout << cp.print(getWallet().getCps()) << " cps is: " << getWallet().getCps() << "\n";
+
 }
 
 void Gameloop::showInput() {
@@ -136,38 +141,43 @@ void Gameloop::showInput() {
 
         for (auto &item : getInventory().getInventory()) {
             if (item.second > 0) {
-                std::cout << item.first.name <<  ": " << item.second.convert_to<CookieFloater>().str(1, std::ios_base::scientific) << "\n";
+                std::cout << item.first.name <<  ": " << cp.print(item.second) << "\n";
             }
         }
     }
 
         std::cout << "\n===== Store ====\n";
-        bool enoughMoney = false;
+        bool enoughMoneyOrHaveItemsAlready = false;
         for (auto &item : getStore().getStoreInventory()) {
-            if (canPayForItem(1, item)) {
-                enoughMoney = true;
-                std::cout << item.buyOneKey << ": buy " << item.name <<
-                  " (cost: ";
-                std::cout << Store::getPrice(item);
-                std::cout << "; +";
-                std::cout << item.cps;
-
-                std::cout << " cps);";
+            if (!canPayForItem(1, item) && getInventory().getItemCount(item) > 0) {
+                enoughMoneyOrHaveItemsAlready = true;
+                std::cout << escapeCode.terminalDim;
+                std::cout << item.buyOneKey << ": not enough cookies for " << item.name <<
+                          " (cost: ";
+                std::cout << cp.print(Store::getPrice(item));
+                std::cout << " cookies);";
+                std::cout << escapeCode.terminalReset << "\n";
+            } else if (canPayForItem(1, item)) {
+                enoughMoneyOrHaveItemsAlready = true;
+                std::cout << item.buyOneKey << "/" << item.buyMaxKey <<
+                ": buy " << item.name << " (cost: ";
+                std::cout << cp.print(Store::getPrice(item));
+                std::cout << " cookies; +";
+                std::cout << cp.print(item.cps);
+                std::cout << " cps); ";
                 if (maxItemAmount(item) > 1) {
-                    std::cout << "\n";
                     std::cout << escapeCode.terminalBold <<
-                    item.buyMaxKey << ": buy MAX " <<
+                    "Max: " <<
+                    "" << cp.print(maxItemAmount(item)) <<
                     escapeCode.terminalReset <<
-                   "(" << maxItemAmount(item) << ") " <<
-                    item.name <<
-                     "s; cost: " <<
-                    Store::getPrice(item, maxItemAmount(item)) <<
-                    "; +" << item.cps * maxItemAmount(item) << " cps); ";
+                    "; cost: " <<
+                    cp.print(Store::getPrice(item, maxItemAmount(item))) <<
+                    " cookies.";
                 }
-                std::cout << "\n";
+                std::cout << escapeCode.terminalReset << "\n";
             }
         }
-        if (!enoughMoney) {
+        if (!enoughMoneyOrHaveItemsAlready) {
             std::cout << "No items available, get some more cookies.\n";
         }
 
@@ -210,11 +220,11 @@ void Gameloop::showStatus() {
     std::cout << "\n===== Stats ====\n";
     std::cout << "Cookies\t:\t";
     if (getWallet().getCookieAmount() > 0)
-        std::cout << getWallet().getCookieAmount();
+        std::cout << cp.print(getWallet().getCookieAmount());
     std::cout << "\n";
     std::cout << "cps\t:\t";
     if (getWallet().getCps() > 0)
-        std::cout << getWallet().getCps();
+        std::cout << cp.print(getWallet().getCps());
     std::cout << "\n";
 }
 

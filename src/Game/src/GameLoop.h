@@ -32,7 +32,7 @@ class Gameloop {
     std::thread gameStepThread;
     std::thread inputThread;
 
-    const unsigned int _maxFrameTimeMs{200}; // 0.2 sec
+    const unsigned int _maxFrameTimeMs{500}; // 0.5 sec
     //const unsigned int _maxFrameTimeMs{1000}; // 1 sec
 
     enum notifyMessages
@@ -53,7 +53,7 @@ class Gameloop {
     Inventory m_Inventory;
     Wallet m_Wallet;
     Store m_Store;
-
+    CookieNumberPrinter cp;
     std::string failed_to_buy_item;
 
     void showInput();
@@ -97,6 +97,8 @@ struct escapeCodes {
     const std::string cursorToBeginningOfLine {"\r"};
     const std::string terminalBold {"\033[1m"};
     const std::string terminalReset {"\033[0m"};
+    const std::string terminalUnderline {"\033[4m"};
+    const std::string terminalDim {"\033[2m"};
 };
 
 /* global variable holding the escapecodes */
