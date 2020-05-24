@@ -1,5 +1,7 @@
 # c_ookieclicker
 
+![C/C++ CI](https://github.com/RaymiiOrg/c_ookieclicker/workflows/C/C++%20CI/badge.svg)
+
 ![demo.gif][2]
 
 c_ookieclicker is my personal pet project to experiment with c++. It is a clone of the famour
