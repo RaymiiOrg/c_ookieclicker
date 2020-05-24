@@ -29,10 +29,10 @@ jobs:
       run: build/src/Store/tst/Store_tst
     - name: Wallet test
       run: build/src/Wallet/tst/Wallet_tst
-    - name: Upload math result for job 1
+    - name: Upload Game.exe
       uses: actions/upload-artifact@v1
       with:
-        name: Game
+        name: Game.exe
         path: build/src/Game/src/Game.exe
       
       
