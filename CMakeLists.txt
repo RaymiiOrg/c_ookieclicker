@@ -19,10 +19,10 @@ if(Boost_FOUND)
 else()
     message(FATAL_ERROR "Boost not found!")
 endif()
-
-SET(CMAKE_EXE_LINKER_FLAGS "-static")
-SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-SET(BUILD_SHARED_LIBS OFF)
+#
+#SET(CMAKE_EXE_LINKER_FLAGS "-static")
+#SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+#SET(BUILD_SHARED_LIBS OFF)
 
 include_directories(src)
 add_subdirectory(src)
