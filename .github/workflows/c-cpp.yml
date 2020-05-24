@@ -1,0 +1,33 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: boost
+      run: sudo apt-get update && sudo apt-get install -yq libboost-all-dev
+    - name: mkdir
+      run: mkdir build
+    - name: cmake build
+      run: cmake -Bbuild -H.
+    - name: cmake make
+      run: cmake --build build/ --target all
+    - name: game test
+      run: build/src/Game/tst/Game_tst
+    - name: commands test
+      run: build/src/Commands/tst/Commands_tst
+    - name: store test
+      run: build/src/Store/tst/Store_tst
+    - name: Wallet test
+      run: build/src/Wallet/tst/Wallet_tst
+      
+    
