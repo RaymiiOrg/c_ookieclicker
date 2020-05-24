@@ -134,7 +134,7 @@ void Gameloop::showInput() {
     std::cout << "c\t:\t get cookie\n";
     std::cout << escapeCode.terminalReset;
     std::cout << "q\t:\t quit\n";
-    std::cout << "s\t:\t save \n";
+//    std::cout << "s\t:\t save \n";
 
     if (!getInventory().getInventory().empty()) {
         std::cout << "\n===== Inventory ====\n";
