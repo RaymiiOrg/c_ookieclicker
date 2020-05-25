@@ -22,7 +22,7 @@ jobs:
         CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
       run: |
         if [[ "$CACHE_HIT" == 'true' ]]; then
-          sudo cp --verbose --force --recursive ~/boost/* /
+          sudo cp --force --recursive ~/boost/* /
         else
           sudo sudo apt-get update && sudo apt-get install -yq libboost1.65-dev
           mkdir -p ~/boost
