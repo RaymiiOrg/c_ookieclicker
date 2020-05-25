@@ -13,8 +13,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: boost
-      run: sudo apt-get update && sudo apt-get install -yq libboost-all-dev
+    - name: Cache boost
+      uses: actions/cache@v1.0.3
+      id: cache-boost
+      with:
+        path: "~/boost"
+    - name: Install boost
+      env:
+        CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
+      run: |
+        if [[ "$CACHE_HIT" == 'true' ]]; then
+          sudo cp --verbose --force --recursive ~/boost/* /
+        else
+          sudo sudo apt-get update && sudo apt-get install -yq libboost-all-dev
+          mkdir -p ~/boost
+          sudo dpkg -L libboost-all-dev | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/boost/
+        fi
+#    - name: boost
+#      run: sudo apt-get update && sudo apt-get install -yq libboost-all-dev
     - name: mkdir
       run: mkdir build
     - name: cmake build
