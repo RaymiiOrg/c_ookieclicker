@@ -18,6 +18,7 @@ jobs:
       id: cache-boost
       with:
         path: "~/boost"
+        key: boost_version
     - name: Install boost
       env:
         CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
