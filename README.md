@@ -51,6 +51,10 @@ The printing method is quite inefficient.
 
 ### Items
 
+## Achievements
+
+
+
 ## Wallet
 
 ## Store
@@ -64,6 +68,8 @@ The printing method is quite inefficient.
 
 ## User interface
 
+
+## Savegame
 
 [1]: https://orteil.dashnet.org/cookieclicker/
 [2]: demo3.gif
