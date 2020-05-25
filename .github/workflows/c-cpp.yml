@@ -18,7 +18,7 @@ jobs:
       id: cache-boost
       with:
         path: "~/boost"
-        key: libboost1.71-dev
+        key: libboost1.65-dev
     - name: Install boost
       env:
         CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
@@ -26,9 +26,9 @@ jobs:
         if [[ "$CACHE_HIT" == 'true' ]]; then
           sudo cp --verbose --force --recursive ~/boost/* /
         else
-          sudo sudo apt-get update && sudo apt-get install -yq libboost1.71-dev
+          sudo sudo apt-get update && sudo apt-get install -yq libboost1.65-dev
           mkdir -p ~/boost
-          for dep in libboost1.71-dev libc6 libgcc1 gcc-8-base; do
+          for dep in libboost1.65-dev libc6 libgcc1 gcc-8-base; do
               dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/valgrind/
           done
         fi
