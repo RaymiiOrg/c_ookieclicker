@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: build and run tests
 
 on:
   push:
@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Cache boost
@@ -40,6 +38,10 @@ jobs:
       run: cmake -Bbuild -H.
     - name: cmake make
       run: cmake --build build/ --target all
+      env:
+        MAKEFLAGS: "-j2"
+
+    # Tests start here
     - name: game test
       run: build/src/Game/tst/Game_tst
     - name: commands test
@@ -48,6 +50,8 @@ jobs:
       run: build/src/Store/tst/Store_tst
     - name: Wallet test
       run: build/src/Wallet/tst/Wallet_tst
+
+    # upload artifact, game binary
     - name: Upload Game.exe
       uses: actions/upload-artifact@v1
       with:
