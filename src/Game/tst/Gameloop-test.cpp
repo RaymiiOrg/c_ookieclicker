@@ -19,6 +19,14 @@ TEST_F(GameloopTestSuite, incrementCps)
     ASSERT_EQ(game->getWallet().getCookieAmount(), CookieNumber(1));
 }
 
+TEST_F(GameloopTestSuite, incrementCpsLargerAmount)
+{
+    game->getWallet().incrementCps(CookieNumber(3500));
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    game->incrementCookiesOnTime();
+    ASSERT_EQ(game->getWallet().getCookieAmount(), CookieNumber(10500));
+}
+
 TEST_F(GameloopTestSuite, maxItemAmount)
 {
     auto game1 = std::make_unique<Gameloop>(false);

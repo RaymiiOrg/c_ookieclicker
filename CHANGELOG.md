@@ -1,6 +1,17 @@
+# Version 102
+
+Release date: 2020-05-30.
+
+- Added input tab bar to make display less cluttered
+  - 1 = store to buy one item;
+  - 2 = store to buy the max amount items that your current cookie count allows
+  - 3 = show inventory
+  - 4 = show achievements (not built yet)
+- Changed cookies per tap (`c` key) to be dynamic (default one) in preparation of achievements.
+
 # Version 101
 
-Release date: 2020-05-224.
+Release date: 2020-05-24.
 
 - Added cookienumber printing in format used by other incremental games. 
   - Example: `1000000000000000000000` becomes `1 sextillion`. 

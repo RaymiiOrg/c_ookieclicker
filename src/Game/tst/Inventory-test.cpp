@@ -63,3 +63,14 @@ TEST_F(InventoryTestSuite, removeItems)
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
     ASSERT_EQ(inventory->getInventory().size(), 2);
 }
+
+
+TEST_F(InventoryTestSuite, cookiesPerTap)
+{
+    //arrange / act
+    inventory->incrementCookiesPerTap(340);
+
+    //assert
+    ASSERT_EQ(inventory->getCookiesPerTap(), CookieNumber(341));
+
+}

@@ -11,7 +11,7 @@
 typedef boost::multiprecision::cpp_int CookieNumber;
 typedef boost::multiprecision::cpp_dec_float_50 CookieFloater;
 namespace game {
-    const int gameVersion = 101;
+    const int gameVersion = 102;
 }
 
 class CookieNumberPrinter {

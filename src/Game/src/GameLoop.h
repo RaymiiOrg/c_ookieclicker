@@ -32,11 +32,21 @@ class Gameloop {
     std::thread gameStepThread;
     std::thread inputThread;
 
-    const unsigned int _maxFrameTimeMs{500}; // 0.5 sec
+    const unsigned int _maxFrameTimeMs{200}; // 0.2 sec
+    //const unsigned int _maxFrameTimeMs{500}; // 0.5 sec
     //const unsigned int _maxFrameTimeMs{1000}; // 1 sec
 
-    enum notifyMessages
-    {
+    enum inputModes {
+        FIRST_MODE,
+        ONE_ITEM,
+        ALL_ITEMS,
+        INVENTORY,
+        ACHIEVEMENTS,
+        LAST_MODE,
+    };
+    std::atomic<inputModes> inputMode = FIRST_MODE;
+
+    enum notifyMessages {
         NO_MSG,
         NOT_ENOUGH_MONEY_FOR_ITEM,
         BOUGHT_ITEM,
@@ -57,6 +67,12 @@ class Gameloop {
     std::string failed_to_buy_item;
 
     void showInput();
+    void showInputBar();
+    void showStoreInput(bool oneItem);
+    void showInventory();
+    void showAchievements() {};
+    static std::string inputModeMapping(inputModes mode);
+
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
     void showStatus();
@@ -70,6 +86,7 @@ class Gameloop {
     void setMessageTime(const std::string& timeString = "%H:%M");
     std::string lastMessageTime;
     FRIEND_TEST(GameloopTestSuite, incrementCps);
+    FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
     FRIEND_TEST(GameloopTestSuite, maxItemAmount);
 
 public:

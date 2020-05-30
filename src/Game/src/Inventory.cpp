@@ -54,3 +54,11 @@ CookieNumber Inventory::getLastItemAddedAmount() {
 const std::string &Inventory::getLastItemAdded() {
     return last_item_added;
 }
+
+CookieNumber Inventory::getCookiesPerTap() {
+    return _cookiesPerTap;
+}
+
+void Inventory::incrementCookiesPerTap(CookieNumber amount) {
+    _cookiesPerTap += amount;
+}
