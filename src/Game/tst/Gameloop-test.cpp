@@ -50,3 +50,26 @@ TEST_F(GameloopTestSuite, maxItemAmount)
     ASSERT_EQ(result3, 2);
     ASSERT_EQ(result4, 7);
 }
+
+
+TEST_F(GameloopTestSuite, reset)
+{
+    //arrange
+    game->getWallet().incrementCookieAmount(CookieNumber(10));
+    game->getWallet().incrementCookieAmount(CookieNumber(20));
+    game->getWallet().incrementCps(CookieNumber(100));
+    game->getInventory().addItem("Key", 30);
+    game->getInventory().addItem("Grandma", 1);
+
+    //act
+    game->reset();
+
+    //assert
+    ASSERT_EQ(game->getWallet().getCps(), 0);
+    ASSERT_EQ(game->getWallet().getTotalcookies(), 0);
+    ASSERT_EQ(game->getWallet().getCookieAmount(), 0);
+    ASSERT_EQ(game->getInventory().getItemCount("Key"),0);
+    ASSERT_EQ(game->getInventory().getItemCount("Grandma"),0);
+    ASSERT_EQ(game->getInventory().getLastItemAdded().empty(), true);
+
+}
