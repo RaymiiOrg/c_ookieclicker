@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Threads REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread" )
 
+# Fix segfault when statically compiling.
+# https://stackoverflow.com/questions/35116327/when-g-static-link-pthread-cause-segmentation-fault-why
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -lrt -pthread -Wl,--whole-archive -lpthread -Wl,--no-whole-archive")
+
 set(GOOGLETEST_VERSION 3.14)
 add_subdirectory(lib/googletest)
 
@@ -19,10 +23,10 @@ if(Boost_FOUND)
 else()
     message(FATAL_ERROR "Boost not found!")
 endif()
-#
-#SET(CMAKE_EXE_LINKER_FLAGS "-static")
-#SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-#SET(BUILD_SHARED_LIBS OFF)
+
+SET(CMAKE_EXE_LINKER_FLAGS "-static")
+SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+SET(BUILD_SHARED_LIBS OFF)
 
 include_directories(src)
 add_subdirectory(src)
