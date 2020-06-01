@@ -48,7 +48,7 @@ private:
     Item Bank {"Bank", "b", "B", CookieNumber(50000), CookieNumber(500), 50};
     Item Temple {"Temple", "e", "E", CookieNumber(150000), CookieNumber(1500), 55};
     Item WizardTower {"Wizard Tower", "w", "W", CookieNumber(300000), CookieNumber(2000), 60};
-    Item Shipment {"Shipment", "s", "S", CookieNumber(4500000), CookieNumber(2500), 65};
+    Item Shipment {"Shipment", "o", "O", CookieNumber(4500000), CookieNumber(2500), 65};
     std::vector<Item> allItems {
         Key,
         Grandma,

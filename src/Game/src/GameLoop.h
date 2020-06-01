@@ -21,6 +21,7 @@
 #include "UpdateCookiesCommand.h"
 #include "Store.h"
 #include "CookieNumbers.h"
+#include "Save.h"
 #include <gtest/gtest_prod.h>
 
 class Gameloop {
@@ -52,6 +53,8 @@ class Gameloop {
         BOUGHT_ITEM,
         MAGIC,
         DEBUG,
+        SAVED,
+        LOADED,
         LAST_MSG,
     };
     std::atomic<notifyMessages> notifyMessage{};
@@ -85,9 +88,13 @@ class Gameloop {
     void showFinalScore();
     void setMessageTime(const std::string& timeString = "%H:%M");
     std::string lastMessageTime;
+    std::string saveFile = ".cookieclicker.save";
+
+    // tests
     FRIEND_TEST(GameloopTestSuite, incrementCps);
     FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
     FRIEND_TEST(GameloopTestSuite, maxItemAmount);
+//    FRIEND_TEST(SaveTestSuite, saveBlankFile);
 
 public:
     Gameloop();

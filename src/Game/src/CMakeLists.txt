@@ -13,6 +13,7 @@ target_link_libraries(${LIBRARY} PUBLIC
         Store
         gtest
         )
+target_link_libraries(${LIBRARY} PUBLIC stdc++fs)
 
 target_include_directories(${LIBRARY} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -22,6 +23,7 @@ target_link_libraries(${LIBRARY}.exe PUBLIC
         Commands
         Wallet
         Store)
+target_link_libraries(${LIBRARY}.exe PUBLIC stdc++fs)
 target_include_directories(${LIBRARY}.exe PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 

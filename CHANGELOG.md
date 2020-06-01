@@ -1,3 +1,13 @@
+# Version 103
+
+Release date: 
+
+- Implemented save game function
+  - Allows game to be saved with `s` and if 
+    a save file is found in the current folder,
+    loaded with `l`.
+- Fix static compilation by including the whole pthread library (`--whole-archive`)
+
 # Version 102
 
 Release date: 2020-05-30.

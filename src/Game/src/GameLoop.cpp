@@ -15,6 +15,10 @@ std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
             return "The answer to life, the universe and everything!";
         case DEBUG:
             return "A Debug Thing Happened!";
+        case SAVED:
+            return "Game saved.";
+        case LOADED:
+            return "Loaded saved game from file";
         case NO_MSG:
         case LAST_MSG:
             return "";
@@ -247,6 +251,18 @@ void Gameloop::handleChoice(const std::string &input) {
         cmd->execute();
     } else if (input == "q" or input == "Q") {
         quit();
+    } else if (input == "s") {
+        auto saveGame = Save(saveFile, getInventory(), getWallet(), 1);
+        if (saveGame.save()) {
+            setMessage(SAVED);
+        }
+    } else if (input == "l") {
+        usleep(30000);
+        quit();
+        auto saveGame = Save(saveFile, getInventory(), getWallet(), 1);
+        if (saveGame.load()) {
+            setMessage(LOADED);
+        }
     } else if (input == "1" or input == "2" or input == "3" or input == "4") {
         inputMode = static_cast<inputModes>(std::stoi(input));
     } else if (input == "6") {
@@ -347,17 +363,3 @@ std::string Gameloop::inputModeMapping(Gameloop::inputModes mode) {
             return "";
     }
 }
-
-//int Gameloop::maxItemAmount(Item &item) {
-//    if (canPayForItem(CookieNumber(500), item))
-//        return 500;
-//    if (canPayForItem(CookieNumber(250), item))
-//        return 250;
-//    if (canPayForItem(CookieNumber(100), item))
-//        return 100;
-//    if (canPayForItem(CookieNumber(50), item))
-//        return 50;
-//    if (canPayForItem(CookieNumber(10), item))
-//        return 10;
-//    return 0;
-//}
