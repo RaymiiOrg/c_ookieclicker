@@ -43,9 +43,10 @@ class Gameloop {
         ALL_ITEMS,
         INVENTORY,
         ACHIEVEMENTS,
+        OPTIONS,
         LAST_MODE,
     };
-    std::atomic<inputModes> inputMode = FIRST_MODE;
+    std::atomic<inputModes> inputMode = ONE_ITEM;
 
     enum notifyMessages {
         NO_MSG,
@@ -74,6 +75,7 @@ class Gameloop {
     void showStoreInput(bool oneItem);
     void showInventory();
     void showAchievements() {};
+    void showOptions();
     static std::string inputModeMapping(inputModes mode);
 
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();

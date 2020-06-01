@@ -133,15 +133,13 @@ void Gameloop::showFinalScore() {
 }
 
 void Gameloop::showInput() {
-    std::cout << "\n===== Commands ====\n";
+    std::cout << std::endl;
     std::cout << escapeCode.terminalBold;
     if (getInventory().getCookiesPerTap() == CookieNumber(1))
-        std::cout << "c\t:\t get cookie\n";
+        std::cout << "[c]\t:\t get cookie\n";
     else if (getInventory().getCookiesPerTap() > CookieNumber(1))
-        std::cout << "c\t:\t get " << getInventory().getCookiesPerTap() << " cookies\n";
+        std::cout << "[c]\t:\t get " << getInventory().getCookiesPerTap() << " cookies\n";
     std::cout << escapeCode.terminalReset;
-    std::cout << "q\t:\t quit\n";
-    std::cout << "s\t:\t save \n";
 
     showInputBar();
 
@@ -159,6 +157,9 @@ void Gameloop::showInput() {
         case ACHIEVEMENTS:
             showAchievements();
             break;
+        case OPTIONS:
+            showOptions();
+            break;
         default:
             break;
     }
@@ -172,16 +173,26 @@ void Gameloop::showInventory() {
 
         for (auto &item : getInventory().getInventory()) {
             if (item.second > 0) {
-                std::cout << item.first.name <<  ": " << cp.print(item.second) << "\n";
+                std::cout << item.first <<  ": " << cp.print(item.second) << "\n";
             }
         }
     }
 }
 
+void Gameloop::showOptions() {
+    std::cout << "\n===== Options ====\n";
+
+    std::cout << "[q]: quit; \n";
+    std::cout << "[s]: save; \n";
+    std::cout << "[l]: load; \n";
+    std::cout << std::endl;
+    std::cout << "version: " << game::gameVersion << std::endl;
+}
+
 void Gameloop::showInputBar() {
     std::cout << std::endl;
     for (int i = static_cast<int>(inputModes::FIRST_MODE); i < static_cast<int>(inputModes::LAST_MODE); ++i) {
-        if (inputMode == static_cast<inputModes>(i) or i == 0) {
+        if (inputMode == static_cast<inputModes>(i)) {
             std::cout << escapeCode.terminalBold <<
             inputModeMapping(static_cast<inputModes>(i)) <<
             escapeCode.terminalReset;
@@ -249,24 +260,22 @@ void Gameloop::handleChoice(const std::string &input) {
     if (input == "c") {
         auto cmd = std::make_unique<UpdateCookiesCommand>(getInventory().getCookiesPerTap(), getWallet());
         cmd->execute();
-    } else if (input == "q" or input == "Q") {
+    } else if (input == "q") {
         quit();
     } else if (input == "s") {
-        auto saveGame = Save(saveFile, getInventory(), getWallet(), 1);
+        auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
         if (saveGame.save()) {
             setMessage(SAVED);
         }
     } else if (input == "l") {
-        usleep(30000);
-        quit();
-        auto saveGame = Save(saveFile, getInventory(), getWallet(), 1);
+        auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
         if (saveGame.load()) {
             setMessage(LOADED);
         }
-    } else if (input == "1" or input == "2" or input == "3" or input == "4") {
+    } else if (input == "1" or input == "2" or input == "3" or input == "4" or input == "5") {
         inputMode = static_cast<inputModes>(std::stoi(input));
-    } else if (input == "6") {
-        getWallet().incrementCookieAmount(CookieNumber(42424242));
+    } else if (input == "42") {
+        getWallet().incrementCookieAmount(CookieNumber(42));
         setMessage(MAGIC);
     } else if (input == "7") {
         getWallet().incrementCookieAmount(CookieNumber(100));
@@ -284,7 +293,7 @@ void Gameloop::handleChoice(const std::string &input) {
 }
 
 void Gameloop::showStatus() {
-    std::cout << "\n===== Stats ====\n";
+    std::cout << "\n===== c_ookieclicker by Remy ====\n";
     std::cout << "Cookies\t:\t";
     if (getWallet().getCookieAmount() > 0)
         std::cout << cp.print(getWallet().getCookieAmount());
@@ -292,7 +301,6 @@ void Gameloop::showStatus() {
     std::cout << "cps\t:\t";
     if (getWallet().getCps() > 0)
         std::cout << cp.print(getWallet().getCps());
-    std::cout << "\n";
 }
 
 void Gameloop::incrementCookiesOnTime() {
@@ -352,13 +360,15 @@ CookieNumber Gameloop::maxItemAmount(Item &item) {
 std::string Gameloop::inputModeMapping(Gameloop::inputModes mode) {
     switch (mode) {
         case ONE_ITEM:
-            return "1: Store | ";
+            return "[1]: Store | ";
         case ALL_ITEMS:
-            return "2: Store Max | ";
+            return "[2]: Store Max | ";
         case INVENTORY:
-            return "3: Inventory | ";
+            return "[3]: Inventory | ";
         case ACHIEVEMENTS:
-            return "4: Achievements";
+            return "[4]: Achievements | ";
+        case OPTIONS:
+            return "[5]: Options";
         default:
             return "";
     }
