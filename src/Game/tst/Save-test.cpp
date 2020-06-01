@@ -8,6 +8,7 @@ struct SaveTestSuite : public ::testing::Test
 {
     std::unique_ptr<Gameloop> game;
     int format1 = 1;
+    CookieNumber largeNumber = CookieNumber("354863150980540376871924332068218985606788610769886127757294461121501888");
     std::experimental::filesystem::path current_source_file = std::experimental::filesystem::path(__FILE__);
     std::string testSaveFileFolder = current_source_file.parent_path().string() + "/data/";
     SaveTestSuite()
@@ -20,11 +21,7 @@ TEST_F(SaveTestSuite, saveBlankFile)
 {
     //arrange
     auto saveFile = testSaveFileFolder + "saveBlankFile.save";
-    //game->getWallet().incrementCookieAmount(CookieNumber(3));
-    //game->getWallet().incrementCps(CookieNumber(20));
-    //std::this_thread::sleep_for(std::chrono::seconds(1));
-    //game->incrementCookiesOnTime();
-    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), format1);
+    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), game->getStore(), format1);
     //act
     auto result = savegame.save();
     //assert
@@ -36,7 +33,7 @@ TEST_F(SaveTestSuite, loadNonExistentFile)
 {
     //arrange
     auto saveFile = testSaveFileFolder + "nonExistentFile.save";
-    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), format1);
+    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), game->getStore(), format1);
     // act
     auto result = savegame.load();
     //assert
@@ -48,25 +45,47 @@ TEST_F(SaveTestSuite, saveThenLoad)
 {
     //arrange
     auto saveFile = testSaveFileFolder + "saveThenLoad.save";
-    auto key = game->getStore().getItemByName("Key");
 
     //act
     game->getWallet().incrementCookieAmount(CookieNumber(3));
     game->getWallet().incrementCps(CookieNumber(20));
-    game->getInventory().addItem(key, 3);
+    game->getInventory().addItem("Key", 3);
+    game->getStore().increasePrice(game->getStore().getItemByName("Key"), 3);
 
-    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), format1);
+    game->getInventory().addItem("Grandma", largeNumber);
+
+    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), game->getStore(), format1);
     auto saveResult = savegame.save();
 
-    game->reset();
+    std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(false);
+    auto saveload = Save(saveFile, gameLoad->getInventory(), gameLoad->getWallet(), gameLoad->getStore(), format1);
+    auto loadResult = saveload.load();
 
-    auto loadResult = savegame.load();
-    auto key2 = game->getStore().getItemByName("Key");
     //assert
     ASSERT_EQ(std::experimental::filesystem::exists(saveFile), true);
     ASSERT_EQ(saveResult, true);
     ASSERT_EQ(loadResult, true);
+    ASSERT_EQ(gameLoad->getWallet().getTotalcookies(), 3);
+    ASSERT_EQ(gameLoad->getWallet().getCps(), 20);
+    ASSERT_EQ(gameLoad->getInventory().getItemCount("Key"), 3);
+    ASSERT_EQ(gameLoad->getStore().getPrice(gameLoad->getStore().getItemByName("Key")), 20);
+    ASSERT_EQ(gameLoad->getInventory().getItemCount("Grandma"), largeNumber);
+}
+
+TEST_F(SaveTestSuite, justLoad)
+{
+    //arrange
+    auto saveFile = testSaveFileFolder + "justLoad.save";
+
+    //act
+    auto saveload = Save(saveFile, game->getInventory(), game->getWallet(), game->getStore(), format1);
+    auto loadResult = saveload.load();
+
+    //assert
+    ASSERT_EQ(loadResult, true);
     ASSERT_EQ(game->getWallet().getTotalcookies(), 3);
     ASSERT_EQ(game->getWallet().getCps(), 20);
-    ASSERT_EQ(game->getInventory().getItemCount(key2), 3);
+    ASSERT_EQ(game->getInventory().getItemCount("Key"), 3);
+    ASSERT_EQ(game->getStore().getPrice(game->getStore().getItemByName("Key")), 20);
+    ASSERT_EQ(game->getInventory().getItemCount("Grandma"), largeNumber);
 }

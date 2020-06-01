@@ -10,16 +10,18 @@
 
 class Save {
 public:
-    Save(const std::string &filename, const Inventory &Inventory, const Wallet &wallet, int format);
+    Save(std::string filename, Inventory &Inventory, Wallet &wallet, Store &store, int format);
     bool save();
     bool load();
 
 private:
+    bool loadFormatOne();
+    bool saveFormatOne();
     std::string m_Filename;
-    Inventory m_Inventory;
-    Wallet m_Wallet;
+    Inventory& m_Inventory;
+    Wallet& m_Wallet;
+    Store& m_Store;
     int m_Format;
-
 };
 
 
