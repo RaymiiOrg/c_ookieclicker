@@ -51,6 +51,26 @@ The printing method is quite inefficient. It consists of multiple if statements.
 
 ### Items
 
+Stolen from the original game.
+
+- Cursors
+- Grandmas
+- Farms
+- Mines
+- Factories
+- Banks
+- Temples
+- Wizard towers
+- Shipments
+- Alchemy labs
+- Portals
+- Time machines
+- Antimatter condensers
+- Prisms
+- Chancemakers
+- Fractal Engines
+- Javascript Consoles
+
 ## Achievements
 
 
@@ -70,6 +90,9 @@ The printing method is quite inefficient. It consists of multiple if statements.
 
 
 ## Savegame
+
+The game is saved in your current folder, filename is `.cookieclicker.save`. Simple text based format, field seperated
+by a `;`. Don't manually edit the file or you might loose your savegame.
 
 [1]: https://orteil.dashnet.org/cookieclicker/
 [2]: demo3.gif
