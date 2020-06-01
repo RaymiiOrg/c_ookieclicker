@@ -14,6 +14,7 @@ class Wallet {
     void incrementCps(CookieNumber amount);
     void decrementCps(CookieNumber amount);
     const CookieNumber getTotalcookies();
+    void reset();
 private:
     CookieNumber cps = 0;
     CookieNumber cookieAmount = 0;

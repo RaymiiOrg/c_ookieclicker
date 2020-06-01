@@ -101,6 +101,7 @@ public:
     explicit Gameloop(bool isRunning);
     ~Gameloop();
     void start();
+    void reset();
     inline void quit();
     void setMessage(notifyMessages msg);
     void input();

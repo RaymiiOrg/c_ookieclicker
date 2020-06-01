@@ -12,6 +12,7 @@ public:
     static CookieNumber getPrice(Item& item, const CookieNumber& amount = 1);
     static void increasePrice(Item& item, const CookieNumber& amountBought = 1);
     Item& getItemByName(const std::string& name);
+    void reset();
 
 private:
     static CookieNumber calcPriceIncrease(Item& item, const CookieNumber& amount = 1);

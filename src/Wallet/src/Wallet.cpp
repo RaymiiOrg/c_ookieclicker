@@ -32,3 +32,9 @@ void Wallet::decrementCookieAmount(const CookieNumber amount) {
 const CookieNumber Wallet::getTotalcookies() {
     return totalcookies;
 }
+
+void Wallet::reset() {
+    cookieAmount = 0;
+    totalcookies = 0;
+    cps = 0;
+}

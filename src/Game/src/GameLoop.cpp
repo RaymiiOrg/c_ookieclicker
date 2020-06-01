@@ -363,3 +363,9 @@ std::string Gameloop::inputModeMapping(Gameloop::inputModes mode) {
             return "";
     }
 }
+
+void Gameloop::reset() {
+    getWallet().reset();
+    getInventory().reset();
+    getStore().reset();
+}

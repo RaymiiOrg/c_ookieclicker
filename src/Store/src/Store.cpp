@@ -34,3 +34,8 @@ Item &Store::getItemByName(const std::string& name) {
     }
     throw std::logic_error("Item not found");
 }
+
+void Store::reset() {
+    storeInventory.clear();
+    storeInventory = m_baseItems.getAllItems();
+}

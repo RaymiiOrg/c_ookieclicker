@@ -62,3 +62,10 @@ CookieNumber Inventory::getCookiesPerTap() {
 void Inventory::incrementCookiesPerTap(CookieNumber amount) {
     _cookiesPerTap += amount;
 }
+
+void Inventory::reset() {
+    _cookiesPerTap = 0;
+    last_item_added_amount = 0;
+    last_item_added.clear();
+    m_Inventory.clear();
+}

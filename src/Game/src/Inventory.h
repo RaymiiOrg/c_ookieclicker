@@ -21,6 +21,7 @@ private:
 public:
     void addItem(Item& item, CookieNumber amountToAdd);
     void removeItem(Item& item, CookieNumber amountToRemove);
+    void reset();
     CookieNumber getItemCount(Item &item);
     CookieNumber getLastItemAddedAmount();
     CookieNumber getCookiesPerTap();

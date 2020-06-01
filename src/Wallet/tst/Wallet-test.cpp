@@ -30,3 +30,31 @@ TEST_F(WalletTestSuite, incrementCookies)
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(110));
 }
 
+TEST_F(WalletTestSuite, decrementCookies)
+{
+    //arrange
+
+    //act
+    wallet->incrementCookieAmount(CookieNumber(10));
+    wallet->incrementCookieAmount(CookieNumber(100));
+    wallet->decrementCookieAmount(CookieNumber(90));
+
+    //assert
+    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(20));
+    ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(110));
+}
+
+
+TEST_F(WalletTestSuite, reset)
+{
+    //arrange
+
+    //act
+    wallet->incrementCookieAmount(CookieNumber(10));
+    wallet->incrementCookieAmount(CookieNumber(100));
+    wallet->reset();
+
+    //assert
+    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
+    ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(0));
+}

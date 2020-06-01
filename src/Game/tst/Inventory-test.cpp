@@ -72,5 +72,26 @@ TEST_F(InventoryTestSuite, cookiesPerTap)
 
     //assert
     ASSERT_EQ(inventory->getCookiesPerTap(), CookieNumber(341));
+}
 
+TEST_F(InventoryTestSuite, reset)
+{
+    //arrange
+    auto testItem1 = items.getAllItems().at(0);
+    auto testItem2 = items.getAllItems().at(1);
+    inventory->addItem(testItem1, CookieNumber(10));
+    inventory->addItem(testItem1, CookieNumber(1));
+    inventory->addItem(testItem2, CookieNumber(1));
+    inventory->incrementCookiesPerTap(340);
+
+    //act
+    inventory->reset();
+
+    //assert
+    ASSERT_EQ(inventory->getItemCount(testItem1), 0);
+    ASSERT_EQ(inventory->getItemCount(testItem2), CookieNumber(0));
+    ASSERT_EQ(inventory->getLastItemAdded().empty(), true);
+    ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
+    ASSERT_EQ(inventory->getCookiesPerTap(), CookieNumber(0));
+    ASSERT_EQ(inventory->getInventory().size(), 0);
 }
