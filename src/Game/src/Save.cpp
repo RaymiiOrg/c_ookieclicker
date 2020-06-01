@@ -4,8 +4,8 @@
 
 #include "Save.h"
 
-Save::Save(const std::string &mFilename, const Inventory &mInventory, const Wallet &mWallet, int mFormat) : m_Filename(
-        mFilename), m_Inventory(mInventory), m_Wallet(mWallet), m_Format(mFormat) {}
+Save::Save(const std::string &filename, const Inventory &Inventory, const Wallet &wallet, int format) : m_Filename(
+        filename), m_Inventory(Inventory), m_Wallet(wallet), m_Format(format) {}
 
 bool Save::save() {
     std::ofstream out(m_Filename);
@@ -41,5 +41,11 @@ bool Save::load() {
     for (auto & count : inV) {
         std::cout << count << "\n";
     }
+    m_Wallet._cookieAmount = CookieNumber(inV.at(2));
+    m_Wallet._cps = CookieNumber(inV.at(3));
+    m_Wallet._totalcookies = CookieNumber(inV.at(4));
+
+    int amountOfItems = std::stoi(inV.at(5));
+
     return true;
 }

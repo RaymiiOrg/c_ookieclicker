@@ -10,7 +10,7 @@
 
 class Save {
 public:
-    Save(const std::string &mFilename, const Inventory &mInventory, const Wallet &mWallet, int mFormat);
+    Save(const std::string &filename, const Inventory &Inventory, const Wallet &wallet, int format);
     bool save();
     bool load();
 

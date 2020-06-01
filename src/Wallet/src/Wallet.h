@@ -5,6 +5,7 @@
 #ifndef C_OOKIECLIKER_WALLET_H
 #define C_OOKIECLIKER_WALLET_H
 #include "CookieNumbers.h"
+
 class Wallet {
     public:
     const CookieNumber getCookieAmount();
@@ -16,9 +17,17 @@ class Wallet {
     const CookieNumber getTotalcookies();
     void reset();
 private:
-    CookieNumber cps = 0;
-    CookieNumber cookieAmount = 0;
-    CookieNumber totalcookies = 0;
+    CookieNumber _cps = 0;
+    CookieNumber _cookieAmount = 0;
+    CookieNumber _totalcookies = 0;
+
+    void setCps(const CookieNumber &cps);
+    void setCookieAmount(const CookieNumber &cookieAmount);
+    void setTotalcookies(const CookieNumber &totalcookies);
+
+private:
+    friend class Save;
+
 
 };
 

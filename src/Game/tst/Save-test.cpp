@@ -43,3 +43,30 @@ TEST_F(SaveTestSuite, loadNonExistentFile)
     ASSERT_EQ(std::experimental::filesystem::exists(saveFile), false);
     ASSERT_EQ(result, false);
 }
+
+TEST_F(SaveTestSuite, saveThenLoad)
+{
+    //arrange
+    auto saveFile = testSaveFileFolder + "saveThenLoad.save";
+    auto key = game->getStore().getItemByName("Key");
+
+    //act
+    game->getWallet().incrementCookieAmount(CookieNumber(3));
+    game->getWallet().incrementCps(CookieNumber(20));
+    game->getInventory().addItem(key, 3);
+
+    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), format1);
+    auto saveResult = savegame.save();
+
+    game->reset();
+
+    auto loadResult = savegame.load();
+    auto key2 = game->getStore().getItemByName("Key");
+    //assert
+    ASSERT_EQ(std::experimental::filesystem::exists(saveFile), true);
+    ASSERT_EQ(saveResult, true);
+    ASSERT_EQ(loadResult, true);
+    ASSERT_EQ(game->getWallet().getTotalcookies(), 3);
+    ASSERT_EQ(game->getWallet().getCps(), 20);
+    ASSERT_EQ(game->getInventory().getItemCount(key2), 3);
+}
