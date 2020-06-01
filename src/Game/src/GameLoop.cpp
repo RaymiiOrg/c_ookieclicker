@@ -42,7 +42,7 @@ std::string Gameloop::currentTime(const std::string &formatString) {
 void Gameloop::renderText() {
     if (notifyMessage != NO_MSG) {
         std::cout << escapeCode.terminalBold;
-        std::cout << lastMessageTime << ": " << std::setprecision(15) << notifyEnumToMsg(notifyMessage);
+        std::cout << lastMessageTime << ": " << notifyEnumToMsg(notifyMessage);
         std::cout << escapeCode.terminalReset;
     }
     std::cout << std::endl;
@@ -133,7 +133,7 @@ void Gameloop::showInput() {
     std::cout << escapeCode.terminalBold;
     if (getInventory().getCookiesPerTap() == CookieNumber(1))
         std::cout << "c\t:\t get cookie\n";
-    else
+    else if (getInventory().getCookiesPerTap() > CookieNumber(1))
         std::cout << "c\t:\t get " << getInventory().getCookiesPerTap() << " cookies\n";
     std::cout << escapeCode.terminalReset;
     std::cout << "q\t:\t quit\n";
@@ -142,6 +142,7 @@ void Gameloop::showInput() {
     showInputBar();
 
     switch (inputMode) {
+        case FIRST_MODE:
         case ONE_ITEM:
             showStoreInput(true);
             break;
@@ -176,7 +177,7 @@ void Gameloop::showInventory() {
 void Gameloop::showInputBar() {
     std::cout << std::endl;
     for (int i = static_cast<int>(inputModes::FIRST_MODE); i < static_cast<int>(inputModes::LAST_MODE); ++i) {
-        if (inputMode == static_cast<inputModes>(i)) {
+        if (inputMode == static_cast<inputModes>(i) or i == 0) {
             std::cout << escapeCode.terminalBold <<
             inputModeMapping(static_cast<inputModes>(i)) <<
             escapeCode.terminalReset;
