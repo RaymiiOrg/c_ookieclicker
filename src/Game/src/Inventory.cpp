@@ -4,28 +4,27 @@
 
 #include "Inventory.h"
 
-
-void Inventory::addItem(Item& item, CookieNumber amountToAdd) {
+void Inventory::addItem(std::string item, CookieNumber amountToAdd) {
     bool found = false;
     for (auto& i : m_Inventory)
     {
-        if (i.first.name == item.name)
+        if (i.first == item)
         {
             i.second += amountToAdd;
             found = true;
         }
     }
     if (!found) {
-        m_Inventory.insert(std::pair<Item &, CookieNumber>(item, amountToAdd));
+        m_Inventory.insert(std::pair<std::string, CookieNumber>(item, amountToAdd));
     }
     last_item_added_amount = amountToAdd;
-    last_item_added = item.name;
+    last_item_added = item;
 }
 
-void Inventory::removeItem(Item &item, CookieNumber amountToRemove) {
+void Inventory::removeItem(std::string item, CookieNumber amountToRemove) {
     for (auto& i : m_Inventory)
     {
-        if (i.first.name == item.name)
+        if (i.first == item)
         {
             if (i.second >= amountToRemove) {
                 i.second -= amountToRemove;
@@ -36,10 +35,10 @@ void Inventory::removeItem(Item &item, CookieNumber amountToRemove) {
     }
 }
 
-CookieNumber Inventory::getItemCount(Item &item) {
+CookieNumber Inventory::getItemCount(std::string item) {
     for (const auto& i : m_Inventory)
     {
-        if (i.first.name == item.name)
+        if (i.first == item)
         {
             return i.second;
         }

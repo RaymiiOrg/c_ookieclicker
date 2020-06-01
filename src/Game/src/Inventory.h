@@ -13,21 +13,21 @@
 
 class Inventory {
 private:
-    std::map<Item, CookieNumber> m_Inventory;
+    std::map<std::string, CookieNumber> m_Inventory;
     std::string last_item_added;
     CookieNumber last_item_added_amount;
     CookieNumber _cookiesPerTap = 1;
 
 public:
-    void addItem(Item& item, CookieNumber amountToAdd);
-    void removeItem(Item& item, CookieNumber amountToRemove);
+    void addItem(std::string, CookieNumber amountToAdd);
+    void removeItem(std::string, CookieNumber amountToRemove);
     void reset();
-    CookieNumber getItemCount(Item &item);
+    CookieNumber getItemCount(std::string);
     CookieNumber getLastItemAddedAmount();
     CookieNumber getCookiesPerTap();
     void incrementCookiesPerTap(CookieNumber amount);
     const std::string& getLastItemAdded();
-    std::map<Item, CookieNumber>& getInventory() { return m_Inventory; };
+    std::map<std::string, CookieNumber>& getInventory() { return m_Inventory; };
 };
 
 

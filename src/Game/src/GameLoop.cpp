@@ -196,10 +196,10 @@ void Gameloop::showStoreInput(bool oneItem) {
     std::cout << "\n===== Store ====\n";
     bool enoughMoneyOrHaveItemsAlready = false;
     for (auto &item : getStore().getStoreInventory()) {
-        if (!canPayForItem(1, item) && getInventory().getItemCount(item) > 0) {
+        if (!canPayForItem(1, item) && getInventory().getItemCount(item.name) > 0) {
             enoughMoneyOrHaveItemsAlready = true;
             std::cout << escapeCode.terminalDim;
-            std::cout << item.buyOneKey << ": not enough cookies for " << item.name <<
+            std::cout << "[" << item.buyOneKey << "]: not enough cookies for " << item.name <<
                       " (cost: ";
             std::cout << cp.print(Store::getPrice(item));
             std::cout << " cookies);";
@@ -207,7 +207,7 @@ void Gameloop::showStoreInput(bool oneItem) {
         } else if (canPayForItem(1, item)) {
             enoughMoneyOrHaveItemsAlready = true;
             if (oneItem) {
-                std::cout << item.buyOneKey <<
+                std::cout << "[" << item.buyOneKey << "]" <<
                           ": buy " << item.name << "; cost: ";
                 std::cout << cp.print(Store::getPrice(item));
                 std::cout << " cookies; +";
@@ -215,15 +215,15 @@ void Gameloop::showStoreInput(bool oneItem) {
                 std::cout << " cps; ";
             } else {
                 if (maxItemAmount(item) > 1) {
-                    std::cout << item.buyMaxKey <<
+                    std::cout << "[" << item.buyMaxKey << "]" <<
                               ": buy " << cp.print(maxItemAmount(item)) <<
-                              " " << item.name << "; cost: " <<
+                              " " << item.name << "s; cost: " <<
                               cp.print(Store::getPrice(item, maxItemAmount(item))) <<
                               " cookies;";
                 } else {
                     std::cout << escapeCode.terminalDim;
-                    std::cout << item.buyMaxKey << ": not enough cookies for " << item.name <<
-                              " (cost: ";
+                    std::cout << "[" << item.buyMaxKey << "]: not enough cookies for " << item.name <<
+                              "s (cost: ";
                     std::cout << cp.print(Store::getPrice(item, 2));
                     std::cout << " cookies);";
                     std::cout << escapeCode.terminalReset;

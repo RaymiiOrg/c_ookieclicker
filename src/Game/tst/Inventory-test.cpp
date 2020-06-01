@@ -15,8 +15,7 @@ struct InventoryTestSuite : public ::testing::Test
 
 TEST_F(InventoryTestSuite, getEmptyInventory)
 {
-    Item cursor = items.getAllItems().at(0);
-    ASSERT_EQ(inventory->getItemCount(cursor), CookieNumber(0));
+    ASSERT_EQ(inventory->getItemCount("Key"), CookieNumber(0));
     ASSERT_EQ(inventory->getLastItemAdded().empty(), true);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
     ASSERT_EQ(inventory->getInventory().empty(), true);
@@ -25,8 +24,8 @@ TEST_F(InventoryTestSuite, getEmptyInventory)
 TEST_F(InventoryTestSuite, addItems)
 {
     //arrange
-    Item testItem1 = items.getAllItems().at(0);
-    Item testItem2 = items.getAllItems().at(1);
+    auto testItem1 = items.getAllItems().at(0).name;
+    auto testItem2 = items.getAllItems().at(1).name;
 
     //act
     inventory->addItem(testItem1, CookieNumber(10));
@@ -36,7 +35,7 @@ TEST_F(InventoryTestSuite, addItems)
     //assert
     ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(12));
     ASSERT_EQ(inventory->getItemCount(testItem2), CookieNumber(1));
-    ASSERT_EQ(inventory->getLastItemAdded(), testItem2.name);
+    ASSERT_EQ(inventory->getLastItemAdded(), testItem2);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
     ASSERT_EQ(inventory->getInventory().size(), 2);
 }
@@ -45,8 +44,8 @@ TEST_F(InventoryTestSuite, addItems)
 TEST_F(InventoryTestSuite, removeItems)
 {
     //arrange
-    Item testItem1 = items.getAllItems().at(0);
-    Item testItem2 = items.getAllItems().at(1);
+    auto testItem1 = items.getAllItems().at(0).name;
+    auto testItem2 = items.getAllItems().at(1).name;
 
     //act
     inventory->addItem(testItem1, CookieNumber(10));
@@ -59,7 +58,7 @@ TEST_F(InventoryTestSuite, removeItems)
     //assert
     ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(3));
     ASSERT_EQ(inventory->getItemCount(testItem2), CookieNumber(0));
-    ASSERT_EQ(inventory->getLastItemAdded(), testItem2.name);
+    ASSERT_EQ(inventory->getLastItemAdded(), testItem2);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
     ASSERT_EQ(inventory->getInventory().size(), 2);
 }
@@ -77,8 +76,8 @@ TEST_F(InventoryTestSuite, cookiesPerTap)
 TEST_F(InventoryTestSuite, reset)
 {
     //arrange
-    auto testItem1 = items.getAllItems().at(0);
-    auto testItem2 = items.getAllItems().at(1);
+    auto testItem1 = items.getAllItems().at(0).name;
+    auto testItem2 = items.getAllItems().at(1).name;
     inventory->addItem(testItem1, CookieNumber(10));
     inventory->addItem(testItem1, CookieNumber(1));
     inventory->addItem(testItem2, CookieNumber(1));

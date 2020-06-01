@@ -20,7 +20,7 @@ struct BuyItemCommandTestSuite : public ::testing::Test
 TEST_F(BuyItemCommandTestSuite, before)
 {
     //arrange
-    Item testItem1 = store->getStoreInventory().at(0);
+    auto testItem1 = store->getStoreInventory().at(0).name;
     //assert
     ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(0));
     ASSERT_TRUE(inventory->getLastItemAdded().empty());
@@ -34,7 +34,7 @@ TEST_F(BuyItemCommandTestSuite, before)
 TEST_F(BuyItemCommandTestSuite, withoutMoney)
 {
     //arrange
-    Item testItem1 = store->getStoreInventory().at(0);
+    auto testItem1 = store->getStoreInventory().at(0);
 
     //act
     auto buyCmd = std::make_unique<BuyItemCommand>(testItem1, CookieNumber(2), *inventory, *wallet, *store);
@@ -43,7 +43,7 @@ TEST_F(BuyItemCommandTestSuite, withoutMoney)
     buyCmd2->execute();
 
     //assert
-    ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(0));
+    ASSERT_EQ(inventory->getItemCount(testItem1.name), CookieNumber(0));
     ASSERT_TRUE(inventory->getLastItemAdded().empty());
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
@@ -55,7 +55,7 @@ TEST_F(BuyItemCommandTestSuite, withoutMoney)
 TEST_F(BuyItemCommandTestSuite, withMoney)
 {
     //arrange
-    Item testItem1 = store->getStoreInventory().at(0);
+    auto testItem1 = store->getStoreInventory().at(0);
     wallet->incrementCookieAmount(CookieNumber(300));
 
     //act
@@ -65,7 +65,7 @@ TEST_F(BuyItemCommandTestSuite, withMoney)
     buyCmd2->execute();
 
     //assert
-    ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(3));
+    ASSERT_EQ(inventory->getItemCount(testItem1.name), CookieNumber(3));
     ASSERT_EQ(inventory->getLastItemAdded(), testItem1.name);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(256));
@@ -78,7 +78,7 @@ TEST_F(BuyItemCommandTestSuite, withMoney)
 TEST_F(BuyItemCommandTestSuite, undo)
 {
     //arrange
-    Item testItem1 = store->getStoreInventory().at(0);
+    auto testItem1 = store->getStoreInventory().at(0);
     wallet->incrementCookieAmount(CookieNumber(300));
 
     //act
@@ -88,7 +88,7 @@ TEST_F(BuyItemCommandTestSuite, undo)
     buyCmd->undo();
 
     //assert
-    ASSERT_EQ(inventory->getItemCount(testItem1), CookieNumber(2));
+    ASSERT_EQ(inventory->getItemCount(testItem1.name), CookieNumber(2));
     ASSERT_EQ(inventory->getLastItemAdded(), testItem1.name);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(2));
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(301));
