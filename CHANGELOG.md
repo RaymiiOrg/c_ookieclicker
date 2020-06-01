@@ -6,6 +6,7 @@ Release date:
   - Allows game to be saved with `s` and if 
     a save file is found in the current folder,
     loaded with `l`.
+- Changed inventory no not hold `Item&` but just `std::string`
 - Fix static compilation by including the whole pthread library (`--whole-archive`)
 
 # Version 102

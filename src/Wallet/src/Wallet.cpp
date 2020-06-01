@@ -4,32 +4,32 @@
 
 #include "Wallet.h"
 
-void Wallet::incrementCps(const CookieNumber amount) {
+void Wallet::incrementCps(const CookieNumber& amount) {
     _cps += amount;
 }
 
-void Wallet::decrementCps(const CookieNumber amount) {
+void Wallet::decrementCps(const CookieNumber& amount) {
     _cps -= amount;
 }
 
-const CookieNumber Wallet::getCookieAmount() {
+CookieNumber Wallet::getCookieAmount() {
     return _cookieAmount;
 }
 
-const CookieNumber Wallet::getCps() {
+CookieNumber Wallet::getCps() {
     return _cps;
 }
 
-void Wallet::incrementCookieAmount(const CookieNumber amount) {
+void Wallet::incrementCookieAmount(const CookieNumber& amount) {
     _cookieAmount += amount;
     _totalcookies += amount;
 }
 
-void Wallet::decrementCookieAmount(const CookieNumber amount) {
+void Wallet::decrementCookieAmount(const CookieNumber& amount) {
     _cookieAmount -= amount;
 }
 
-const CookieNumber Wallet::getTotalcookies() {
+CookieNumber Wallet::getTotalcookies() {
     return _totalcookies;
 }
 

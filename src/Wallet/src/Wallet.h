@@ -8,24 +8,21 @@
 
 class Wallet {
     public:
-    const CookieNumber getCookieAmount();
-    const CookieNumber getCps();
-    void incrementCookieAmount(CookieNumber amount);
-    void decrementCookieAmount(CookieNumber amount);
-    void incrementCps(CookieNumber amount);
-    void decrementCps(CookieNumber amount);
-    const CookieNumber getTotalcookies();
+    CookieNumber getCookieAmount();
+    CookieNumber getCps();
+    void incrementCookieAmount(const CookieNumber& amount);
+    void decrementCookieAmount(const CookieNumber& amount);
+    void incrementCps(const CookieNumber& amount);
+    void decrementCps(const CookieNumber& amount);
+    CookieNumber getTotalcookies();
     void reset();
 private:
     CookieNumber _cps = 0;
     CookieNumber _cookieAmount = 0;
     CookieNumber _totalcookies = 0;
-
     void setCps(const CookieNumber &cps);
     void setCookieAmount(const CookieNumber &cookieAmount);
     void setTotalcookies(const CookieNumber &totalcookies);
-
-private:
     friend class Save;
 
 
