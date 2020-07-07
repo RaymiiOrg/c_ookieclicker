@@ -12,32 +12,34 @@ struct StoreTestSuite : public ::testing::Test
 
 };
 
-TEST_F(StoreTestSuite, getPriceNothingBought)
-{
-    // arrange / act
-    auto key = m_store->getStoreInventory().at(0);
-    // assert
-    ASSERT_EQ(m_store->getPrice(key),CookieNumber(10));
-    ASSERT_EQ(m_store->getPrice(key, 5),CookieNumber(66));
-    ASSERT_EQ(m_store->getPrice(key, 10),CookieNumber(131));
-}
-
-TEST_F(StoreTestSuite, priceIncrease)
+TEST_F(StoreTestSuite, noPriceIncreaseWhenEmptyInventory)
 {
     //arrange
     auto key = m_store->getStoreInventory().at(0);
-    //act
-    m_store->increasePrice(key, 1);
+
     //assert
-    ASSERT_EQ(m_store->getPrice(key),CookieNumber(14));
+    EXPECT_EQ(m_store->getPrice(key, 1, 0), CookieNumber(15));
+    EXPECT_EQ(m_store->getPrice(key, 2, 0), CookieNumber(15));
+    EXPECT_EQ(m_store->getPrice(key, 3, 0), CookieNumber(15));
 }
 
-TEST_F(StoreTestSuite, reset)
+
+TEST_F(StoreTestSuite, priceIncreaseFilledInventory)
 {
     //arrange
-    m_store->increasePrice(m_store->getStoreInventory().at(0), 1);
+    auto key = m_store->getStoreInventory().at(0);
+
     //act
-    m_store->reset();
+
     //assert
-    ASSERT_EQ(m_store->getPrice(m_store->getStoreInventory().at(0)),CookieNumber(10));
+    EXPECT_EQ(m_store->getPrice(key, 1, 1), CookieNumber(18));
+    EXPECT_EQ(m_store->getPrice(key, 1, 2), CookieNumber(20));
+    EXPECT_EQ(m_store->getPrice(key, 1, 3), CookieNumber(23));
+    EXPECT_EQ(m_store->getPrice(key, 1, 4), CookieNumber(27));
+    EXPECT_EQ(m_store->getPrice(key, 1, 5), CookieNumber(31));
+    EXPECT_EQ(m_store->getPrice(key, 1, 6), CookieNumber(35));
+    EXPECT_EQ(m_store->getPrice(key, 1, 7), CookieNumber(40));
+    EXPECT_EQ(m_store->getPrice(key, 1, 8), CookieNumber(46));
+    EXPECT_EQ(m_store->getPrice(key, 1, 9), CookieNumber(53));
+    EXPECT_EQ(m_store->getPrice(key, 1, 10), CookieNumber(61));
 }

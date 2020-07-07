@@ -5,24 +5,26 @@
 #include "Store.h"
 
 
-CookieNumber Store::getPrice(Item &item, const CookieNumber& amount) {
-    if (amount == 1)
-        return item.price;
+CookieNumber Store::getPrice(Item &item, const CookieNumber &amount, const CookieNumber &amountAlreadyHave) {
 
-    auto priceXamount = item.price * amount;
-    return (priceXamount + calcPriceIncrease(item, amount));
-}
+    if (amountAlreadyHave == 0)
+        return item.baseCost;
 
-void Store::increasePrice(Item &item, const CookieNumber& amountBought) {
-    item.price += calcPriceIncrease(item, amountBought);
-}
+    CookieFloater baseCost(item.baseCost);
+    CookieFloater itemAmountInInventory(amountAlreadyHave);
+    CookieFloater amountToBuy(amount);
 
-CookieNumber Store::calcPriceIncrease(Item &item, const CookieNumber& amount) {
-    auto priceIncrease = item.percentIncreaseWhenBought;
-    CookieFloater itemPrice(item.price);
-    auto increaseAmount = ((priceIncrease / 100) * itemPrice);
-    auto resultFloat = increaseAmount * amount.convert_to<CookieFloater>();
-    auto result = resultFloat.convert_to<CookieNumber>() + 1; // +1 because conversion rounds down;
+    auto amountInInventoryPOW = boost::multiprecision::pow(CookieFloater("1.15"), itemAmountInInventory);
+//    std::cerr << "amountPOW: " << (amountInInventoryPOW) << std::endl;
+
+    auto newPrice = baseCost * amountInInventoryPOW;
+//    std::cerr << "newPrive: " << newPrice << std::endl;
+
+    auto resultFloat = amountToBuy * newPrice;
+//    std::cerr << "resultFLoat: " << resultFloat << std::endl;
+
+    auto result = resultFloat.convert_to<CookieNumber>() + 1; // +1 due to rounding down
+//    std::cerr << "result: " << result << std::endl;
     return result;
 }
 

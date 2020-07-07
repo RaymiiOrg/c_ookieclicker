@@ -66,7 +66,6 @@ bool Save::loadFormatOne() {
             auto itemName = item_results.at(0);
             auto itemAmount = CookieNumber(item_results.at(1));
             m_Inventory.addItem(itemName, itemAmount);
-            m_Store.increasePrice(m_Store.getItemByName(itemName), itemAmount);
         }
     }
 

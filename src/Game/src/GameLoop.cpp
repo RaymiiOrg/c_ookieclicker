@@ -21,6 +21,7 @@ std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
             return "Loaded saved game from file";
         case NO_MSG:
         case LAST_MSG:
+        default:
             return "";
     }
 };
@@ -212,7 +213,7 @@ void Gameloop::showStoreInput(bool oneItem) {
             std::cout << escapeCode.terminalDim;
             std::cout << "[" << item.buyOneKey << "]: not enough cookies for " << item.name <<
                       " (cost: ";
-            std::cout << cp.print(Store::getPrice(item));
+            std::cout << cp.print(Store::getPrice(item, 1, getInventory().getItemCount(item.name)));
             std::cout << " cookies);";
             std::cout << escapeCode.terminalReset << "\n";
         } else if (canPayForItem(1, item)) {
@@ -220,7 +221,7 @@ void Gameloop::showStoreInput(bool oneItem) {
             if (oneItem) {
                 std::cout << "[" << item.buyOneKey << "]" <<
                           ": buy " << item.name << "; cost: ";
-                std::cout << cp.print(Store::getPrice(item));
+                std::cout << cp.print(Store::getPrice(item, 1, getInventory().getItemCount(item.name)));
                 std::cout << " cookies; +";
                 std::cout << cp.print(item.cps);
                 std::cout << " cps; ";
@@ -229,13 +230,13 @@ void Gameloop::showStoreInput(bool oneItem) {
                     std::cout << "[" << item.buyMaxKey << "]" <<
                               ": buy " << cp.print(maxItemAmount(item)) <<
                               " " << item.name << "s; cost: " <<
-                              cp.print(Store::getPrice(item, maxItemAmount(item))) <<
+                              cp.print(Store::getPrice(item, maxItemAmount(item), getInventory().getItemCount(item.name))) <<
                               " cookies;";
                 } else {
                     std::cout << escapeCode.terminalDim;
                     std::cout << "[" << item.buyMaxKey << "]: not enough cookies for " << item.name <<
                               "s (cost: ";
-                    std::cout << cp.print(Store::getPrice(item, 2));
+                    std::cout << cp.print(Store::getPrice(item, 2, getInventory().getItemCount(item.name)));
                     std::cout << " cookies);";
                     std::cout << escapeCode.terminalReset;
                 }
@@ -286,7 +287,7 @@ void Gameloop::handleChoice(const std::string &input) {
         setMessage(DEBUG);
     } else if (input == "9") {
         setMessage(DEBUG);
-        CookieNumber a ("115119036727821003870521051126876277284277153860658940094917200695393093978299485941825124206612415512884049997084612576423130590962154289376800387194154816459487665078480150348801009011289080");
+        CookieNumber a ("1151190367278210038705210519997084612576423130590962154289376800387194154816459487665078480150348801009011289080");
         getWallet().incrementCookieAmount(a);
         getWallet().incrementCps(a*2);
     }
@@ -322,7 +323,7 @@ void Gameloop::buyItem(CookieNumber amountToBuy, Item &item) {
 }
 
 bool Gameloop::canPayForItem(const CookieNumber &amountToBuy, Item &item) {
-    return getWallet().getCookieAmount() >= Store::getPrice(item, amountToBuy);
+    return getWallet().getCookieAmount() >= Store::getPrice(item, amountToBuy, getInventory().getItemCount(item.name));
 }
 
 void Gameloop::setMessageTime(const std::string &timeString) {
@@ -342,15 +343,31 @@ Store &Gameloop::getStore() {
 }
 
 CookieNumber Gameloop::maxItemAmount(Item &item) {
-    if (getWallet().getCookieAmount() < (item.price * 2) - 1) {
+    if (getInventory().getItemCount(item.name) == 0)
         return CookieNumber(1);
-    }
-    auto priceIncrease = item.percentIncreaseWhenBought;
-    auto increaseAmount = ((priceIncrease / 100) * getWallet().getCookieAmount().convert_to<CookieFloater>());
 
-    auto amountOfCookiesMinusIncreasePercentageF = getWallet().getCookieAmount().convert_to<CookieFloater>() - increaseAmount;
-    auto amountOfCookiesMinusIncreasePercentage = amountOfCookiesMinusIncreasePercentageF.convert_to<CookieNumber>();
-    auto canBuy = amountOfCookiesMinusIncreasePercentage / Store::getPrice(item);
+    if (getWallet().getCookieAmount() < (item.baseCost * 2) - 1)
+        return CookieNumber(1);
+
+    auto itemCountF = CookieFloater(getInventory().getItemCount(item.name));
+    auto priceIncrease = boost::multiprecision::pow(CookieFloater("1.15"), itemCountF);
+    std::cerr << "priceincrease: " << priceIncrease << std::endl;
+
+    auto cookieAmountF = CookieFloater(getWallet().getCookieAmount());
+    std::cerr << "cookieAmountF: " << cookieAmountF << std::endl;
+
+    auto increaseAmount = (cookieAmountF / priceIncrease);
+    std::cerr << "increaseAmount: " << increaseAmount << std::endl;
+
+    auto amountOfCookiesMinusIncreasePercentageF = cookieAmountF - increaseAmount;
+    std::cerr << "amountOfCookiesMinusIncreasePercentageF: " << amountOfCookiesMinusIncreasePercentageF << std::endl;
+
+    auto amountOfCookiesMinusIncreasePercentage = CookieNumber(amountOfCookiesMinusIncreasePercentageF);
+    std::cerr << "amountOfCookiesMinusIncreasePercentage: " << amountOfCookiesMinusIncreasePercentage << std::endl;
+
+    auto canBuy = amountOfCookiesMinusIncreasePercentage / Store::getPrice(item, 1, getInventory().getItemCount(item.name));
+    std::cerr << "canBuy: " << canBuy << std::endl;
+    std::cerr << ".." << std::endl;
     if (canBuy > 1)
         return canBuy;
     else

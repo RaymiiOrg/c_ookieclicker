@@ -14,9 +14,9 @@ struct Item {
     std::string buyMaxKey;
 
     bool operator<(const Item &rhs) const {
-        if (price < rhs.price)
+        if (baseCost < rhs.baseCost)
             return true;
-        if (rhs.price < price)
+        if (rhs.baseCost < baseCost)
             return false;
         return cps < rhs.cps;
     }
@@ -33,24 +33,23 @@ struct Item {
         return !(*this < rhs);
     }
 
-    CookieNumber price {1};
+    CookieNumber baseCost {1};
     CookieNumber cps {1};
-    CookieFloater percentIncreaseWhenBought {1};
 };
 
 class Items {
 private:
-    Item Key {"Key", "k", "K", CookieNumber(10), CookieNumber(1), 30};
-    Item Grandma {"Grandma", "g", "G", CookieNumber(100), CookieNumber(10), 35};
-    Item Farm {"Farm", "f", "F", CookieNumber(1000), CookieNumber(20), 40};
-    Item Mine {"Mine", "m", "M", CookieNumber(5000), CookieNumber(50), 45};
-    Item Factory {"Factory", "t", "T", CookieNumber(15000), CookieNumber(100), 50};
-    Item Bank {"Bank", "b", "B", CookieNumber(50000), CookieNumber(500), 50};
-    Item Temple {"Temple", "e", "E", CookieNumber(150000), CookieNumber(1500), 55};
-    Item WizardTower {"Wizard Tower", "w", "W", CookieNumber(300000), CookieNumber(2000), 60};
-    Item Shipment {"Shipment", "o", "O", CookieNumber(4500000), CookieNumber(2500), 65};
-    Item Alchemylab {"Alchemy Lab", "a", "A", CookieNumber("900000000"), CookieNumber(3500), 90};
-    Item Portal {"Portal", "p", "P", CookieNumber("4500000000"), CookieNumber(5000), 130};
+    Item Key {"Key", "k", "K", CookieNumber(15), CookieNumber(1)};
+    Item Grandma {"Grandma", "g", "G", CookieNumber(100), CookieNumber(10)};
+    Item Farm {"Farm", "f", "F", CookieNumber(1000), CookieNumber(20)};
+    Item Mine {"Mine", "m", "M", CookieNumber(5000), CookieNumber(50)};
+    Item Factory {"Factory", "t", "T", CookieNumber(15000), CookieNumber(100)};
+    Item Bank {"Bank", "b", "B", CookieNumber(50000), CookieNumber(500)};
+    Item Temple {"Temple", "e", "E", CookieNumber(150000), CookieNumber(1500)};
+    Item WizardTower {"Wizard Tower", "w", "W", CookieNumber(300000), CookieNumber(2000)};
+    Item Shipment {"Shipment", "o", "O", CookieNumber(4500000), CookieNumber(2500)};
+    Item Alchemylab {"Alchemy Lab", "a", "A", CookieNumber("900000000"), CookieNumber(3500)};
+    Item Portal {"Portal", "p", "P", CookieNumber("4500000000"), CookieNumber(5000)};
 //    Item Timemachine {"Time Machine", "i", "I", CookieNumber(), CookieNumber(), };
 //    Item Antimattercondenser {"Antimatter Condenser", "y", "Y", CookieNumber(), CookieNumber(), };
 //    Item Prism {"Prism", "Y", "Y", CookieNumber(), CookieNumber(), };

@@ -10,18 +10,17 @@ BuyItemCommand::BuyItemCommand(Item& item, CookieNumber amount, Inventory& inven
 }
 
 void BuyItemCommand::execute() {
-    auto price = Store::getPrice(m_Item, m_Amount);
+    auto price = Store::getPrice(m_Item, m_Amount, m_Inventory.getItemCount(m_Item.name));
     auto cps = m_Item.cps * m_Amount;
     if (m_Wallet.getCookieAmount() >= price) {
         m_Inventory.addItem(m_Item.name, m_Amount);
         m_Wallet.decrementCookieAmount(price);
         m_Wallet.incrementCps(cps);
-        Store::increasePrice(m_Item, m_Amount);
     }
 }
 
 void BuyItemCommand::undo() {
-    auto price = Store::getPrice(m_Item, m_Amount);
+    auto price = Store::getPrice(m_Item, m_Amount, m_Inventory.getItemCount(m_Item.name));
     auto cps = m_Item.cps * m_Amount;
     m_Inventory.removeItem(m_Item.name, m_Amount);
     m_Wallet.incrementCookieAmount(price);
