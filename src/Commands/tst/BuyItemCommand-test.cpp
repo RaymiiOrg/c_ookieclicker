@@ -22,13 +22,13 @@ TEST_F(BuyItemCommandTestSuite, before)
     //arrange
     auto key = store->getStoreInventory().at(0).name;
     //assert
-    ASSERT_EQ(inventory->getItemCount(key), CookieNumber(0));
+    EXPECT_EQ(inventory->getItemCount(key), CookieNumber(0));
     ASSERT_TRUE(inventory->getLastItemAdded().empty());
-    ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
-    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
-    ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(0));
-    ASSERT_EQ(wallet->getCps(), CookieNumber(0));
-    ASSERT_EQ(store->getStoreInventory().at(0).baseCost, 15);
+    EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(0));
+    EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(0));
+    EXPECT_EQ(wallet->getCps(), CookieNumber(0));
+    EXPECT_EQ(store->getStoreInventory().at(0).baseCost, 15);
 }
 
 TEST_F(BuyItemCommandTestSuite, withoutMoney)
@@ -43,13 +43,13 @@ TEST_F(BuyItemCommandTestSuite, withoutMoney)
     buyCmd2->execute();
 
     //assert
-    ASSERT_EQ(inventory->getItemCount(key.name), CookieNumber(0));
+    EXPECT_EQ(inventory->getItemCount(key.name), CookieNumber(0));
     ASSERT_TRUE(inventory->getLastItemAdded().empty());
-    ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
-    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
-    ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(0));
-    ASSERT_EQ(wallet->getCps(), CookieNumber(0));
-    ASSERT_EQ(store->getStoreInventory().at(0).baseCost, 15);
+    EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(0));
+    EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(0));
+    EXPECT_EQ(wallet->getCps(), CookieNumber(0));
+    EXPECT_EQ(store->getStoreInventory().at(0).baseCost, 15);
 }
 
 TEST_F(BuyItemCommandTestSuite, withMoney)
@@ -65,13 +65,13 @@ TEST_F(BuyItemCommandTestSuite, withMoney)
     buyCmd2->execute();
 
     //assert
-    ASSERT_EQ(inventory->getItemCount(key.name), CookieNumber(3));
-    ASSERT_EQ(inventory->getLastItemAdded(), key.name);
-    ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
-    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(265));
-    ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(300));
-    ASSERT_EQ(wallet->getCps(), CookieNumber(3));
-    ASSERT_EQ(store->getPrice(key, 1, inventory->getItemCount(key.name)), 23);
+    EXPECT_EQ(inventory->getItemCount(key.name), CookieNumber(3));
+    EXPECT_EQ(inventory->getLastItemAdded(), key.name);
+    EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(247));
+    EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(300));
+    EXPECT_EQ(wallet->getCps(), CookieNumber(3));
+    EXPECT_EQ(store->getPrice(key, inventory->getItemCount(key.name)), 23);
 }
 
 
@@ -88,11 +88,11 @@ TEST_F(BuyItemCommandTestSuite, undo)
     buyCmd->undo();
 
     //assert
-    ASSERT_EQ(inventory->getItemCount(key.name), CookieNumber(2));
-    ASSERT_EQ(inventory->getLastItemAdded(), key.name);
-    ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(2));
-    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(298));
-    ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(353));
-    ASSERT_EQ(wallet->getCps(), CookieNumber(2));
-    ASSERT_EQ(store->getPrice(key, 1, inventory->getItemCount(key.name)), 20);
+    EXPECT_EQ(inventory->getItemCount(key.name), CookieNumber(2));
+    EXPECT_EQ(inventory->getLastItemAdded(), key.name);
+    EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(2));
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(251));
+    EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(327));
+    EXPECT_EQ(wallet->getCps(), CookieNumber(2));
+    EXPECT_EQ(store->getPrice(key, inventory->getItemCount(key.name)), 20);
 }

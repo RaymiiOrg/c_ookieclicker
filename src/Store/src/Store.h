@@ -9,7 +9,9 @@
 class Store {
 public:
     std::vector<Item>& getStoreInventory() { return storeInventory; };
-    static CookieNumber getPrice(Item &item, const CookieNumber &amount, const CookieNumber &amountAlreadyHave);
+    static CookieNumber getPrice(Item &item, const CookieNumber &amountAlreadyHave);
+    static CookieNumber getPriceOfTen(Item &item, const CookieNumber &amountAlreadyHave);
+    static CookieNumber getPriceOfHundred(Item &item, const CookieNumber &amountAlreadyHave);
     Item& getItemByName(const std::string& name);
     void reset();
 

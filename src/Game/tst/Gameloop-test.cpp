@@ -39,16 +39,14 @@ TEST_F(GameloopTestSuite, maxItemAmount)
     //act
     game0->getWallet().incrementCookieAmount(CookieNumber(15));
 
-    game1->getWallet().incrementCookieAmount(CookieNumber(15));
-    game1->getInventory().addItem("Key", 1);
+    game1->getWallet().incrementCookieAmount(CookieNumber(15+18));
 
-    game2->getWallet().incrementCookieAmount(CookieNumber(20));
-    game2->getInventory().addItem("Key", 1);
+    game2->getWallet().incrementCookieAmount(CookieNumber(8));
 
-    game3->getWallet().incrementCookieAmount(CookieNumber(53));
+    game3->getWallet().incrementCookieAmount(CookieNumber(370));
     game3->getInventory().addItem("Key", 1);
 
-    game4->getWallet().incrementCookieAmount(CookieNumber(370));
+    game4->getWallet().incrementCookieAmount(CookieNumber(5000));
     game4->getInventory().addItem("Key", 1);
 
     //assert
@@ -59,10 +57,10 @@ TEST_F(GameloopTestSuite, maxItemAmount)
     auto result4 = game4->maxItemAmount(game4->getStore().getItemByName("Key"));
 
     EXPECT_EQ(result0, 1);
-    EXPECT_EQ(result1, 1);
-    EXPECT_EQ(result2, 1);
-    EXPECT_EQ(result3, 2);
-    EXPECT_EQ(result4, 10);
+    EXPECT_EQ(result1, 2);
+    EXPECT_EQ(result2, 0);
+    EXPECT_EQ(result3, 10);
+    EXPECT_EQ(result4, 27);
 }
 
 

@@ -18,6 +18,7 @@ public:
     void undo() override;
 
 private:
+    CookieNumber getPriceOf();
     Inventory &m_Inventory;
     Wallet &m_Wallet;
     CookieNumber m_Amount;

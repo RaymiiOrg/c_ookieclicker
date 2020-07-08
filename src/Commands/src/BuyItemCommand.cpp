@@ -9,8 +9,31 @@ BuyItemCommand::BuyItemCommand(Item& item, CookieNumber amount, Inventory& inven
 {
 }
 
+CookieNumber BuyItemCommand::getPriceOf() {
+    CookieNumber price;
+    if (m_Amount == 1)
+    {
+        price = Store::getPrice(m_Item, m_Inventory.getItemCount(m_Item.name));
+    }
+    else if (m_Amount == 10)
+    {
+        price = Store::getPriceOfTen(m_Item, m_Inventory.getItemCount(m_Item.name));
+    }
+    else if (m_Amount == 100)
+    {
+        price = Store::getPriceOfHundred(m_Item, m_Inventory.getItemCount(m_Item.name));
+    }
+    else {
+        for (CookieNumber i = 0; i < m_Amount; ++i) {
+            price += Store::getPrice(m_Item, m_Inventory.getItemCount(m_Item.name) + i);
+        }
+    }
+    return price;
+}
+
 void BuyItemCommand::execute() {
-    auto price = Store::getPrice(m_Item, m_Amount, m_Inventory.getItemCount(m_Item.name));
+    CookieNumber price = getPriceOf();
+
     auto cps = m_Item.cps * m_Amount;
     if (m_Wallet.getCookieAmount() >= price) {
         m_Inventory.addItem(m_Item.name, m_Amount);
@@ -20,7 +43,7 @@ void BuyItemCommand::execute() {
 }
 
 void BuyItemCommand::undo() {
-    auto price = Store::getPrice(m_Item, m_Amount, m_Inventory.getItemCount(m_Item.name));
+    auto price = getPriceOf();
     auto cps = m_Item.cps * m_Amount;
     m_Inventory.removeItem(m_Item.name, m_Amount);
     m_Wallet.incrementCookieAmount(price);

@@ -85,10 +85,13 @@ class Gameloop {
 
     void buyItem(CookieNumber amountToBuy, Item &item);
     bool canPayForItem(const CookieNumber& amountToBuy, Item &item);
-    CookieNumber maxItemAmount(Item &item);
-    void handleChoice(const std::string &input);
+    bool canBuyTen(Item &item);
+    bool canBuyHundred(Item &item);
+    int tenOrHundred(Item &item);
+    int maxItemAmount(Item &item);
+    void handleChoice(const std::string& input);
     void showFinalScore();
-    void setMessageTime(const std::string& timeString = "%H:%M");
+    void setMessageTime(const std::string& timeString = "%H:%M:%S");
     std::string lastMessageTime;
     std::string saveFile = ".cookieclicker.save";
 

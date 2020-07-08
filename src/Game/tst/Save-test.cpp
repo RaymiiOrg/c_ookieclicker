@@ -67,7 +67,7 @@ TEST_F(SaveTestSuite, saveThenLoad)
     ASSERT_EQ(gameLoad->getWallet().getTotalcookies(), 3);
     ASSERT_EQ(gameLoad->getWallet().getCps(), 20);
     ASSERT_EQ(gameLoad->getInventory().getItemCount("Key"), 3);
-    ASSERT_EQ(gameLoad->getStore().getPrice(gameLoad->getStore().getItemByName("Key"), 1,
+    ASSERT_EQ(gameLoad->getStore().getPrice(gameLoad->getStore().getItemByName("Key"),
                                             gameLoad->getInventory().getItemCount("Key")), 23);
     ASSERT_EQ(gameLoad->getInventory().getItemCount("Grandma"), largeNumber);
 }
@@ -86,6 +86,6 @@ TEST_F(SaveTestSuite, justLoad)
     ASSERT_EQ(game->getWallet().getTotalcookies(), 3);
     ASSERT_EQ(game->getWallet().getCps(), 20);
     ASSERT_EQ(game->getInventory().getItemCount("Key"), 3);
-    ASSERT_EQ(game->getStore().getPrice(game->getStore().getItemByName("Key"), 1, game->getInventory().getItemCount("Key")), 23);
+    ASSERT_EQ(game->getStore().getPrice(game->getStore().getItemByName("Key"), game->getInventory().getItemCount("Key")), 23);
     ASSERT_EQ(game->getInventory().getItemCount("Grandma"), largeNumber);
 }

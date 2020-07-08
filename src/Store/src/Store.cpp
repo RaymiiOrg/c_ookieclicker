@@ -5,27 +5,29 @@
 #include "Store.h"
 
 
-CookieNumber Store::getPrice(Item &item, const CookieNumber &amount, const CookieNumber &amountAlreadyHave) {
+CookieNumber Store::getPrice(Item &item, const CookieNumber &amountAlreadyHave) {
 
     if (amountAlreadyHave == 0)
         return item.baseCost;
 
     CookieFloater baseCost(item.baseCost);
+    CookieFloater priceIncrease("1.15");
     CookieFloater itemAmountInInventory(amountAlreadyHave);
-    CookieFloater amountToBuy(amount);
 
-    auto amountInInventoryPOW = boost::multiprecision::pow(CookieFloater("1.15"), itemAmountInInventory);
-//    std::cerr << "amountPOW: " << (amountInInventoryPOW) << std::endl;
+    auto pow = boost::multiprecision::pow(priceIncrease, itemAmountInInventory);
 
-    auto newPrice = baseCost * amountInInventoryPOW;
-//    std::cerr << "newPrive: " << newPrice << std::endl;
+    auto result = boost::multiprecision::ceil(baseCost * pow);
 
-    auto resultFloat = amountToBuy * newPrice;
-//    std::cerr << "resultFLoat: " << resultFloat << std::endl;
+    return CookieNumber(result);
+}
 
-    auto result = resultFloat.convert_to<CookieNumber>() + 1; // +1 due to rounding down
-//    std::cerr << "result: " << result << std::endl;
-    return result;
+
+CookieNumber Store::getPriceOfTen(Item &item, const CookieNumber &amountAlreadyHave) {
+    return getPrice(item, amountAlreadyHave) * CookieNumber(20);
+}
+
+CookieNumber Store::getPriceOfHundred(Item &item, const CookieNumber &amountAlreadyHave) {
+    return getPrice(item, amountAlreadyHave) * CookieNumber(7828749);
 }
 
 Item &Store::getItemByName(const std::string& name) {
