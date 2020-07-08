@@ -1,6 +1,15 @@
+# Version 104
+
+Release date: 2020-07-10
+
+- Refactored price increase formula to match original javascript game
+- Performance optimization for item price calculation (1/10/100)
+- Events print seconds
+- Multiple input charactes allowed (ex: cc gets 2 cookies)
+
 # Version 103
 
-Release date: 
+Release date:  
 
 - Implemented save game function
   - Allows game to be saved with `s` and if 
