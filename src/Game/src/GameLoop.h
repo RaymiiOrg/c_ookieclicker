@@ -61,7 +61,7 @@ class Gameloop {
     std::atomic<notifyMessages> notifyMessage{};
     std::string notifyEnumToMsg(notifyMessages msg);
     static void cleanTerminal();
-    static std::string currentTime(const std::string& formatString = "%H:%M");
+    static std::string currentTime(const std::string& formatString = "%H:%M:%S");
     void renderText();
 
     Inventory m_Inventory;
@@ -74,7 +74,7 @@ class Gameloop {
     void showInputBar();
     void showStoreInput(bool oneItem);
     void showInventory();
-    void showAchievements() {};
+    void showAchievements();
     void showOptions();
     static std::string inputModeMapping(inputModes mode);
 
