@@ -90,7 +90,10 @@ void Gameloop::input() {
         std::lock_guard<std::mutex> locker(inputMutex);
         std::string input;
         std::getline(std::cin, input);
-        handleChoice(input);
+        for (char &c : input) {
+            std::string choice(1,c);
+            handleChoice(choice);
+        }
     }
 }
 
@@ -127,7 +130,8 @@ void Gameloop::showFinalScore() {
     std::cout << "c_ookieclicker version: " << std::to_string(game::gameVersion);
     std::cout << " by Remy, https://raymii.org\n";
     if (getWallet().getCookieAmount().str().length() > 13)
-        std::cout << cp.print(getWallet().getCookieAmount()) << " cookies is: " << getWallet().getCookieAmount() << "\n";
+        std::cout << cp.print(getWallet().getCookieAmount()) << " cookies is: " << getWallet().getCookieAmount()
+                  << "\n";
     if (getWallet().getCps().str().length() > 13)
         std::cout << cp.print(getWallet().getCps()) << " cps is: " << getWallet().getCps() << "\n";
 
@@ -169,16 +173,21 @@ void Gameloop::showInput() {
 }
 
 void Gameloop::showInventory() {
+    std::cout << "\n===== Inventory ====\n";
     if (!getInventory().getInventory().empty()) {
-        std::cout << "\n===== Inventory ====\n";
-
         for (auto &item : getInventory().getInventory()) {
             if (item.second > 0) {
-                std::cout << item.first <<  ": " << cp.print(item.second) << "\n";
+                std::cout << item.first << ": " << cp.print(item.second) << "\n";
             }
         }
     }
 }
+
+void Gameloop::showAchievements() {
+    std::cout << "\n===== Achievements ====\n";
+    std::cout << "Not implemented yet.\n";
+}
+
 
 void Gameloop::showOptions() {
     std::cout << "\n===== Options ====\n";
@@ -195,8 +204,8 @@ void Gameloop::showInputBar() {
     for (int i = static_cast<int>(inputModes::FIRST_MODE); i < static_cast<int>(inputModes::LAST_MODE); ++i) {
         if (inputMode == static_cast<inputModes>(i)) {
             std::cout << escapeCode.terminalBold <<
-            inputModeMapping(static_cast<inputModes>(i)) <<
-            escapeCode.terminalReset;
+                      inputModeMapping(static_cast<inputModes>(i)) <<
+                      escapeCode.terminalReset;
         } else {
             std::cout << inputModeMapping(static_cast<inputModes>(i));
         }
@@ -299,9 +308,10 @@ void Gameloop::handleChoice(const std::string& input) {
         setMessage(DEBUG);
     } else if (input == "9") {
         setMessage(DEBUG);
-        CookieNumber a ("1151190367278210038705210519997084612576423130590962154289376800387194154816459487665078480150348801009011289080");
+        CookieNumber a(
+                "1151190367278210038705210519997084612576423130590962154289376800387194154816459487665078480150348801009011289080");
         getWallet().incrementCookieAmount(a);
-        getWallet().incrementCps(a*2);
+        getWallet().incrementCps(a * 2);
     }
 }
 
