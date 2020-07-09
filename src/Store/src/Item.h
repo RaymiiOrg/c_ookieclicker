@@ -41,21 +41,21 @@ class Items {
 private:
     Item Key {"Key", "k", "K", CookieNumber(15), CookieNumber(1)};
     Item Grandma {"Grandma", "g", "G", CookieNumber(100), CookieNumber(10)};
-    Item Farm {"Farm", "f", "F", CookieNumber(1000), CookieNumber(20)};
-    Item Mine {"Mine", "m", "M", CookieNumber(5000), CookieNumber(50)};
-    Item Factory {"Factory", "t", "T", CookieNumber(15000), CookieNumber(100)};
-    Item Bank {"Bank", "b", "B", CookieNumber(50000), CookieNumber(500)};
-    Item Temple {"Temple", "e", "E", CookieNumber(150000), CookieNumber(1500)};
-    Item WizardTower {"Wizard Tower", "w", "W", CookieNumber(300000), CookieNumber(2000)};
-    Item Shipment {"Shipment", "o", "O", CookieNumber(4500000), CookieNumber(2500)};
-    Item Alchemylab {"Alchemy Lab", "a", "A", CookieNumber("900000000"), CookieNumber(3500)};
-    Item Portal {"Portal", "p", "P", CookieNumber("4500000000"), CookieNumber(5000)};
-//    Item Timemachine {"Time Machine", "i", "I", CookieNumber(), CookieNumber(), };
-//    Item Antimattercondenser {"Antimatter Condenser", "y", "Y", CookieNumber(), CookieNumber(), };
-//    Item Prism {"Prism", "Y", "Y", CookieNumber(), CookieNumber(), };
-//    Item Chancemaker {"Chance maker", "z", "Z", CookieNumber(), CookieNumber(), };
-//    Item FractalEngine {"Fractal Engine", "H", "H", CookieNumber(), CookieNumber(), };
-//    Item JavascriptConsole {"Javascript Console", "j", "J", CookieNumber(), CookieNumber(), };
+    Item Farm {"Farm", "f", "F", CookieNumber(1100), CookieNumber(20)};
+    Item Mine {"Mine", "m", "M", CookieNumber(12000), CookieNumber(50)};
+    Item Factory {"Factory", "t", "T", CookieNumber(130000), CookieNumber(260)};
+    Item Bank {"Bank", "b", "B", CookieNumber(1400000), CookieNumber(1400)};
+    Item Temple {"Temple", "e", "E", CookieNumber(20000000), CookieNumber(7800)};
+    Item WizardTower {"Wizard Tower", "w", "W", CookieNumber(330000000), CookieNumber(44000)};
+    Item Shipment {"Shipment", "o", "O", CookieNumber(5100000000), CookieNumber(260000)};
+    Item Alchemylab {"Alchemy Lab", "a", "A", CookieNumber("75000000000"), CookieNumber(1600000)};
+    Item Portal {"Portal", "p", "P", CookieNumber("1000000000000"), CookieNumber(10000000)};
+    Item Timemachine {"Time Machine", "i", "I", CookieNumber("14000000000000"), CookieNumber(65000000), };
+    Item Antimattercondenser {"Antimatter Condenser", "y", "Y", CookieNumber("170000000000000"), CookieNumber(430000000), };
+    Item Prism {"Prism", "Y", "Y", CookieNumber("2100000000000000"), CookieNumber("2900000000"), };
+    Item Chancemaker {"Chance maker", "z", "Z", CookieNumber("26000000000000000"), CookieNumber("21000000000"), };
+    Item FractalEngine {"Fractal Engine", "h", "H", CookieNumber("310000000000000000"), CookieNumber("150000000000"), };
+    Item JavascriptConsole {"Javascript Console", "j", "J", CookieNumber("71000000000000000000"), CookieNumber("1100000000000"), };
 
     std::vector<Item> allItems {
         Key,
@@ -69,6 +69,12 @@ private:
         Shipment,
         Alchemylab,
         Portal,
+        Timemachine,
+        Antimattercondenser,
+        Prism,
+        Chancemaker,
+        FractalEngine,
+        JavascriptConsole,
     };
 
 public:

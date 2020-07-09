@@ -30,6 +30,7 @@ class Gameloop {
     std::atomic<int> cookieStepIncrement {0};
     std::mutex inputMutex;
     std::mutex gameStepMutex;
+    std::mutex outputShowMutex;
     std::thread gameStepThread;
     std::thread inputThread;
 
@@ -85,9 +86,10 @@ class Gameloop {
 
     void buyItem(CookieNumber amountToBuy, Item &item);
     bool canPayForItem(const CookieNumber& amountToBuy, Item &item);
+    bool canBuyOne(Item &item);
     bool canBuyTen(Item &item);
     bool canBuyHundred(Item &item);
-    int tenOrHundred(Item &item);
+    int canBuyTenOrHundred(Item &item);
     int maxItemAmount(Item &item);
     void handleChoice(const std::string& input);
     void showFinalScore();
@@ -114,6 +116,7 @@ public:
     Wallet &getWallet();
     Inventory &getInventory();
     Store &getStore();
+    void handleBuyItemChoice(const std::string &input);
 };
 
 

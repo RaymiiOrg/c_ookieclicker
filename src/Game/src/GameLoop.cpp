@@ -138,6 +138,7 @@ void Gameloop::showFinalScore() {
 }
 
 void Gameloop::showInput() {
+    std::lock_guard<std::mutex> locker(outputShowMutex);
     std::cout << std::endl;
     std::cout << escapeCode.terminalBold;
     if (getInventory().getCookiesPerTap() == CookieNumber(1))
@@ -236,7 +237,7 @@ void Gameloop::showStoreInput(bool oneItem) {
                 std::cout << cp.print(item.cps);
                 std::cout << " cps; ";
             } else {
-                int maxbuy = tenOrHundred(item);
+                int maxbuy = canBuyTenOrHundred(item);
                 if (maxbuy == 10) {
                     std::cout << "[" << item.buyMaxKey << "]" <<
                               ": buy 10 " << item.name << "s; cost: " <<
@@ -266,19 +267,10 @@ void Gameloop::showStoreInput(bool oneItem) {
 
 
 void Gameloop::handleChoice(const std::string& input) {
-    for (Item &item : getStore().getStoreInventory()) {
-        if (input == item.buyOneKey) {
-            buyItem(CookieNumber(1), item);
-        } else if (input == item.buyMaxKey) {
-            int maxbuy = tenOrHundred(item);
-            if (maxbuy == 10 or maxbuy == 100) {
-                buyItem(CookieNumber(maxbuy), item);
-            } else {
-                failed_to_buy_item = item.name;
-                setMessage(NOT_ENOUGH_MONEY_FOR_ITEM);
-            }
-        }
-    }
+
+    handleBuyItemChoice(input);
+
+
     if (input == "c") {
         auto cmd = std::make_unique<UpdateCookiesCommand>(getInventory().getCookiesPerTap(), getWallet());
         cmd->execute();
@@ -296,9 +288,6 @@ void Gameloop::handleChoice(const std::string& input) {
         }
     } else if (input == "1" or input == "2" or input == "3" or input == "4" or input == "5") {
         inputMode = static_cast<inputModes>(std::stoi(input));
-    } else if (input == "42") {
-        getWallet().incrementCookieAmount(CookieNumber(42));
-        setMessage(MAGIC);
     } else if (input == "7") {
         getWallet().incrementCookieAmount(CookieNumber(100));
         setMessage(DEBUG);
@@ -309,9 +298,28 @@ void Gameloop::handleChoice(const std::string& input) {
     } else if (input == "9") {
         setMessage(DEBUG);
         CookieNumber a(
-                "1151190367278210038705210519997084612576423130590962154289376800387194154816459487665078480150348801009011289080");
+                "115119036727821003870521051999708461"
+                "257642313059096215428937680038718894154"
+                "816459487665078480150348801009011289080");
         getWallet().incrementCookieAmount(a);
         getWallet().incrementCps(a * 2);
+    }
+}
+
+void Gameloop::handleBuyItemChoice(const std::string &input) {
+    for (Item &item : getStore().getStoreInventory()) {
+        if (input == item.buyOneKey && canPayForItem(1, item)) {
+            buyItem(CookieNumber(1), item);
+        } else if (input == item.buyMaxKey) {
+            int maxbuy = canBuyTenOrHundred(item);
+            if ((maxbuy == 10 && canPayForItem(10, item)) or
+                (maxbuy == 100 && canPayForItem(100, item))) {
+                buyItem(CookieNumber(maxbuy), item);
+            } else {
+                failed_to_buy_item = item.name;
+                setMessage(NOT_ENOUGH_MONEY_FOR_ITEM);
+            }
+        }
     }
 }
 
@@ -334,7 +342,7 @@ void Gameloop::incrementCookiesOnTime() {
 }
 
 void Gameloop::buyItem(CookieNumber amountToBuy, Item &item) {
-    if (canPayForItem(amountToBuy, item)) {
+    if (canPayForItem(amountToBuy, item) && amountToBuy > CookieNumber(0)) {
         auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, getInventory(), getWallet(), getStore());
         buyCommand->execute();
         setMessage(BOUGHT_ITEM);
@@ -345,12 +353,12 @@ void Gameloop::buyItem(CookieNumber amountToBuy, Item &item) {
 }
 
 bool Gameloop::canPayForItem(const CookieNumber &amountToBuy, Item &item) {
-    if (amountToBuy == CookieNumber(10) && canBuyTen(item))
-        return true;
     if (amountToBuy == CookieNumber(100) && canBuyHundred(item))
         return true;
+    if (amountToBuy == CookieNumber(10) && canBuyTen(item))
+        return true;
 
-    return getWallet().getCookieAmount() >= Store::getPrice(item, getInventory().getItemCount(item.name));
+    return canBuyOne(item);
 }
 
 void Gameloop::setMessageTime(const std::string &timeString) {
@@ -369,8 +377,14 @@ Store &Gameloop::getStore() {
     return m_Store;
 }
 
+bool Gameloop::canBuyOne(Item &item) {
+    auto itemCount = getInventory().getItemCount(item.name);
+    return getWallet().getCookieAmount() >= Store::getPrice(item, itemCount);
+}
 
 bool Gameloop::canBuyTen(Item &item) {
+    if (!canBuyOne(item))
+        return false;
     auto itemCount = getInventory().getItemCount(item.name);
     if (Store::getPriceOfTen(item, itemCount) > getWallet().getCookieAmount())
         return false;
@@ -386,7 +400,7 @@ bool Gameloop::canBuyHundred(Item &item) {
     return true;
 }
 
-int Gameloop::tenOrHundred(Item &item) {
+int Gameloop::canBuyTenOrHundred(Item &item) {
     int maxbuy = 0;
     if (canBuyTen(item)) {
         maxbuy = 10;
@@ -409,9 +423,9 @@ int Gameloop::maxItemAmount(Item &item) {
 std::string Gameloop::inputModeMapping(Gameloop::inputModes mode) {
     switch (mode) {
         case ONE_ITEM:
-            return "[1]: Store | ";
+            return "[1]: Buildings | ";
         case ALL_ITEMS:
-            return "[2]: Store Max | ";
+            return "[2]: Buidlings (10/100) | ";
         case INVENTORY:
             return "[3]: Inventory | ";
         case ACHIEVEMENTS:

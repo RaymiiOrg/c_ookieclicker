@@ -3,6 +3,7 @@
 Release date: 2020-07-10
 
 - Refactored price increase formula to match original javascript game
+- Matches items, prices and cps with Javascript game
 - Performance optimization for item price calculation (1/10/100)
 - Events print seconds
 - Multiple input charactes allowed (ex: cc gets 2 cookies)
