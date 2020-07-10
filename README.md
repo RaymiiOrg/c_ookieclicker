@@ -4,8 +4,12 @@
 
 ![demo.gif][2]
 
-c_ookieclicker is my personal pet project to experiment with c++. It is a clone of the famour
-cookieclicker game [by ortiel][1]. A clone of a game is simple enough to get up and running fairly quickly, but also extensible enough when needed. How do you store huge score numbers when they don't fit in a `long long`? How do you write a game loop, how to use threads to handle user input? Saving a game (how to design a proper save format)? Also a great way to learn about project organization, software architecture and to try out design patterns.
+c_ookieclicker is my personal pet project to experiment with c++. It is a clone of the famous 
+cookieclicker game [by ortiel][1]. A clone of a game is simple enough to get up and running 
+fairly quickly, but also extensible enough when needed. How do you store huge score numbers 
+when they don't fit in a `long long`? How do you write a game loop, how to use threads to handle 
+user input? Saving a game (how to design a proper save format)? Also a great way to learn about 
+project organization, software architecture and to try out design patterns.
 
 
 # Build
