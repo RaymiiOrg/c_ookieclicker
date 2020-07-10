@@ -418,6 +418,7 @@ int Gameloop::maxItemAmount(Item &item) {
         if (priceOfX > getWallet().getCookieAmount())
             return i;
     }
+    return 0;
 }
 
 std::string Gameloop::inputModeMapping(Gameloop::inputModes mode) {
