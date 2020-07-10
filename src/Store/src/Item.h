@@ -39,7 +39,7 @@ struct Item {
 
 class Items {
 private:
-    Item Cursor {"Cursor", "c", "C", CookieNumber(15), CookieNumber(1)};
+    Item Cursor {"Cursor", "k", "K", CookieNumber(15), CookieNumber(".1")};
     Item Grandma {"Grandma", "g", "G", CookieNumber(100), CookieNumber(10)};
     Item Farm {"Farm", "f", "F", CookieNumber(1100), CookieNumber(20)};
     Item Mine {"Mine", "m", "M", CookieNumber(12000), CookieNumber(50)};

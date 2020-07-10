@@ -8,8 +8,10 @@
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 
-typedef boost::multiprecision::cpp_int CookieNumber;
+//typedef boost::multiprecision::cpp_int CookieNumber;
 typedef boost::multiprecision::cpp_dec_float_50 CookieFloater;
+typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<100>> CookieNumber;
+
 namespace game {
     const int gameVersion = 104;
 }
@@ -118,8 +120,27 @@ private:
     "yyy", "yyy", "yyy",
     "zzz", "zzz", "zzz",};
 public:
-    std::string print(const CookieNumber &c);
+    template <typename T>
+    std::string print(const T &c) {
+        if (c <= 0) {
+            return "0";
+        } else if (c > 0 && c.str().length() <= 13) {
+            return c.str();
+        } else if (cookieNumberNames.size()-1 > (c.str().length()-2)) {
+            std::string retStr;
+            retStr += c.str().at(0);
+            if (cookieNumberNames.at(c.str().length()-1) == cookieNumberNames.at(c.str().length()))
+                retStr += c.str().at(1);
+            if (cookieNumberNames.at(c.str().length()-2) == cookieNumberNames.at(c.str().length()))
+                retStr += c.str().at(2);
+            retStr += cookieNumberNames.at(c.str().length());
+            return retStr;
+        } else {
+            return c.str() += " amazingly big amount for which I did not define a suffix yet ";
+        }
+    }
 };
+
 
 typedef CookieNumberPrinter cnp;
 
