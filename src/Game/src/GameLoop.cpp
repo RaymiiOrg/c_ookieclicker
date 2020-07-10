@@ -106,7 +106,7 @@ void Gameloop::gameStep() {
         renderText();
 
         // end of cycle
-        if (cookieStepIncrement >= 1000) {
+        if (cookieStepIncrement >= 1000) { //(1 second)
             incrementCookiesOnTime();
             cookieStepIncrement = 0;
         }

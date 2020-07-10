@@ -43,13 +43,20 @@ The game executable is:
 
 ## CookieNumber
 
-Class which allows storing of a large number (score, prices, inventory amount). Currently a typedef alias to Boosts multiprecision cpp_int.  
+Class which allows storing of a large number (score, prices, inventory amount). 
+Currently a typedef alias to Boosts multiprecision cpp_int.  
  
 Supports printing in format used by other incremental games. 
   - Example: `1000000000000000000000` becomes `1 sextillion`. 
   - Example: `21341831944003682716936974836612280224172215802627435299099076055022090949593824685640853139456777002501904985670414671748540291630152113086259344562839841917575524836560787544358350755299402239335813148535474932165751` becomes `21xx`.
 
 The printing method is quite inefficient. It consists of multiple if statements.
+
+
+## CookieFloater
+
+typedef to a Boost multiprecision cpp_dec_float_100. Used in the store for price increase calculation.
+Why are the other large numbers not floaters as well? It is weird with printing on the console.
 
 ## Inventory
 
@@ -81,7 +88,17 @@ The same from the original game.
 
 ## Wallet
 
+Stores your cookies and the cps.
+
 ## Store
+
+Lets you buy buildings. If you have enough cookies, you are able to buy things.
+Things you buy land in your inventory. 
+
+Price calculation is done for either 1 item, 10 items or 100 items, with an sort-of cheat
+calculation taken from the cookie clicker wiki. At first I calculated the exact price, 
+but with gigantuous amounts of cookies the game crawled to a halt, so I optimized a bit
+with the formulas I found on the wiki. 
 
 ## Game loop
 
@@ -92,11 +109,15 @@ The same from the original game.
 
 ## User interface
 
+Text based as you already guessed. Input it given in single key commands, seperate 
+"tabs" (1/2/3/4/5 etc) for different interface parts.
 
 ## Savegame
 
-The game is saved in your current folder, filename is `.cookieclicker.save`. Text based format, field seperated
-by a `;`. Don't manually edit the file or you might loose your savegame.
+The game is saved in your current folder, filename is `.cookieclicker.save`. 
+Text based format, field seperated by a `;`. Don't manually edit the file or
+you might loose your savegame. Currently savegame is prepared for newer things,
+it has a version number in the savegame.
 
 [1]: https://orteil.dashnet.org/cookieclicker/
 [2]: demo4.gif
