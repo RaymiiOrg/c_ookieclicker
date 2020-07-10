@@ -1,6 +1,6 @@
 # c_ookieclicker
 
-[![C/C++ CI](https://github.com/RaymiiOrg/c_ookieclicker/workflows/C/C++%20CI/badge.svg)][https://github.com/RaymiiOrg/c_ookieclicker/actions]
+<a href="https://github.com/RaymiiOrg/c_ookieclicker/actions"><img src="https://github.com/RaymiiOrg/c_ookieclicker/workflows/C/C++%20CI/badge.svg" alt="ci badge"></a>
 
 ![demo.gif][2]
 
