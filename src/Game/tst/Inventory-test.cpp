@@ -15,7 +15,7 @@ struct InventoryTestSuite : public ::testing::Test
 
 TEST_F(InventoryTestSuite, getEmptyInventory)
 {
-    ASSERT_EQ(inventory->getItemCount("Key"), CookieNumber(0));
+    ASSERT_EQ(inventory->getItemCount("Cursor"), CookieNumber(0));
     ASSERT_EQ(inventory->getLastItemAdded().empty(), true);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
     ASSERT_EQ(inventory->getInventory().empty(), true);

@@ -222,7 +222,7 @@ void Gameloop::showStoreInput(bool oneItem) {
         if (!canPayForItem(1, item) && itemCount > 0) {
             enoughMoneyOrHaveItemsAlready = true;
             std::cout << escapeCode.terminalDim;
-            std::cout << "[" << item.buyOneKey << "]: not enough cookies for " << item.name <<
+            std::cout << "[" << item.buyOneCursor << "]: not enough cookies for " << item.name <<
                       " (cost: ";
             std::cout << cp.print(Store::getPrice(item, itemCount));
             std::cout << " cookies);";
@@ -230,7 +230,7 @@ void Gameloop::showStoreInput(bool oneItem) {
         } else if (canPayForItem(1, item)) {
             enoughMoneyOrHaveItemsAlready = true;
             if (oneItem) {
-                std::cout << "[" << item.buyOneKey << "]" <<
+                std::cout << "[" << item.buyOneCursor << "]" <<
                           ": buy " << item.name << "; cost: ";
                 std::cout << cp.print(Store::getPrice(item, itemCount));
                 std::cout << " cookies; +";
@@ -239,18 +239,18 @@ void Gameloop::showStoreInput(bool oneItem) {
             } else {
                 int maxbuy = canBuyTenOrHundred(item);
                 if (maxbuy == 10) {
-                    std::cout << "[" << item.buyMaxKey << "]" <<
+                    std::cout << "[" << item.buyMaxCursor << "]" <<
                               ": buy 10 " << item.name << "s; cost: " <<
                               cp.print(Store::getPriceOfTen(item, itemCount)) <<
                               " cookies;";
                 } else if (maxbuy == 100) {
-                    std::cout << "[" << item.buyMaxKey << "]" <<
+                    std::cout << "[" << item.buyMaxCursor << "]" <<
                               ": buy 100 " << item.name << "s; cost: " <<
                               cp.print(Store::getPriceOfHundred(item, itemCount)) <<
                               " cookies;";
                 } else {
                     std::cout << escapeCode.terminalDim;
-                    std::cout << "[" << item.buyMaxKey << "]: not enough cookies for 10 " << item.name <<
+                    std::cout << "[" << item.buyMaxCursor << "]: not enough cookies for 10 " << item.name <<
                               "s (cost: ";
                     std::cout << cp.print(Store::getPriceOfTen(item, itemCount));
                     std::cout << " cookies);";
@@ -308,9 +308,9 @@ void Gameloop::handleChoice(const std::string& input) {
 
 void Gameloop::handleBuyItemChoice(const std::string &input) {
     for (Item &item : getStore().getStoreInventory()) {
-        if (input == item.buyOneKey && canPayForItem(1, item)) {
+        if (input == item.buyOneCursor && canPayForItem(1, item)) {
             buyItem(CookieNumber(1), item);
-        } else if (input == item.buyMaxKey) {
+        } else if (input == item.buyMaxCursor) {
             int maxbuy = canBuyTenOrHundred(item);
             if ((maxbuy == 10 && canPayForItem(10, item)) or
                 (maxbuy == 100 && canPayForItem(100, item))) {

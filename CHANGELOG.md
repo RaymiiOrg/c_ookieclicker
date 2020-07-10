@@ -28,7 +28,7 @@ Release date: 2020-05-30.
   - 2 = store to buy the max amount items that your current cookie count allows
   - 3 = show inventory
   - 4 = show achievements (not built yet)
-- Changed cookies per tap (`c` key) to be dynamic (default one) in preparation of achievements.
+- Changed cookies per tap (`c` cursor) to be dynamic (default one) in preparation of achievements.
 
 # Version 101
 

@@ -10,8 +10,8 @@
 
 struct Item {
     std::string name;
-    std::string buyOneKey;
-    std::string buyMaxKey;
+    std::string buyOneCursor;
+    std::string buyMaxCursor;
 
     bool operator<(const Item &rhs) const {
         if (baseCost < rhs.baseCost)
@@ -39,7 +39,7 @@ struct Item {
 
 class Items {
 private:
-    Item Key {"Key", "k", "K", CookieNumber(15), CookieNumber(1)};
+    Item Cursor {"Cursor", "c", "C", CookieNumber(15), CookieNumber(1)};
     Item Grandma {"Grandma", "g", "G", CookieNumber(100), CookieNumber(10)};
     Item Farm {"Farm", "f", "F", CookieNumber(1100), CookieNumber(20)};
     Item Mine {"Mine", "m", "M", CookieNumber(12000), CookieNumber(50)};
@@ -58,7 +58,7 @@ private:
     Item JavascriptConsole {"Javascript Console", "j", "J", CookieNumber("71000000000000000000"), CookieNumber("1100000000000"), };
 
     std::vector<Item> allItems {
-        Key,
+        Cursor,
         Grandma,
         Farm,
         Mine,

@@ -44,17 +44,17 @@ TEST_F(GameloopTestSuite, maxItemAmount)
     game2->getWallet().incrementCookieAmount(CookieNumber(8));
 
     game3->getWallet().incrementCookieAmount(CookieNumber(370));
-    game3->getInventory().addItem("Key", 1);
+    game3->getInventory().addItem("Cursor", 1);
 
     game4->getWallet().incrementCookieAmount(CookieNumber(5000));
-    game4->getInventory().addItem("Key", 1);
+    game4->getInventory().addItem("Cursor", 1);
 
     //assert
-    auto result0 = game0->maxItemAmount(game1->getStore().getItemByName("Key"));
-    auto result1 = game1->maxItemAmount(game1->getStore().getItemByName("Key"));
-    auto result2 = game2->maxItemAmount(game2->getStore().getItemByName("Key"));
-    auto result3 = game3->maxItemAmount(game3->getStore().getItemByName("Key"));
-    auto result4 = game4->maxItemAmount(game4->getStore().getItemByName("Key"));
+    auto result0 = game0->maxItemAmount(game1->getStore().getItemByName("Cursor"));
+    auto result1 = game1->maxItemAmount(game1->getStore().getItemByName("Cursor"));
+    auto result2 = game2->maxItemAmount(game2->getStore().getItemByName("Cursor"));
+    auto result3 = game3->maxItemAmount(game3->getStore().getItemByName("Cursor"));
+    auto result4 = game4->maxItemAmount(game4->getStore().getItemByName("Cursor"));
 
     EXPECT_EQ(result0, 1);
     EXPECT_EQ(result1, 2);
@@ -70,7 +70,7 @@ TEST_F(GameloopTestSuite, reset)
     game->getWallet().incrementCookieAmount(CookieNumber(10));
     game->getWallet().incrementCookieAmount(CookieNumber(20));
     game->getWallet().incrementCps(CookieNumber(100));
-    game->getInventory().addItem("Key", 30);
+    game->getInventory().addItem("Cursor", 30);
     game->getInventory().addItem("Grandma", 1);
 
     //act
@@ -80,7 +80,7 @@ TEST_F(GameloopTestSuite, reset)
     EXPECT_EQ(game->getWallet().getCps(), 0);
     EXPECT_EQ(game->getWallet().getTotalcookies(), 0);
     EXPECT_EQ(game->getWallet().getCookieAmount(), 0);
-    EXPECT_EQ(game->getInventory().getItemCount("Key"),0);
+    EXPECT_EQ(game->getInventory().getItemCount("Cursor"),0);
     EXPECT_EQ(game->getInventory().getItemCount("Grandma"),0);
     EXPECT_EQ(game->getInventory().getLastItemAdded().empty(), true);
 

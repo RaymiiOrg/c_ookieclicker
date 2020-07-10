@@ -51,7 +51,7 @@ The printing method is quite inefficient. It consists of multiple if statements.
 
 ### Items
 
-Stolen from the original game.
+The same from the original game.
 
 - Cursors
 - Grandmas
@@ -91,8 +91,8 @@ Stolen from the original game.
 
 ## Savegame
 
-The game is saved in your current folder, filename is `.cookieclicker.save`. Simple text based format, field seperated
+The game is saved in your current folder, filename is `.cookieclicker.save`. Text based format, field seperated
 by a `;`. Don't manually edit the file or you might loose your savegame.
 
 [1]: https://orteil.dashnet.org/cookieclicker/
-[2]: demo3.gif
+[2]: demo4.gif

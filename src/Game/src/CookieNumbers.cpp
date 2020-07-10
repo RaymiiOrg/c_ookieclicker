@@ -6,7 +6,7 @@
 std::string CookieNumberPrinter::print(const CookieNumber &c) {
         if (c <= 0) {
             return "0";
-        } else if (c >= 1 && c.str().length() <= 13) {
+        } else if (c >= 1 && c.str().length() <= 5) {
             return c.str();
         } else if (cookieNumberNames.size()-1 > (c.str().length())) {
             std::string retStr;
