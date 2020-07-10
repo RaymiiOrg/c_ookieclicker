@@ -37,7 +37,7 @@ TEST_F(CookieNumbersTestSuite, printWithoutSuffix)
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_EQ(output, "1 10 11 45 99 100 135 999 1000 4231 20000 43212 424242 9999999 42424242 100000000 9999999999 10000000000 100000000001 ");
+    ASSERT_EQ(output, "1 10 11 45 99 100 135 999 1000 4231 20000 43212 424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion ");
 }
 
 TEST_F(CookieNumbersTestSuite, printWithSuffix)
