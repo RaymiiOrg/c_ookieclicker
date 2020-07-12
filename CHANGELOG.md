@@ -1,12 +1,14 @@
 # Version 104
 
-Release date: 2020-07-10
+Release date: 2020-07-12
 
 - Refactored price increase formula to match original javascript game
 - Matches items, prices and cps with Javascript game
 - Performance optimization for item price calculation (1/10/100)
 - Events print seconds
 - Multiple input charactes allowed (ex: cc gets 2 cookies)
+- Refactored cookienumber to be a `cpp_dec_float` instead of int to allow for `0.1`
+  cookies per second.
 
 # Version 103
 

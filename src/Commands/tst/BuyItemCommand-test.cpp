@@ -72,7 +72,7 @@ TEST_F(BuyItemCommandTestSuite, withMoney)
     EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
     EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(247));
     EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(300));
-    EXPECT_EQ(cp->print(wallet->getCps()), cp->print(CookieNumber(0.3)));
+    EXPECT_EQ(cp->print(wallet->getCps()), cp->print(CookieNumber(0.31)));
     EXPECT_EQ(store->getPrice(cursor, inventory->getItemCount(cursor.name)), 23);
 }
 
