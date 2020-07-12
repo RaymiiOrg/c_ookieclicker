@@ -5,11 +5,13 @@
 
 struct BuyItemCommandTestSuite : public ::testing::Test
 {
+    std::unique_ptr<CookieNumberPrinter> cp;
     std::unique_ptr<Inventory> inventory;
     std::unique_ptr<Wallet> wallet;
     std::unique_ptr<Store> store;
     BuyItemCommandTestSuite()
     {
+        cp = std::make_unique<CookieNumberPrinter>();
         inventory = std::make_unique<Inventory>();
         wallet = std::make_unique<Wallet>();
         store = std::make_unique<Store>();
@@ -70,7 +72,7 @@ TEST_F(BuyItemCommandTestSuite, withMoney)
     EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
     EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(247));
     EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(300));
-    EXPECT_EQ(wallet->getCps(), CookieNumber(3));
+    EXPECT_EQ(cp->print(wallet->getCps()), cp->print(CookieNumber(0.3)));
     EXPECT_EQ(store->getPrice(cursor, inventory->getItemCount(cursor.name)), 23);
 }
 
@@ -93,6 +95,6 @@ TEST_F(BuyItemCommandTestSuite, undo)
     EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(2));
     EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(282));
     EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(358));
-    EXPECT_EQ(wallet->getCps(), CookieNumber(2));
+    EXPECT_EQ(cp->print(wallet->getCps()), cp->print(CookieNumber(0.2)));
     EXPECT_EQ(store->getPrice(cursor, inventory->getItemCount(cursor.name)), 20);
 }

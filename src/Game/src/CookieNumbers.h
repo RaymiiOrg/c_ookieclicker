@@ -170,8 +170,8 @@ public:
             return "0";
         } else if (integerpart.length() <= 5) {
             // up until the thousands we're interested in the fractional part
-            if (fractionalpart.length() > 0) {
-                return integerpart + "." + fractionalpart;
+            if (fractionalpart.length() > 0 && std::stoi(fractionalpart.substr(0,1)) > 0) {
+                return integerpart + "." + fractionalpart.at(0);
             } else {
                 // don't print 2. if number is 2.0. just print 2.
                 return integerpart;

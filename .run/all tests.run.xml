@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="all tests" type="CompoundRunConfigurationType">
+    <toRun name="Game_tst" type="CMakeGoogleTestRunConfigurationType" />
+    <toRun name="Commands_tst" type="CMakeGoogleTestRunConfigurationType" />
+    <toRun name="Store_tst" type="CMakeGoogleTestRunConfigurationType" />
+    <toRun name="Wallet_tst" type="CMakeGoogleTestRunConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
