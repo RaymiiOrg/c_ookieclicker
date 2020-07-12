@@ -16,7 +16,7 @@ project organization, software architecture and to try out design patterns.
 
 How to build the game for yourself.
 
-Install `boost` and build dependencies. On Ubuntu:
+Install `boost` and build dependencies. On Ubuntu 18.04:
 
     sudo apt install libboost-dev-all build-essential cmake
  
@@ -36,7 +36,7 @@ Build locally:
     
 The game executable is:
 
-    src/Game/src/Game.exe
+    src/Game/src/Game_linux
  
 
 # Different parts of the game
@@ -44,19 +44,19 @@ The game executable is:
 ## CookieNumber
 
 Class which allows storing of a large number (score, prices, inventory amount). 
-Currently a typedef alias to Boosts multiprecision cpp_int.  
+Currently a typedef alias to Boosts multiprecision `cpp_dec_float`.  
  
 Supports printing in format used by other incremental games. 
   - Example: `1000000000000000000000` becomes `1 sextillion`. 
   - Example: `21341831944003682716936974836612280224172215802627435299099076055022090949593824685640853139456777002501904985670414671748540291630152113086259344562839841917575524836560787544358350755299402239335813148535474932165751` becomes `21xx`.
 
-The printing method is quite inefficient. It consists of multiple if statements.
+Look at the `CookieNumberPrinter` class how I print in the incremental / idle game style. 
 
+## CookieInt
 
-## CookieFloater
-
-typedef to a Boost multiprecision cpp_dec_float_100. Used in the store for price increase calculation.
-Why are the other large numbers not floaters as well? It is weird with printing on the console.
+typedef to a Boost multiprecision `cpp_int`. Same as CookieNumber, I used it before I
+figured out how to use the float correctly with the CookieNumberPrinter to get the idle
+game style.
 
 ## Inventory
 

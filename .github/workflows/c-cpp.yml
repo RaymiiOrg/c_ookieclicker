@@ -53,10 +53,10 @@ jobs:
       run: build/src/Wallet/tst/Wallet_tst
 
     # upload artifact, game binary
-    - name: Upload Game.exe
+    - name: Upload Game
       uses: actions/upload-artifact@v1
       with:
-        name: Game.exe
-        path: build/src/Game/src/Game.exe
+        name: c_ookieClicker_linux
+        path: build/src/Game/src/Game_linux
       
       
