@@ -24,14 +24,14 @@ bool Save::saveFormatOne() {
     out << "# c_ookieClicker savegame, by https://raymii.org" << ";";
     out << std::to_string(m_Format) << ";";
 
-    out << m_Wallet.getCookieAmount() << ";";
-    out << m_Wallet.getCps() << ";";
-    out << m_Wallet.getTotalcookies() << ";";
+    out << m_Wallet.getCookieAmount().str(0, std::ios_base::fixed) << ";";
+    out << m_Wallet.getCps().str(0, std::ios_base::fixed) << ";";
+    out << m_Wallet.getTotalcookies().str(0, std::ios_base::fixed) << ";";
 
     out << m_Inventory.getInventory().size() << ";";
     for (const auto& item : m_Inventory.getInventory())
     {
-        out << item.first << " " << item.second << ";";
+        out << item.first << " " << item.second.str(0, std::ios_base::fixed) << ";";
     }
     return true;
 }

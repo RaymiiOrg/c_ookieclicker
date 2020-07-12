@@ -129,12 +129,6 @@ void Gameloop::showFinalScore() {
     std::cout << "Thank you for playing!\n";
     std::cout << "c_ookieclicker version: " << std::to_string(game::gameVersion);
     std::cout << " by Remy, https://raymii.org\n";
-    if (getWallet().getCookieAmount().str().length() > 13)
-        std::cout << cp.print(getWallet().getCookieAmount()) << " cookies is: " << getWallet().getCookieAmount().str()
-                  << "\n";
-    if (getWallet().getCps().str().length() > 13)
-        std::cout << cp.print(getWallet().getCps()) << " cps is: " << getWallet().getCps().str(0) << "\n";
-
 }
 
 void Gameloop::showInput() {
