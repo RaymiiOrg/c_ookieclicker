@@ -43,8 +43,17 @@ jobs:
         MAKEFLAGS: "-j2"
 
     # Tests start here
-    - name: run tests
-      run: bash run_all_tests.sh
+    - name: game test
+      run: build/src/Game/tst/Game_tst
+    - name: commands test
+      run: build/src/Commands/tst/Commands_tst
+    - name: store test
+      run: build/src/Store/tst/Store_tst
+    - name: Wallet test
+      run: build/src/Wallet/tst/Wallet_tst
+    - name: Achievement test
+      run: build/src/Achievements/tst/Achievements_tst
+
 
     # upload artifact, game binary
     - name: Upload Game
