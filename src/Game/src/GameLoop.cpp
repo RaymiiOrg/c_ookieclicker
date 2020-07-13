@@ -420,7 +420,7 @@ std::string Gameloop::inputModeMapping(Gameloop::inputModes mode) {
         case ONE_ITEM:
             return "[1]: Buildings | ";
         case ALL_ITEMS:
-            return "[2]: Buidlings (10/100) | ";
+            return "[2]: Buildings (10/100) | ";
         case INVENTORY:
             return "[3]: Inventory | ";
         case ACHIEVEMENTS:
