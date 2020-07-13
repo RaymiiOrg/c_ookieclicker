@@ -5,26 +5,24 @@ cd cmake-build-debug
 
 cmake ..
 make -j8 all
-
-./src/Game/tst/Game_tst
 if [[ $? != 0 ]]; then
+  echo "Make failed"
+  cd ..
   exit 1;
 fi
 
-./src/Commands/tst/Commands_tst
-if [[ $? != 0 ]]; then
-  exit 1;
-fi
+tests="$(cmake --build . --target help | grep -o -E "[a-zA-Z]*_tst")"
 
-./src/Wallet/tst/Wallet_tst
-if [[ $? != 0 ]]; then
-  exit 1;
-fi
-
-./src/Store/tst/Store_tst
-if [[ $? != 0 ]]; then
-  exit 1;
-fi
-
+for testexecutable in ${tests}; do
+  testfolder=${testexecutable%"_tst"}
+  testpath=./src/${testfolder}/tst/${testexecutable}
+  echo "Running test: ${testpath}"
+  ./${testpath}
+  if [[ $? != 0 ]]; then
+    cd ..
+    exit 1;
+  fi
+  echo
+done
 
 cd ..
