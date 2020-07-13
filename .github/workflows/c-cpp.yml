@@ -44,7 +44,7 @@ jobs:
 
     # Tests start here
     - name: run tests
-      run: run_all_tests.sh
+      run: bash run_all_tests.sh
 
     # upload artifact, game binary
     - name: Upload Game

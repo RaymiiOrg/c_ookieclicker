@@ -7,7 +7,6 @@
 class Achievement {
 public:
 
-private:
 
 };
 #endif //C_OOKIECLIKER_ACHIEVEMENT_H
