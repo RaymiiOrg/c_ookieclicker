@@ -3,12 +3,14 @@
 mkdir -p cmake-build-debug
 cd cmake-build-debug
 
-cmake ..
-make -j8 all
-if [[ $? != 0 ]]; then
-  echo "Make failed"
-  cd ..
-  exit 1;
+if [[ $1 == "runcmake" ]]; then
+  cmake ..
+  make -j8 all
+  if [[ $? != 0 ]]; then
+    echo "Make failed"
+    cd ..
+    exit 1;
+  fi
 fi
 
 tests="$(cmake --build . --target help | grep -o -E "[a-zA-Z]*_tst")"
