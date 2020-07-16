@@ -181,15 +181,23 @@ public:
             // nobody cares about after the fractional part here...
             std::string returnString;
             returnString += integerpart.at(0);
-            if (cookieNumberNames.at(integerpart.length()-1) == cookieNumberNames.at(integerpart.length()))
+            if (cookieNumberNames.at(integerpart.length()-1) == cookieNumberNames.at(integerpart.length())) {
                 returnString += integerpart.at(1);
-            if (cookieNumberNames.at(integerpart.length()-2) == cookieNumberNames.at(integerpart.length()))
+            }
+            if (cookieNumberNames.at(integerpart.length()-2) == cookieNumberNames.at(integerpart.length())) {
                 returnString += integerpart.at(2);
+            }
+
+            auto lengthBeforeComma = returnString.length();
 
             returnString += ",";
-            returnString += integerpart.at(3);
-            returnString += integerpart.at(4);
-            returnString += integerpart.at(5);
+
+            if (integerpart.length() > lengthBeforeComma)
+                returnString += integerpart.at(lengthBeforeComma);
+            if (integerpart.length() > (lengthBeforeComma) + 1)
+                returnString += integerpart.at((lengthBeforeComma) + 1);
+            if (integerpart.length() > (lengthBeforeComma) + 2 )
+                returnString += integerpart.at(lengthBeforeComma + 2);
 
             returnString += cookieNumberNames.at(integerpart.length());
             return returnString;

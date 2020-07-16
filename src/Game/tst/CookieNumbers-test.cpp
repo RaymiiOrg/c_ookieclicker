@@ -37,7 +37,8 @@ TEST_F(CookieNumbersTestSuite, printWithoutSuffix)
 TEST_F(CookieNumbersTestSuite, printWithSuffix)
 {
     testing::internal::CaptureStdout();
-    std::vector<CookieNumber> numbers{CookieNumber(424242),
+    std::vector<CookieNumber> numbers{CookieNumber(123456),
+                                      CookieNumber(424242),
                                       CookieNumber(9999999),
                                       CookieNumber(42424242),
                                       CookieNumber(100000000),
@@ -58,7 +59,7 @@ TEST_F(CookieNumbersTestSuite, printWithSuffix)
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_EQ(output, "424,242 thousand 9,999 million 42,242 million 100,000 million 9,999 billion 10,000 billion 100,000 billion 1,000 quadrillion 10,000 quadrillion 100,000 quadrillion 1,000 quintillion 10,000 quintillion 100,000 quintillion 1,000 sextillion 1,471ss 29,329rr ");
+    ASSERT_EQ(output, "123,456 thousand 424,242 thousand 9,999 million 42,424 million 100,000 million 9,999 billion 10,000 billion 100,000 billion 1,000 quadrillion 10,000 quadrillion 100,000 quadrillion 1,000 quintillion 10,000 quintillion 100,000 quintillion 1,000 sextillion 1,144ss 29,732rr ");
 }
 
 
@@ -88,7 +89,8 @@ TEST_F(CookieNumbersTestSuite, floatWithoutSuffix)
 TEST_F(CookieNumbersTestSuite, floatWithSuffix)
 {
     testing::internal::CaptureStdout();
-    std::vector<CookieNumber> numbers{CookieNumber(424242.897),
+    std::vector<CookieNumber> numbers{CookieNumber(123456.789),
+                                      CookieNumber(424242.897),
                                       CookieNumber(9999999.8),
                                       CookieNumber(42424242.87),
                                       CookieNumber(100000000.000000001),
@@ -109,7 +111,7 @@ TEST_F(CookieNumbersTestSuite, floatWithSuffix)
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_EQ(output, "424,242 thousand 9,999 million 42,242 million 100,000 million 9,999 billion 10,000 billion 100,000 billion 1,000 quadrillion 10,000 quadrillion 100,000 quadrillion 1,000 quintillion 10,000 quintillion 100,000 quintillion 1,000 sextillion 1,471ss 29,329rr ");
+    ASSERT_EQ(output, "123,456 thousand 424,242 thousand 9,999 million 42,424 million 100,000 million 9,999 billion 10,000 billion 100,000 billion 1,000 quadrillion 10,000 quadrillion 100,000 quadrillion 1,000 quintillion 10,000 quintillion 100,000 quintillion 1,000 sextillion 1,144ss 29,732rr ");
 }
 
 TEST_F(CookieNumbersTestSuite, printCookieIntWithoutSuffix)
@@ -139,27 +141,28 @@ TEST_F(CookieNumbersTestSuite, printCookieIntWithoutSuffix)
 TEST_F(CookieNumbersTestSuite, printCookieIntWithSuffix)
 {
     testing::internal::CaptureStdout();
-    std::vector<CookieInt> numbers{CookieInt(424242),
-                                      CookieInt(9999999),
-                                      CookieInt(42424242),
-                                      CookieInt(100000000),
-                                      CookieInt(9999999999),
-                                      CookieInt(10000000000),
-                                      CookieInt(100000000001),
-                                      CookieInt(1000000000000000), // 1 quadrillion
-                                      CookieInt(10000000000000000), // 10 quadrillion
-                                      CookieInt(100000000000000000), // 100 quadrillion
-                                      CookieInt(1000000000000000000), // 1 quintillion
-                                      CookieInt("10000000000000000000"), // 10 quintillion
-                                      CookieInt("100000000000000000000"), // 100 quintillion
-                                      CookieInt("1000000000000000000000"), // 1 sextillion
-                                      CookieInt("1144719819892401912749029396684122481958005671979101260467392893236621867918257383955449889430362322321133260887721542254157244194509697745617726122395152454650625637283773749439767525187740228611643080"), //1ss
-                                      CookieInt("29732982334867582149325438874912272258649497973483149622529685538613555010863828154687010115074346034315149633447312785822266082974277863522538340841432531289626639929448668816617338316564681262640080"), // 29rr
+    std::vector<CookieInt> numbers{CookieInt(123456),
+                                   CookieInt(424242),
+                                   CookieInt(9999999),
+                                   CookieInt(42424242),
+                                   CookieInt(100000000),
+                                   CookieInt(9999999999),
+                                   CookieInt(10000000000),
+                                   CookieInt(100000000001),
+                                   CookieInt(1000000000000000), // 1 quadrillion
+                                   CookieInt(10000000000000000), // 10 quadrillion
+                                   CookieInt(100000000000000000), // 100 quadrillion
+                                   CookieInt(1000000000000000000), // 1 quintillion
+                                   CookieInt("10000000000000000000"), // 10 quintillion
+                                   CookieInt("100000000000000000000"), // 100 quintillion
+                                   CookieInt("1000000000000000000000"), // 1 sextillion
+                                   CookieInt("1144719819892401912749029396684122481958005671979101260467392893236621867918257383955449889430362322321133260887721542254157244194509697745617726122395152454650625637283773749439767525187740228611643080"), //1ss
+                                   CookieInt("29732982334867582149325438874912272258649497973483149622529685538613555010863828154687010115074346034315149633447312785822266082974277863522538340841432531289626639929448668816617338316564681262640080"), // 29rr
     };
     for (const auto& n : numbers) {
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_EQ(output, "424,242 thousand 9,999 million 42,242 million 100,000 million 9,999 billion 10,000 billion 100,000 billion 1,000 quadrillion 10,000 quadrillion 100,000 quadrillion 1,000 quintillion 10,000 quintillion 100,000 quintillion 1,000 sextillion 1,471ss 29,329rr ");
+    ASSERT_EQ(output, "123,456 thousand 424,242 thousand 9,999 million 42,424 million 100,000 million 9,999 billion 10,000 billion 100,000 billion 1,000 quadrillion 10,000 quadrillion 100,000 quadrillion 1,000 quintillion 10,000 quintillion 100,000 quintillion 1,000 sextillion 1,144ss 29,732rr ");
 }
 
