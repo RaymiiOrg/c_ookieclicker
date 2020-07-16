@@ -7,8 +7,8 @@
 #include <string>
 class Achievement {
 public:
-
-    virtual void apply() = 0;
+    virtual bool hasAchieved() = 0;
+    virtual std::string name() = 0;
     virtual std::string description() = 0;
 
 };
