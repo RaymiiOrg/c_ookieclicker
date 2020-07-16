@@ -101,7 +101,6 @@ class Gameloop {
     FRIEND_TEST(GameloopTestSuite, incrementCps);
     FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
     FRIEND_TEST(GameloopTestSuite, maxItemAmount);
-//    FRIEND_TEST(SaveTestSuite, saveBlankFile);
 
 public:
     Gameloop();

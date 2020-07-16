@@ -53,11 +53,6 @@ jobs:
     - name: Achievement test
       run: build/src/Achievements/tst/Achievements_tst
 
-
-    #coding style check
-    - name: style check
-      run: cmake --build build/ --target checkstyle
-
       # upload artifact, game binary
     - name: Upload Game
       uses: actions/upload-artifact@v1
