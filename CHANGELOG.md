@@ -5,7 +5,7 @@ Release date: 2020-
 - Implemented achievements
 - Display Cookienumbers more like javascript game, 
   with some numbers behind the comma.
- 
+- Added coding style check (clang-format)
 
 
 # Version 104

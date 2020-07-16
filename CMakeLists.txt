@@ -31,6 +31,10 @@ SET(BUILD_SHARED_LIBS OFF)
 include_directories(src)
 add_subdirectory(src)
 
+add_custom_target(checkstyle
+        COMMAND ${CMAKE_SOURCE_DIR}/lib/checkstyle.sh "${CMAKE_BINARY_DIR}/formatdiff.txt"
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
 
 
 
