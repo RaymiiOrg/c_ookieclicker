@@ -135,10 +135,8 @@ void Gameloop::showInput() {
     std::lock_guard<std::mutex> locker(outputShowMutex);
     std::cout << std::endl;
     std::cout << escapeCode.terminalBold;
-    if (getInventory().getCookiesPerTap() == CookieNumber(1))
-        std::cout << "[c]\t:\t get cookie\n";
-    else if (getInventory().getCookiesPerTap() > CookieNumber(1))
-        std::cout << "[c]\t:\t get " << getInventory().getCookiesPerTap() << " cookies\n";
+    if (getInventory().getCookiesPerTap() >= CookieNumber(1))
+        std::cout << "[c]\t:\t get cookie \n";
     std::cout << escapeCode.terminalReset;
 
     showInputBar();
@@ -233,15 +231,21 @@ void Gameloop::showStoreInput(bool oneItem) {
             } else {
                 int maxbuy = canBuyTenOrHundred(item);
                 if (maxbuy == 10) {
+                    CookieNumber cpsOfTen = item.cps * CookieNumber(maxbuy);
                     std::cout << "[" << item.buyMaxCursor << "]" <<
                               ": buy 10 " << item.name << "s; cost: " <<
                               cp.print(Store::getPriceOfTen(item, itemCount)) <<
-                              " cookies;";
+                              " cookies; +" <<
+                              cp.print(cpsOfTen) <<
+                              " cps; ";
                 } else if (maxbuy == 100) {
+                    CookieNumber cpsOfHundred = item.cps * CookieNumber(maxbuy);
                     std::cout << "[" << item.buyMaxCursor << "]" <<
                               ": buy 100 " << item.name << "s; cost: " <<
                               cp.print(Store::getPriceOfHundred(item, itemCount)) <<
-                              " cookies;";
+                              " cookies +" <<
+                              cp.print(cpsOfHundred) <<
+                              " cps; ";
                 } else {
                     std::cout << escapeCode.terminalDim;
                     std::cout << "[" << item.buyMaxCursor << "]: not enough cookies for 10 " << item.name <<

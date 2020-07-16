@@ -3,6 +3,9 @@
 Release date: 2020-
 
 - Implemented achievements
+- Display Cookienumbers more like javascript game, 
+  with some numbers behind the comma.
+ 
 
 
 # Version 104

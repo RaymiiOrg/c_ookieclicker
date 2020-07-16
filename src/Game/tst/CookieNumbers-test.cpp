@@ -58,7 +58,7 @@ TEST_F(CookieNumbersTestSuite, printWithSuffix)
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_EQ(output, "424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion 1 quadrillion 10 quadrillion 100 quadrillion 1 quintillion 10 quintillion 100 quintillion 1 sextillion 1ss 29rr ");
+    ASSERT_EQ(output, "424,242 thousand 9,999 million 42,242 million 100,000 million 9,999 billion 10,000 billion 100,000 billion 1,000 quadrillion 10,000 quadrillion 100,000 quadrillion 1,000 quintillion 10,000 quintillion 100,000 quintillion 1,000 sextillion 1,471ss 29,329rr ");
 }
 
 
@@ -109,7 +109,7 @@ TEST_F(CookieNumbersTestSuite, floatWithSuffix)
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_EQ(output, "424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion 1 quadrillion 10 quadrillion 100 quadrillion 1 quintillion 10 quintillion 100 quintillion 1 sextillion 1ss 29rr ");
+    ASSERT_EQ(output, "424,242 thousand 9,999 million 42,242 million 100,000 million 9,999 billion 10,000 billion 100,000 billion 1,000 quadrillion 10,000 quadrillion 100,000 quadrillion 1,000 quintillion 10,000 quintillion 100,000 quintillion 1,000 sextillion 1,471ss 29,329rr ");
 }
 
 TEST_F(CookieNumbersTestSuite, printCookieIntWithoutSuffix)
@@ -160,6 +160,6 @@ TEST_F(CookieNumbersTestSuite, printCookieIntWithSuffix)
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_EQ(output, "424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion 1 quadrillion 10 quadrillion 100 quadrillion 1 quintillion 10 quintillion 100 quintillion 1 sextillion 1ss 29rr ");
+    ASSERT_EQ(output, "424,242 thousand 9,999 million 42,242 million 100,000 million 9,999 billion 10,000 billion 100,000 billion 1,000 quadrillion 10,000 quadrillion 100,000 quadrillion 1,000 quintillion 10,000 quintillion 100,000 quintillion 1,000 sextillion 1,471ss 29,329rr ");
 }
 

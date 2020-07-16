@@ -13,7 +13,7 @@ typedef boost::multiprecision::cpp_dec_float_50 CookieFloater;
 typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieNumber;
 
 namespace game {
-    const int gameVersion = 104;
+    const int gameVersion = 105;
 }
 
 class CookieNumberPrinter {
@@ -185,6 +185,12 @@ public:
                 returnString += integerpart.at(1);
             if (cookieNumberNames.at(integerpart.length()-2) == cookieNumberNames.at(integerpart.length()))
                 returnString += integerpart.at(2);
+
+            returnString += ",";
+            returnString += integerpart.at(3);
+            returnString += integerpart.at(4);
+            returnString += integerpart.at(5);
+
             returnString += cookieNumberNames.at(integerpart.length());
             return returnString;
         } else {
