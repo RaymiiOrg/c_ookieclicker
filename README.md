@@ -12,6 +12,10 @@ user input? Saving a game (how to design a proper save format)? Also a great way
 project organization, software architecture and to try out design patterns.
 
 
+# License
+
+GNU gpl v2.
+
 # Build
 
 How to build the game for yourself.
