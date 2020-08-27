@@ -14,11 +14,12 @@ class Subject {
     std::vector<Observer*> observers;
 public:
     virtual ~Subject() =default;
-    void addObserver(Observer& o) { observers.push_back(&o); };
-    void removeObserver(Observer& o) { observers.erase(std::remove(observers.begin(), observers.end(), &o)); };
+    void addObserver(Observer* o) { if (o) observers.push_back(o); };
+    void removeObserver(Observer* o) { if (o) observers.erase(std::remove(observers.begin(), observers.end(), o), observers.end()); };
     void notify() {
-        for (auto* o : observers)
-            o->update(this);
+        for (auto o : observers)
+            if (o != nullptr)
+                o->update();
     }
 };
 

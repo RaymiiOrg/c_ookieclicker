@@ -1,76 +1,121 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-err58-cpp"
+
 #include "Observer.h"
 #include "Subject.h"
 #include "gtest/gtest.h"
 
-struct ObserverTestSuite : public ::testing::Test
+class testSubject : public Subject
 {
-
-    ObserverTestSuite()
-    {
-    }
-
-};
-
-class ClockTimer : public Subject
-{
+    int _test=0;
 public:
-    void SetTime(int _hour, int _minute, int _second)
+    void setTest(int test)
     {
-        std::cout << "clock setTime" << std::endl;
-        this->_hour = _hour;
-        this->_minute = _minute;
-        this->_second = _second;
-
+        //std::cout << "testSubject setTest" << std::endl;
+        this->_test = test;
         notify();
     }
+    [[nodiscard]] int getTest() const {return _test;};
 
-    int Get_hour() const { return _hour; }
-    int Get_minute() const { return _minute; }
-    int Get_second() const { return _second; }
 
-private:
-    int _hour;
-    int _minute;
-    int _second;
 };
 
-class DigitalClock: public Observer
+class testObserver1: public Observer
 {
+    testSubject* subject = nullptr;
 public:
-    explicit DigitalClock(ClockTimer& s) : subject(s) { subject.addObserver(*this); }
-    ~DigitalClock() { subject.removeObserver(*this); }
-    void update(Subject* theChangedSubject) override
+    ~testObserver1() override { if(subject != nullptr) subject->removeObserver(this); }
+    void update() override
     {
-           std::cout << "Digital time is " << subject.Get_hour() << ":"
-                  << subject.Get_minute() << ":"
-                  << subject.Get_second() << std::endl;
+           if (subject != nullptr) {
+               //std::cout << "testObserver1 subject.getTest(): " << subject->getTest() << std::endl;
+               _result = subject->getTest();
+           }
     }
-
-private:
-    ClockTimer& subject;
+    int _result=0;
+    void setSubject(testSubject* s) {subject = s; subject->addObserver(this);};
 };
 
-class AnalogClock: public Observer
+class testObserver2: public Observer
 {
+    testSubject* _s = nullptr;
 public:
-    explicit AnalogClock(ClockTimer& s) : subject(s) { subject.addObserver(*this); }
-    ~AnalogClock() { subject.removeObserver(*this); }
-    void update(Subject* theChangedSubject) override {
-        std::cout << "Analog time is " << subject.Get_hour() << ":"
-                  << subject.Get_minute() << ":"
-                  << subject.Get_second() << std::endl;
+    ~testObserver2() override { if(_s != nullptr) _s->removeObserver(this); }
+    void setSubject(testSubject* s) { _s = s; _s->addObserver(this);};
+    void update() override {
+        if (_s != nullptr) {
+            //std::cout << "testObserver2 subject.getTest(): " << subject->getTest() << std::endl;
+            _result = _s->getTest();
+        }
     }
-
-private:
-    ClockTimer& subject;
+    int _result=0;
 };
 
-TEST_F(ObserverTestSuite, getEmptyObserver)
+TEST(ObserverTestSuite, notSubscribed)
 {
-    ClockTimer timer;
+    //arrange
+    testSubject testsub;
+    testObserver1 testobs1;
 
-    DigitalClock digitalClock(timer);
-    AnalogClock analogClock(timer);
-
-    timer.SetTime(14, 41, 36);
+    //act
+    testsub.setTest(10);
+    //assert
+    ASSERT_EQ(testobs1._result, 0);
 }
+
+
+TEST(ObserverTestSuite, subscribeOneObserver)
+{
+    //arrange
+    testSubject testsub;
+    testObserver1 testobs1;
+    testObserver2 testobs2;
+    testobs1.setSubject(&testsub);
+
+    //act
+    testsub.setTest(10);
+
+    //assert
+    ASSERT_EQ(testobs1._result, 10);
+    ASSERT_EQ(testobs2._result, 0);
+}
+
+TEST(ObserverTestSuite, subscribeMultiple)
+{
+    //arrange
+    testSubject testsub;
+    testObserver1 testobs1;
+    testObserver2 testobs2;
+    testobs1.setSubject(&testsub);
+    testobs2.setSubject(&testsub);
+
+    //act
+    testsub.setTest(10);
+
+    //assert
+    ASSERT_EQ(testobs1._result, 10);
+    ASSERT_EQ(testobs2._result, 10);
+}
+
+
+
+TEST(ObserverTestSuite, differentSubjects)
+{
+    //arrange
+    testSubject testsub1;
+    testSubject testsub2;
+    testObserver1 testobs1;
+    testObserver2 testobs2;
+    testobs1.setSubject(&testsub1);
+    testobs2.setSubject(&testsub2);
+
+    //act
+    testsub1.setTest(10);
+    testsub2.setTest(90);
+
+    //assert
+    ASSERT_EQ(testobs1._result, 10);
+    ASSERT_EQ(testobs2._result, 90);
+}
+
+#pragma clang diagnostic pop
