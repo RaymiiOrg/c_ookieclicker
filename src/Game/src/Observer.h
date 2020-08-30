@@ -11,7 +11,7 @@ class Subject;
 class Observer {
 public:
     virtual ~Observer() = default;
-    virtual void update() = 0;
+    virtual void update(Subject* subject) = 0;
 };
 
 

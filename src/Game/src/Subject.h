@@ -19,7 +19,7 @@ public:
     void notify() {
         for (auto o : observers)
             if (o != nullptr)
-                o->update();
+                o->update(this);
     }
 };
 

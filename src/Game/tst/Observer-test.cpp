@@ -22,30 +22,22 @@ public:
 
 class testObserver1: public Observer
 {
-    testSubject* subject = nullptr;
-public:
-    ~testObserver1() override { if(subject != nullptr) subject->removeObserver(this); }
-    void update() override
+    public:
+    void update(Subject* _s) override
     {
-           if (subject != nullptr) {
-               //std::cout << "testObserver1 subject.getTest(): " << subject->getTest() << std::endl;
-               _result = subject->getTest();
-           }
+        if (dynamic_cast<testSubject*>(_s) != nullptr) {
+            _result = dynamic_cast<testSubject*>(_s)->getTest();
+        }
     }
     int _result=0;
-    void setSubject(testSubject* s) {subject = s; subject->addObserver(this);};
 };
 
 class testObserver2: public Observer
 {
-    testSubject* _s = nullptr;
 public:
-    ~testObserver2() override { if(_s != nullptr) _s->removeObserver(this); }
-    void setSubject(testSubject* s) { _s = s; _s->addObserver(this);};
-    void update() override {
-        if (_s != nullptr) {
-            //std::cout << "testObserver2 subject.getTest(): " << subject->getTest() << std::endl;
-            _result = _s->getTest();
+    void update(Subject* _s) override {
+        if (dynamic_cast<testSubject*>(_s) != nullptr) {
+            _result = dynamic_cast<testSubject*>(_s)->getTest();
         }
     }
     int _result=0;
@@ -70,7 +62,7 @@ TEST(ObserverTestSuite, subscribeOneObserver)
     testSubject testsub;
     testObserver1 testobs1;
     testObserver2 testobs2;
-    testobs1.setSubject(&testsub);
+    testsub.addObserver(&testobs1);
 
     //act
     testsub.setTest(10);
@@ -86,8 +78,8 @@ TEST(ObserverTestSuite, subscribeMultiple)
     testSubject testsub;
     testObserver1 testobs1;
     testObserver2 testobs2;
-    testobs1.setSubject(&testsub);
-    testobs2.setSubject(&testsub);
+    testsub.addObserver(&testobs1);
+    testsub.addObserver(&testobs2);
 
     //act
     testsub.setTest(10);
@@ -106,8 +98,8 @@ TEST(ObserverTestSuite, differentSubjects)
     testSubject testsub2;
     testObserver1 testobs1;
     testObserver2 testobs2;
-    testobs1.setSubject(&testsub1);
-    testobs2.setSubject(&testsub2);
+    testsub1.addObserver(&testobs1);
+    testsub2.addObserver(&testobs2);
 
     //act
     testsub1.setTest(10);
