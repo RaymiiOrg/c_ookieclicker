@@ -10,15 +10,16 @@
 
 class CookieAmountAchievement : public Achievement {
 public:
-    CookieAmountAchievement(CookieNumber &amountRequired, const std::string& name, Wallet &wallet);
+    CookieAmountAchievement(const CookieNumber& amountRequired, std::string name);
     bool hasAchieved() override;
     std::string name() override;
     std::string description() override;
+    void update(Subject *subject) override;
 
 private:
-    CookieNumber& _amountRequired;
-    Wallet& _wallet;
+    const CookieNumber& _amountRequired;
     std::string _name;
+    bool _hasAchieved = false;
     cnp cp;
 };
 

@@ -5,8 +5,9 @@
 #ifndef C_OOKIECLIKER_WALLET_H
 #define C_OOKIECLIKER_WALLET_H
 #include "CookieNumbers.h"
+#include "Subject.h"
 
-class Wallet {
+class Wallet : public Subject {
     public:
     CookieNumber getCookieAmount();
     CookieNumber getCps();

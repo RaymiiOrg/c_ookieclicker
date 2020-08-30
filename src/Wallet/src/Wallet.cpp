@@ -6,10 +6,12 @@
 
 void Wallet::incrementCps(const CookieNumber& amount) {
     _cps += amount;
+    notify();
 }
 
 void Wallet::decrementCps(const CookieNumber& amount) {
     _cps -= amount;
+    notify();
 }
 
 CookieNumber Wallet::getCookieAmount() {
@@ -23,10 +25,12 @@ CookieNumber Wallet::getCps() {
 void Wallet::incrementCookieAmount(const CookieNumber& amount) {
     _cookieAmount += amount;
     _totalcookies += amount;
+    notify();
 }
 
 void Wallet::decrementCookieAmount(const CookieNumber& amount) {
     _cookieAmount -= amount;
+    notify();
 }
 
 CookieNumber Wallet::getTotalcookies() {
@@ -37,6 +41,7 @@ void Wallet::reset() {
     _cookieAmount = 0;
     _totalcookies = 0;
     _cps = 0;
+    notify();
 }
 
 void Wallet::setCps(const CookieNumber &cps) {

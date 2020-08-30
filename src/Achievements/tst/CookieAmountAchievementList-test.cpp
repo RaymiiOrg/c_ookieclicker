@@ -1,13 +1,13 @@
-#include "Achievements.h"
+#include "CookieAmountAchievementList.h"
 #include <memory>
 #include "gtest/gtest.h"
 
 struct AchievementsTestSuite : public ::testing::Test
 {
-    std::unique_ptr<Achievements> achievements;
+    std::unique_ptr<CookieAmountAchievementList> achievements;
     AchievementsTestSuite()
     {
-        achievements = std::make_unique<Achievements>();
+        achievements = std::make_unique<CookieAmountAchievementList>();
     }
 
 };
