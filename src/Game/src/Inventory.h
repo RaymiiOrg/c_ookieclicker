@@ -19,13 +19,13 @@ private:
     CookieNumber _cookiesPerTap = 1;
 
 public:
-    void addItem(std::string, CookieNumber amountToAdd);
-    void removeItem(std::string, CookieNumber amountToRemove);
+    void addItem(const std::string&, const CookieNumber& amountToAdd);
+    void removeItem(const std::string&, const CookieNumber& amountToRemove);
     void reset();
-    CookieNumber getItemCount(std::string);
+    CookieNumber getItemCount(const std::string&);
     CookieNumber getLastItemAddedAmount();
     CookieNumber getCookiesPerTap();
-    void incrementCookiesPerTap(CookieNumber amount);
+    void incrementCookiesPerTap(const CookieNumber& amount);
     const std::string& getLastItemAdded();
     std::map<std::string, CookieNumber>& getInventory() { return m_Inventory; };
 };

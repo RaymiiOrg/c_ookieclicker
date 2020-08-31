@@ -4,7 +4,7 @@
 
 #include "Inventory.h"
 
-void Inventory::addItem(std::string item, CookieNumber amountToAdd) {
+void Inventory::addItem(const std::string& item, const CookieNumber& amountToAdd) {
     bool found = false;
     for (auto& i : m_Inventory)
     {
@@ -21,7 +21,7 @@ void Inventory::addItem(std::string item, CookieNumber amountToAdd) {
     last_item_added = item;
 }
 
-void Inventory::removeItem(std::string item, CookieNumber amountToRemove) {
+void Inventory::removeItem(const std::string& item, const CookieNumber& amountToRemove) {
     for (auto& i : m_Inventory)
     {
         if (i.first == item)
@@ -35,7 +35,7 @@ void Inventory::removeItem(std::string item, CookieNumber amountToRemove) {
     }
 }
 
-CookieNumber Inventory::getItemCount(std::string item) {
+CookieNumber Inventory::getItemCount(const std::string& item) {
     for (const auto& i : m_Inventory)
     {
         if (i.first == item)
@@ -58,7 +58,7 @@ CookieNumber Inventory::getCookiesPerTap() {
     return _cookiesPerTap;
 }
 
-void Inventory::incrementCookiesPerTap(CookieNumber amount) {
+void Inventory::incrementCookiesPerTap(const CookieNumber& amount) {
     _cookiesPerTap += amount;
 }
 
