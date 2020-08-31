@@ -19,6 +19,9 @@
 #include "BuyItemCommand.h"
 #include "UpdateCpsCommand.h"
 #include "UpdateCookiesCommand.h"
+#include "CookieAmountAchievement.h"
+#include "AchievementList.h"
+#include "Achievement.h"
 #include "Store.h"
 #include "CookieNumbers.h"
 #include "Save.h"
@@ -57,6 +60,7 @@ class Gameloop {
         DEBUG,
         SAVED,
         LOADED,
+        ERROR,
         LAST_MSG,
     };
     std::atomic<notifyMessages> notifyMessage{};
@@ -64,6 +68,7 @@ class Gameloop {
     static void cleanTerminal();
     static std::string currentTime(const std::string& formatString = "%H:%M:%S");
     void renderText();
+    std::string lastError;
 
     Inventory m_Inventory;
     Wallet m_Wallet;
@@ -97,7 +102,11 @@ class Gameloop {
     std::string lastMessageTime;
     std::string saveFile = ".cookieclicker.save";
 
-    // tests
+    std::shared_ptr<AchievementList<CookieAmountAchievement>> cookieAmountAchievements =
+            std::make_shared<AchievementList<CookieAmountAchievement>>(std::vector<std::shared_ptr<CookieAmountAchievement>>());
+
+    void loadCookieAmountAchievements();
+
     FRIEND_TEST(GameloopTestSuite, incrementCps);
     FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
     FRIEND_TEST(GameloopTestSuite, maxItemAmount);

@@ -3,6 +3,7 @@
 //
 
 #include "GameLoop.h"
+#include "filesystem.h"
 
 std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
     switch (msg) {
@@ -19,6 +20,8 @@ std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
             return "Game saved.";
         case LOADED:
             return "Loaded saved game from file";
+        case ERROR:
+            return "An error occured: " + lastError;
         case NO_MSG:
         case LAST_MSG:
         default:
@@ -64,6 +67,19 @@ void Gameloop::setMessage(notifyMessages msg) {
 Gameloop::Gameloop() : running(true),
                        gameStepThread(&Gameloop::gameStep, this),
                        inputThread(&Gameloop::input, this), notifyMessage(NO_MSG) {
+    loadCookieAmountAchievements();
+}
+
+void Gameloop::loadCookieAmountAchievements() {
+    m_Wallet.addObserver(cookieAmountAchievements.get());
+    std::string achievementsFile = fs::current_path().string() + "/gamedata/achievements/CookieAmountAchievements.csv";
+    if (fs::exists(achievementsFile))
+        cookieAmountAchievements->loadAchievementsFromCSV(achievementsFile);
+    else {
+        lastError = "Could not load achievementsfile from '" + achievementsFile + "'.";
+        setMessage(ERROR);
+    }
+
 }
 
 Gameloop::Gameloop(bool isRunning) : running(isRunning) {
@@ -178,7 +194,12 @@ void Gameloop::showInventory() {
 
 void Gameloop::showAchievements() {
     std::cout << "\n===== Achievements ====\n";
-    std::cout << "Not implemented yet.\n";
+    std::cout << "Cookie Amount: " << std::endl;
+    for (const std::shared_ptr<CookieAmountAchievement>& a : cookieAmountAchievements->getAchievements())
+    {
+        if (a != nullptr && a->hasAchieved())
+            std::cout << " - " << a->name() << std::endl;
+    }
 }
 
 

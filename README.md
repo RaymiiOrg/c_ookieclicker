@@ -89,7 +89,6 @@ The same from the original game.
 ## Achievements
 
 
-
 ## Wallet
 
 Stores your cookies and the cps.

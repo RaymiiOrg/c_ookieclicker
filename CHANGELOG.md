@@ -2,7 +2,8 @@
 
 Release date: 2020-
 
-- Implemented achievements
+- Implemented Cookie Amount achievements
+  - Added observer pattern style notifications on Wallet->incrementCookieAmount
 - Display Cookienumbers more like javascript game, 
   with some numbers behind the comma.
 - Added coding style check (clang-format)
