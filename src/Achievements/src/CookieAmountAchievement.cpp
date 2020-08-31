@@ -3,7 +3,6 @@
 //
 
 #include "CookieAmountAchievement.h"
-#include <utility>
 
 bool CookieAmountAchievement::hasAchieved() {
     return _hasAchieved;
@@ -16,8 +15,10 @@ std::string CookieAmountAchievement::description() {
         return "Bake " + cp.print(_amountRequired) + " cookies";
 }
 
-CookieAmountAchievement::CookieAmountAchievement(const CookieNumber& amountRequired, std::string  name)
-        : _amountRequired(amountRequired), _name(std::move(name)) {
+CookieAmountAchievement::CookieAmountAchievement(const std::vector<std::string>& params)
+{
+    _amountRequired = static_cast<CookieNumber>(params.front());
+    _name = params.back();
 }
 
 std::string CookieAmountAchievement::name() {
