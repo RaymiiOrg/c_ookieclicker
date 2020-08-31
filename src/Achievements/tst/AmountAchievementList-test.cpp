@@ -4,10 +4,10 @@
 
 struct AchievementsTestSuite : public ::testing::Test
 {
-    std::unique_ptr<CookieAmountAchievementList> achievements;
+    std::unique_ptr<AchievementList<CookieAmountAchievement>> achievements;
     AchievementsTestSuite()
     {
-        achievements = std::make_unique<AchievementList>();
+        achievements = std::make_unique<AchievementList<CookieAmountAchievement>>(std::vector<CookieAmountAchievement>());
     }
 
 };

@@ -5,6 +5,8 @@
 struct CookieAmountAchievementTestSuite : public ::testing::Test
 {
     std::unique_ptr<Wallet> wallet;
+    CookieNumber amountRequired1 = CookieNumber(1);
+    CookieNumber amountRequired2 = CookieNumber(1000);
     CookieAmountAchievementTestSuite()
     {
         wallet = std::make_unique<Wallet>();
@@ -15,10 +17,10 @@ struct CookieAmountAchievementTestSuite : public ::testing::Test
 TEST_F(CookieAmountAchievementTestSuite, getAchievement)
 {
     // arrange
-    auto amountRequired1 = CookieNumber(1);
-    auto amountRequired2 = CookieNumber(1000);
     CookieAmountAchievement oneCookie = CookieAmountAchievement(amountRequired1, "Wake & Bake");
     CookieAmountAchievement thousandCookies = CookieAmountAchievement(amountRequired2, "Make some dough");
+    wallet->addObserver(&oneCookie);
+    wallet->addObserver(&thousandCookies);
 
     // act
     wallet->incrementCookieAmount(CookieNumber(2));
