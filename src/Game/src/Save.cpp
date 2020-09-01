@@ -31,7 +31,7 @@ bool Save::saveFormatOne() {
     out << m_Inventory.getInventory().size() << ";";
     for (const auto& item : m_Inventory.getInventory())
     {
-        out << item.first << " " << item.second.str(0, std::ios_base::fixed) << ";";
+        out << item.first << "," << item.second.str(0, std::ios_base::fixed) << ";";
     }
     return true;
 }
@@ -59,12 +59,14 @@ bool Save::loadFormatOne() {
     int amountOfItems = std::stoi(inV.at(5));
     if (amountOfItems > 0) {
         for (int i = 0; i < amountOfItems; ++i) {
+            std::string current_item_line;
+            std::vector<std::string> in_items;
             std::istringstream itemstream(inV.at(6 + i));
-            std::vector<std::string> item_results(std::istream_iterator<std::string>{itemstream},
-                                                  std::istream_iterator<std::string>());
-
-            auto itemName = item_results.at(0);
-            auto itemAmount = CookieNumber(item_results.at(1));
+            while (std::getline(itemstream, current_item_line, ',')) {
+                in_items.push_back(current_item_line);
+            }
+            auto itemName = in_items.front();
+            auto itemAmount = CookieNumber(in_items.back());
             m_Inventory.addItem(itemName, itemAmount);
         }
     }

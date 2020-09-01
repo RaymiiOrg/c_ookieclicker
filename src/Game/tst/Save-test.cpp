@@ -49,7 +49,7 @@ TEST_F(SaveTestSuite, saveThenLoad)
     //act
     game->getWallet().incrementCookieAmount(CookieNumber(3));
     game->getWallet().incrementCps(CookieNumber(20));
-    game->getInventory().addItem("Cursor", 3);
+    game->getInventory().addItem("Alchemy Lab", 3);
 
     game->getInventory().addItem("Grandma", largeNumber);
 
@@ -66,9 +66,9 @@ TEST_F(SaveTestSuite, saveThenLoad)
     ASSERT_EQ(loadResult, true);
     ASSERT_EQ(gameLoad->getWallet().getTotalcookies(), 3);
     ASSERT_EQ(gameLoad->getWallet().getCps(), 20);
-    ASSERT_EQ(gameLoad->getInventory().getItemCount("Cursor"), 3);
-    ASSERT_EQ(gameLoad->getStore().getPrice(gameLoad->getStore().getItemByName("Cursor"),
-                                            gameLoad->getInventory().getItemCount("Cursor")), 23);
+    ASSERT_EQ(gameLoad->getInventory().getItemCount("Alchemy Lab"), 3);
+    ASSERT_EQ(gameLoad->getStore().getPrice(gameLoad->getStore().getItemByName("Alchemy Lab"),
+                                            gameLoad->getInventory().getItemCount("Alchemy Lab")), 114065625000);
     ASSERT_EQ(gameLoad->getInventory().getItemCount("Grandma"), largeNumber);
 }
 
