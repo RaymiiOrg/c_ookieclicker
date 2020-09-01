@@ -50,6 +50,7 @@ void Wallet::setCps(const CookieNumber &cps) {
 
 void Wallet::setCookieAmount(const CookieNumber &cookieAmount) {
     _cookieAmount = cookieAmount;
+    notify();
 }
 
 void Wallet::setTotalcookies(const CookieNumber &totalcookies) {

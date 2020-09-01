@@ -42,6 +42,9 @@ bool Save::loadFormatOne() {
     if (!in.good()) {
         return false;
     }
+    m_Wallet.reset();
+    m_Inventory.reset();
+    m_Store.reset();
 
     std::string current_line;
     while (std::getline(in, current_line, ';')) {
