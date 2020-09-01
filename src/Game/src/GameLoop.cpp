@@ -27,16 +27,8 @@ std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
         default:
             return "";
     }
-};
-
-void Gameloop::cleanTerminal() {
-    int lines = 300;
-    for (int i = 0; i < lines; ++i) {
-        std::cout << escapeCode.eraseCurrentLine;
-        std::cout << escapeCode.cursorUpOneLine;
-        std::cout << escapeCode.cursorToBeginningOfLine;
-    }
 }
+
 
 std::string Gameloop::currentTime(const std::string &formatString) {
     auto time_point = std::chrono::system_clock::now();
@@ -47,7 +39,16 @@ std::string Gameloop::currentTime(const std::string &formatString) {
     return os.str();
 };
 
-void Gameloop::renderText() {
+void Gameloop::renderTopStatus() {
+    std::lock_guard<std::mutex> locker(outputShowMutex);
+    std::cout << escapeCode.cursorTo0x0;
+
+    for (int line = 0; line < 2; ++line)
+        std::cout << escapeCode.eraseCurrentLine << escapeCode.cursorDownOneLine;
+    std::cout << escapeCode.cursorTo0x0;
+    std::cout << escapeCode.eraseCurrentLine;
+    std::cout << "===== c_ookieclicker by Remy ====" << std::endl;
+    std::cout << escapeCode.eraseCurrentLine;
     if (notifyMessage != NO_MSG) {
         std::cout << escapeCode.terminalBold;
         std::cout << lastMessageTime << ": " << notifyEnumToMsg(notifyMessage);
@@ -55,8 +56,6 @@ void Gameloop::renderText() {
     }
     std::cout << std::endl;
     showStatus();
-    showInput();
-
 }
 
 void Gameloop::setMessage(notifyMessages msg) {
@@ -103,6 +102,7 @@ inline void Gameloop::quit() {
 
 void Gameloop::input() {
     while (running) {
+        showInput();
         std::lock_guard<std::mutex> locker(inputMutex);
         std::string input;
         std::getline(std::cin, input);
@@ -118,8 +118,7 @@ void Gameloop::gameStep() {
         std::lock_guard<std::mutex> locker(gameStepMutex);
         auto startTime = std::chrono::high_resolution_clock::now();
 
-        cleanTerminal();
-        renderText();
+        renderTopStatus();
 
         // end of cycle
         if (cookieStepIncrement >= 1000) { //(1 second)
@@ -139,6 +138,7 @@ void Gameloop::gameStep() {
 }
 
 void Gameloop::showFinalScore() {
+    std::cout << escapeCode.clearEntireScreen << escapeCode.cursorTo7x0;
     std::cout << "Well done.\n";
     std::cout << "Ended with " << cp.print(getWallet().getCookieAmount()) << " cookies.\n";
     std::cout << "Total cookies earned: " << cp.print(getWallet().getTotalcookies()) << "\n";
@@ -149,7 +149,10 @@ void Gameloop::showFinalScore() {
 
 void Gameloop::showInput() {
     std::lock_guard<std::mutex> locker(outputShowMutex);
-    std::cout << std::endl;
+    std::cout << escapeCode.cursorTo7x0;
+    for (int line = 0; line < 150; ++line)
+        std::cout << escapeCode.cursorDownOneLine << escapeCode.eraseCurrentLine;
+    std::cout << escapeCode.cursorTo7x0;
     std::cout << escapeCode.terminalBold;
     if (getInventory().getCookiesPerTap() >= CookieNumber(1))
         std::cout << "[c]\t:\t get cookie \n";
@@ -177,8 +180,6 @@ void Gameloop::showInput() {
         default:
             break;
     }
-
-    std::cout << "\nCommand + ↩:\n";
 }
 
 void Gameloop::showInventory() {
@@ -195,10 +196,14 @@ void Gameloop::showInventory() {
 void Gameloop::showAchievements() {
     std::cout << "\n===== Achievements ====\n";
     std::cout << "Cookie Amount: " << std::endl;
+    int count = 1;
     for (const std::shared_ptr<CookieAmountAchievement>& a : cookieAmountAchievements->getAchievements())
     {
-        if (a != nullptr && a->hasAchieved())
-            std::cout << " - " << a->name() << std::endl;
+        if (a != nullptr && a->hasAchieved()) {
+            std::cout << a->name() << ": " << a->description() << std::endl;
+
+        }
+
     }
 }
 
@@ -343,14 +348,17 @@ void Gameloop::handleBuyItemChoice(const std::string &input) {
 }
 
 void Gameloop::showStatus() {
-    std::cout << "\n===== c_ookieclicker by Remy ====\n";
+    std::cout << escapeCode.eraseCurrentLine;
     std::cout << "Cookies\t:\t";
     if (getWallet().getCookieAmount() > 0)
         std::cout << cp.print(getWallet().getCookieAmount());
-    std::cout << "\n";
+    std::cout << std::endl;
+    std::cout << escapeCode.eraseCurrentLine;
     std::cout << "cps\t:\t";
     if (getWallet().getCps() > 0)
         std::cout << cp.print(getWallet().getCps());
+    std::cout << std::endl;
+    std::cout << escapeCode.eraseCurrentLine;
 }
 
 void Gameloop::incrementCookiesOnTime() {
