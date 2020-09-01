@@ -188,17 +188,6 @@ public:
                 returnString += integerpart.at(2);
             }
 
-            auto lengthBeforeComma = returnString.length();
-
-            returnString += ",";
-
-            if (integerpart.length() > lengthBeforeComma)
-                returnString += integerpart.at(lengthBeforeComma);
-            if (integerpart.length() > (lengthBeforeComma) + 1)
-                returnString += integerpart.at((lengthBeforeComma) + 1);
-            if (integerpart.length() > (lengthBeforeComma) + 2 )
-                returnString += integerpart.at(lengthBeforeComma + 2);
-
             returnString += cookieNumberNames.at(integerpart.length());
             return returnString;
         } else {
