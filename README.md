@@ -41,6 +41,23 @@ Build locally:
 The game executable is:
 
     src/Game/src/Game_linux
+    
+Make sure to run it in the cloned folder, otherwise some game data might not load, like
+then achievements. Game data files are in:
+    
+    releases/$version/gamedata
+    
+and are symlinked in the main folder you cloned from github.
+
+# How to play
+
+Start up the game. In the top you'll see your amount of cookies and
+your Cookies per Second. Press `c`, then `Enter` to bake your first 
+cookie. Repeat until you can buy items (like a cursor or grandma)
+to automate your baking. There is no end to the game, but main goal
+is to automate as much as possible. 
+ 
+ 
  
 
 # Different parts of the game
@@ -88,6 +105,13 @@ The same from the original game.
 
 ## Achievements
 
+This was my first attempt at writing an Observer pattern style 
+notification system. For the Cookie Amount Achievements, the 
+wallet notifies the observer (the achievement list) on a cookie
+increment.
+
+The achievements themself are in `.csv files` in the `gamedata` folder
+so you can add or remove achievements if you please.
 
 ## Wallet
 
