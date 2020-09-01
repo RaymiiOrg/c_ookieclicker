@@ -13,14 +13,6 @@ struct WalletTestSuite : public ::testing::Test
 
 };
 
-class WalletTestObserver : public Observer {
-public:
-    int cookies = 0;
-    bool somethingHappened = false;
-    void update() override {
-
-    }
-};
 
 TEST_F(WalletTestSuite, getEmptyWallet)
 {
@@ -69,17 +61,3 @@ TEST_F(WalletTestSuite, reset)
     ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(0));
 }
 
-
-TEST_F(WalletTestSuite, incrementObserver)
-{
-    //arrange
-    WalletTestObserver obs;
-    wallet->addObserver(&obs);
-
-    //act
-    wallet->incrementCookieAmount(CookieNumber(10));
-    wallet->incrementCookieAmount(CookieNumber(100));
-
-    //assert
-    ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(110));
-}
