@@ -22,6 +22,8 @@ std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
             return "Loaded saved game from file";
         case ERROR:
             return "An error occured: " + lastError;
+        case ACHIEVEMENT_UNLOCKED:
+            return "Achievement unlocked: " + lastAchievement + "!";
         case NO_MSG:
         case LAST_MSG:
         default:
@@ -37,7 +39,7 @@ std::string Gameloop::currentTime(const std::string &formatString) {
     std::ostringstream os;
     os << std::put_time(time_info, formatString.c_str());
     return os.str();
-};
+}
 
 void Gameloop::renderTopStatus() {
     std::lock_guard<std::mutex> locker(outputShowMutex);
@@ -195,18 +197,23 @@ void Gameloop::showInventory() {
 
 void Gameloop::showAchievements() {
     std::cout << "\n===== Achievements ====\n";
-    std::cout << "Cookie Amount: " << std::endl;
-    int count = 1;
-    for (const std::shared_ptr<CookieAmountAchievement>& a : cookieAmountAchievements->getAchievements())
-    {
-        if (a != nullptr && a->hasAchieved()) {
-            std::cout << a->name() << ": " << a->description() << std::endl;
-
+    for (const auto& mapping : achievementviewmap) {
+        if (achievementView == mapping.view) {
+            std::cout << escapeCode.terminalBold << mapping.description << " Achievement" << escapeCode.terminalReset << std::endl;
+        } else {
+            std::cout << "[" << mapping.inputKey << "]: Show " << mapping.description << " Achievement" << std::endl;
         }
-
     }
-}
 
+    switch (achievementView) {
+        case COOKIE_AMOUNT:
+            showAchievement(cookieAmountAchievements);
+            break;
+        case COOKIES_PER_SECOND:
+            break;
+    }
+
+}
 
 void Gameloop::showOptions() {
     std::cout << "\n===== Options ====\n";
@@ -292,42 +299,26 @@ void Gameloop::showStoreInput(bool oneItem) {
 
 void Gameloop::handleChoice(const std::string& input) {
 
-    handleBuyItemChoice(input);
+    handleGenericChoice(input);
+    handleSaveLoadChoice(input);
+    handleInputSwitchChoice(input);
 
-
-    if (input == "c") {
-        auto cmd = std::make_unique<UpdateCookiesCommand>(getInventory().getCookiesPerTap(), getWallet());
-        cmd->execute();
-    } else if (input == "q") {
-        quit();
-    } else if (input == "s") {
-        auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
-        if (saveGame.save()) {
-            setMessage(SAVED);
-        }
-    } else if (input == "l") {
-        auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
-        if (saveGame.load()) {
-            setMessage(LOADED);
-        }
-    } else if (input == "1" or input == "2" or input == "3" or input == "4" or input == "5") {
-        inputMode = static_cast<inputModes>(std::stoi(input));
-    } else if (input == "7") {
-        getWallet().incrementCookieAmount(CookieNumber(100));
-        setMessage(DEBUG);
-    } else if (input == "8") {
-        getWallet().incrementCookieAmount(getWallet().getCookieAmount() * 2);
-        getWallet().incrementCps(getWallet().getCps() * 2);
-        setMessage(DEBUG);
-    } else if (input == "9") {
-        setMessage(DEBUG);
-        CookieNumber a(
-                "115119036727821003870521051999708461"
-                "257642313059096215428937680038718894154"
-                "816459487665078480150348801009011289080");
-        getWallet().incrementCookieAmount(a);
-        getWallet().incrementCps(a * 2);
+    switch (inputMode) {
+        case FIRST_MODE:
+        case ONE_ITEM:
+            handleBuyItemChoice(input);
+            break;
+        case ALL_ITEMS:
+        case INVENTORY:
+        case ACHIEVEMENTS:
+            handleAchievementViewChoice(input);
+        case OPTIONS:
+        default:
+            break;
     }
+#ifndef NDEBUG
+    handleDebugChoice(input);
+#endif
 }
 
 void Gameloop::handleBuyItemChoice(const std::string &input) {
@@ -368,7 +359,7 @@ void Gameloop::incrementCookiesOnTime() {
     step_start = std::chrono::high_resolution_clock::now();
 }
 
-void Gameloop::buyItem(CookieNumber amountToBuy, Item &item) {
+void Gameloop::buyItem(const CookieNumber& amountToBuy, Item &item) {
     if (canPayForItem(amountToBuy, item) && amountToBuy > CookieNumber(0)) {
         auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, getInventory(), getWallet(), getStore());
         buyCommand->execute();
@@ -470,3 +461,61 @@ void Gameloop::reset() {
     getInventory().reset();
     getStore().reset();
 }
+
+void Gameloop::handleGenericChoice(const std::string &input) {
+    if (input == "c") {
+        auto cmd = std::make_unique<UpdateCookiesCommand>(getInventory().getCookiesPerTap(), getWallet());
+        cmd->execute();
+    } else if (input == "q") {
+        quit();
+    }
+}
+
+void Gameloop::handleSaveLoadChoice(const std::string &input) {
+    if (input == "s") {
+        auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
+        if (saveGame.save()) {
+            setMessage(SAVED);
+        }
+    } else if (input == "l") {
+        auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
+        if (saveGame.load()) {
+            setMessage(LOADED);
+        }
+    }
+}
+
+void Gameloop::handleInputSwitchChoice(const std::string &input) {
+    if (input == "1" or input == "2" or input == "3" or input == "4" or input == "5") {
+        inputMode = static_cast<inputModes>(std::stoi(input));
+    }
+}
+
+void Gameloop::handleAchievementViewChoice(const std::string &input) {
+    for (const auto& map : achievementviewmap) {
+        if (input == map.inputKey) {
+            achievementView = map.view;
+        }
+    }
+
+}
+
+void Gameloop::handleDebugChoice(const std::string &input) {
+    if (input == "7") {
+        getWallet().incrementCookieAmount(CookieNumber(100));
+        setMessage(DEBUG);
+    } else if (input == "8") {
+        getWallet().incrementCookieAmount(getWallet().getCookieAmount() * 2);
+        getWallet().incrementCps(getWallet().getCps() * 2);
+        setMessage(DEBUG);
+    } else if (input == "9") {
+        setMessage(DEBUG);
+        CookieNumber a(
+                "115119036727821003870521051999708461"
+                "257642313059096215428937680038718894154"
+                "816459487665078480150348801009011289080");
+        getWallet().incrementCookieAmount(a);
+        getWallet().incrementCps(a * 2);
+    }
+}
+

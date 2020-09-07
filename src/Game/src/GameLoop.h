@@ -8,6 +8,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
 #include <thread>
 #include <mutex>
 #include <chrono>
@@ -52,6 +53,12 @@ class Gameloop {
     };
     std::atomic<inputModes> inputMode = ONE_ITEM;
 
+    enum achievementViews {
+        COOKIE_AMOUNT,
+        COOKIES_PER_SECOND,
+    };
+    std::atomic<achievementViews> achievementView = COOKIE_AMOUNT;
+
     enum notifyMessages {
         NO_MSG,
         NOT_ENOUGH_MONEY_FOR_ITEM,
@@ -61,15 +68,17 @@ class Gameloop {
         SAVED,
         LOADED,
         ERROR,
+        ACHIEVEMENT_UNLOCKED,
         LAST_MSG,
     };
     std::atomic<notifyMessages> notifyMessage{};
     std::string notifyEnumToMsg(notifyMessages msg);
-    static void cleanTerminal();
     static std::string currentTime(const std::string& formatString = "%H:%M:%S");
     void renderTopStatus();
     std::string lastError;
+    std::string lastAchievement;
 
+private:
     Inventory m_Inventory;
     Wallet m_Wallet;
     Store m_Store;
@@ -81,7 +90,7 @@ class Gameloop {
     void showStoreInput(bool oneItem);
     void showInventory();
     void showAchievements();
-    void showOptions();
+    static void showOptions();
     static std::string inputModeMapping(inputModes mode);
 
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
@@ -89,7 +98,7 @@ class Gameloop {
     void showStatus();
     void incrementCookiesOnTime();
 
-    void buyItem(CookieNumber amountToBuy, Item &item);
+    void buyItem(const CookieNumber& amountToBuy, Item &item);
     bool canPayForItem(const CookieNumber& amountToBuy, Item &item);
     bool canBuyOne(Item &item);
     bool canBuyTen(Item &item);
@@ -106,6 +115,32 @@ class Gameloop {
             std::make_shared<AchievementList<CookieAmountAchievement>>(std::vector<std::shared_ptr<CookieAmountAchievement>>());
 
     void loadCookieAmountAchievements();
+    void handleBuyItemChoice(const std::string &input);
+    void handleGenericChoice(const std::string &input);
+    void handleSaveLoadChoice(const std::string &input);
+    void handleInputSwitchChoice(const std::string &input);
+    void handleAchievementViewChoice(const std::string &input);
+    void handleDebugChoice(const std::string& input);
+
+    struct achievementViewMapping {
+        achievementViews view;
+        std::string inputKey;
+        std::string description;
+    };
+
+    std::vector<achievementViewMapping> achievementviewmap {
+            {COOKIE_AMOUNT, "a", "Cookie Amount"},
+            {COOKIES_PER_SECOND, "b", "Cookies per Second"},
+    };
+
+    template <typename T>
+    void showAchievement(const T& achievementList) {
+        for (const auto &a : achievementList->getAchievements()) {
+            if (a != nullptr && a->hasAchieved()) {
+                std::cout << a->name() << ": " << a->description() << std::endl;
+            }
+        }
+    }
 
     FRIEND_TEST(GameloopTestSuite, incrementCps);
     FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
@@ -124,7 +159,6 @@ public:
     Wallet &getWallet();
     Inventory &getInventory();
     Store &getStore();
-    void handleBuyItemChoice(const std::string &input);
 };
 
 
