@@ -26,6 +26,7 @@
 #include "Store.h"
 #include "CookieNumbers.h"
 #include "Save.h"
+#include "Screen.h"
 #include <gtest/gtest_prod.h>
 
 class Gameloop {
@@ -76,6 +77,7 @@ class Gameloop {
     static std::string currentTime(const std::string& formatString = "%H:%M:%S");
     void renderTopStatus();
     std::string lastError;
+
     std::string lastAchievement;
 
 private:
@@ -121,6 +123,8 @@ private:
     void handleInputSwitchChoice(const std::string &input);
     void handleAchievementViewChoice(const std::string &input);
     void handleDebugChoice(const std::string& input);
+
+    Screen gamescreen = Screen(m_Wallet);
 
     struct achievementViewMapping {
         achievementViews view;

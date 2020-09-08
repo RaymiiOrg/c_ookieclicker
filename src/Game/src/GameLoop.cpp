@@ -111,6 +111,7 @@ void Gameloop::input() {
         for (char &c : input) {
             std::string choice(1,c);
             handleChoice(choice);
+            gamescreen.handleInput(choice);
         }
     }
 }
@@ -119,7 +120,7 @@ void Gameloop::gameStep() {
     while (running) {
         std::lock_guard<std::mutex> locker(gameStepMutex);
         auto startTime = std::chrono::high_resolution_clock::now();
-
+        gamescreen.render();
         renderTopStatus();
 
         // end of cycle

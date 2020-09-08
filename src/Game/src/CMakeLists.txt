@@ -12,6 +12,7 @@ target_link_libraries(${LIBRARY} PUBLIC
         Wallet
         Store
         Achievements
+        Screen
         gtest
         )
 target_link_libraries(${LIBRARY} PUBLIC stdc++fs)
@@ -24,6 +25,7 @@ target_link_libraries(${LIBRARY}_linux PUBLIC
         Commands
         Wallet
         Achievements
+        Screen
         Store)
 target_link_libraries(${LIBRARY}_linux PUBLIC stdc++fs)
 target_include_directories(${LIBRARY}_linux PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
