@@ -14,7 +14,8 @@ TEST(notifyMessageTestSuite, setMessage)
     ASSERT_EQ(msg.getCurrentMessage(), notifyMessage::msgType::ACHIEVEMENT_UNLOCKED);
 }
 
-TEST(notifyMessageTestSuite, getMessage) {
+TEST(notifyMessageTestSuite, getMessage)
+{
     //arrange
     testing::internal::CaptureStdout();
     notifyMessage msg;
