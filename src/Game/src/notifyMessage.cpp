@@ -46,7 +46,7 @@ void notifyMessage::setCurrentMessage(notifyMessage::msgType currentMessage) {
 
 
 void notifyMessage::setMessageTime(const std::string &timeString) {
-    lastMessageTime = timeString;
+    lastMessageTime = currentTime(timeString);
 }
 
 std::ostream &operator<<(std::ostream &os, const notifyMessage &message) {
@@ -54,25 +54,34 @@ std::ostream &operator<<(std::ostream &os, const notifyMessage &message) {
     switch (message.getCurrentMessage()) {
         case notifyMessage::msgType::NOT_ENOUGH_MONEY_FOR_ITEM:
             os << "Not enough money to buy " + message.lastItemFailedToBuy;
+            break;
         case notifyMessage::msgType::BOUGHT_ITEM:
             os << "You bought " + cp.print(message.lastItemBoughtAmount) + " " +
                    message.lastItemBoughtName + "(s).";
+            break;
         case notifyMessage::msgType::MAGIC:
             os << "The answer to life, the universe and everything!";
+            break;
         case notifyMessage::msgType::DEBUG:
             os << "A Debug Thing Happened!";
+            break;
         case notifyMessage::msgType::SAVED:
             os << "Game saved.";
+            break;
         case notifyMessage::msgType::LOADED:
             os << "Loaded saved game from file";
+            break;
         case notifyMessage::msgType::ERROR:
             os << "An error occured: " << message.lastError;
+            break;
         case notifyMessage::msgType::ACHIEVEMENT_UNLOCKED:
             os << "Achievement unlocked: " << message.lastAchievement + "!";
+            break;
         case notifyMessage::msgType::NO_MSG:
         case notifyMessage::msgType::LAST_MSG:
         default:
             os << "";
+            break;
     }
     return os;
 }
