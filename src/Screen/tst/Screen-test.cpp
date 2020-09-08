@@ -10,7 +10,7 @@ struct ScreenTestSuite : public ::testing::Test
 
 TEST_F(ScreenTestSuite, defaultScreen) {
     //arrange
-    Screen screen;
+    Screen screen(<#initializer#>, <#initializer#>);
     //act
     //assert
     ASSERT_EQ(screen.activeView, dynamic_cast<View*>(&screen.storeview));
@@ -18,9 +18,9 @@ TEST_F(ScreenTestSuite, defaultScreen) {
 
 TEST_F(ScreenTestSuite, switchScreen) {
     //arrange
-    Screen screen1;
-    Screen screen2;
-    Screen screen3;
+    Screen screen1(<#initializer#>, <#initializer#>);
+    Screen screen2(<#initializer#>, <#initializer#>);
+    Screen screen3(<#initializer#>, <#initializer#>);
     //act
     screen1.handleInput("3");
     screen2.handleInput("4");

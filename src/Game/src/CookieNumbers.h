@@ -203,4 +203,6 @@ public:
 
 typedef CookieNumberPrinter cnp;
 
+static const CookieNumberPrinter cp;
+
 #endif //C_OOKIECLIKER_COOKIENUMBERS_H

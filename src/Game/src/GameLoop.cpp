@@ -5,69 +5,11 @@
 #include "GameLoop.h"
 #include "filesystem.h"
 
-std::string Gameloop::notifyEnumToMsg(notifyMessages msg) {
-    switch (msg) {
-        case NOT_ENOUGH_MONEY_FOR_ITEM:
-            return "Not enough money to buy " + failed_to_buy_item;
-        case BOUGHT_ITEM:
-            return "You bought " + cp.print(getInventory().getLastItemAddedAmount()) + " " +
-                   getInventory().getLastItemAdded() + "(s).";
-        case MAGIC:
-            return "The answer to life, the universe and everything!";
-        case DEBUG:
-            return "A Debug Thing Happened!";
-        case SAVED:
-            return "Game saved.";
-        case LOADED:
-            return "Loaded saved game from file";
-        case ERROR:
-            return "An error occured: " + lastError;
-        case ACHIEVEMENT_UNLOCKED:
-            return "Achievement unlocked: " + lastAchievement + "!";
-        case NO_MSG:
-        case LAST_MSG:
-        default:
-            return "";
-    }
-}
-
-
-std::string Gameloop::currentTime(const std::string &formatString) {
-    auto time_point = std::chrono::system_clock::now();
-    std::time_t now_c = std::chrono::system_clock::to_time_t(time_point);
-    struct tm *time_info = std::localtime(&now_c);
-    std::ostringstream os;
-    os << std::put_time(time_info, formatString.c_str());
-    return os.str();
-}
-
-void Gameloop::renderTopStatus() {
-    std::lock_guard<std::mutex> locker(outputShowMutex);
-    std::cout << escapeCode.cursorTo0x0;
-
-    for (int line = 0; line < 2; ++line)
-        std::cout << escapeCode.eraseCurrentLine << escapeCode.cursorDownOneLine;
-    std::cout << escapeCode.cursorTo0x0;
-    std::cout << escapeCode.eraseCurrentLine;
-    std::cout << "===== c_ookieclicker by Remy ====" << std::endl;
-    std::cout << escapeCode.eraseCurrentLine;
-    if (notifyMessage != NO_MSG) {
-        std::cout << escapeCode.terminalBold;
-        std::cout << lastMessageTime << ": " << notifyEnumToMsg(notifyMessage);
-        std::cout << escapeCode.terminalReset;
-    }
-    std::cout << std::endl;
-    showStatus();
-}
-
-void Gameloop::setMessage(notifyMessages msg) {
-    setMessageTime(currentTime());
-    notifyMessage = msg;
-}
 
 Gameloop::Gameloop() : running(true),
                        gameStepThread(&Gameloop::gameStep, this),
-                       inputThread(&Gameloop::input, this), notifyMessage(NO_MSG) {
+                       inputThread(&Gameloop::input, this) {
+    gamescreen = std::make_unique<Screen>(m_Wallet, currentMessage);
     loadCookieAmountAchievements();
 }
 
@@ -77,8 +19,8 @@ void Gameloop::loadCookieAmountAchievements() {
     if (fs::exists(achievementsFile))
         cookieAmountAchievements->loadAchievementsFromCSV(achievementsFile);
     else {
-        lastError = "Could not load achievementsfile from '" + achievementsFile + "'.";
-        setMessage(ERROR);
+        currentMessage.setLastError("Could not load achievementsfile from '" + achievementsFile + "'.");
+        currentMessage.setCurrentMessage(notifyMessage::msgType::ERROR);
     }
 
 }
@@ -91,10 +33,6 @@ Gameloop::~Gameloop() {
         inputThread.join();
     if (gameStepThread.joinable())
         gameStepThread.join();
-}
-
-void Gameloop::start() {
-    running = true;
 }
 
 inline void Gameloop::quit() {
@@ -111,7 +49,8 @@ void Gameloop::input() {
         for (char &c : input) {
             std::string choice(1,c);
             handleChoice(choice);
-            gamescreen.handleInput(choice);
+            if(gamescreen)
+                gamescreen->handleInput(choice);
         }
     }
 }
@@ -120,8 +59,9 @@ void Gameloop::gameStep() {
     while (running) {
         std::lock_guard<std::mutex> locker(gameStepMutex);
         auto startTime = std::chrono::high_resolution_clock::now();
-        gamescreen.render();
-        renderTopStatus();
+        if (gamescreen) {
+            gamescreen->render();
+        }
 
         // end of cycle
         if (cookieStepIncrement >= 1000) { //(1 second)
@@ -151,7 +91,6 @@ void Gameloop::showFinalScore() {
 }
 
 void Gameloop::showInput() {
-    std::lock_guard<std::mutex> locker(outputShowMutex);
     std::cout << escapeCode.cursorTo7x0;
     for (int line = 0; line < 150; ++line)
         std::cout << escapeCode.cursorDownOneLine << escapeCode.eraseCurrentLine;
@@ -178,7 +117,7 @@ void Gameloop::showInput() {
             showAchievements();
             break;
         case OPTIONS:
-            showOptions();
+            //showOptions();
             break;
         default:
             break;
@@ -214,16 +153,6 @@ void Gameloop::showAchievements() {
             break;
     }
 
-}
-
-void Gameloop::showOptions() {
-    std::cout << "\n===== Options ====\n";
-
-    std::cout << "[q]: quit; \n";
-    std::cout << "[s]: save; \n";
-    std::cout << "[l]: load; \n";
-    std::cout << std::endl;
-    std::cout << "version: " << game::gameVersion << std::endl;
 }
 
 void Gameloop::showInputBar() {
@@ -332,26 +261,13 @@ void Gameloop::handleBuyItemChoice(const std::string &input) {
                 (maxbuy == 100 && canPayForItem(100, item))) {
                 buyItem(CookieNumber(maxbuy), item);
             } else {
-                failed_to_buy_item = item.name;
-                setMessage(NOT_ENOUGH_MONEY_FOR_ITEM);
+                currentMessage.setLastItemFailedToBuy(item.name);
+                currentMessage.setCurrentMessage(notifyMessage::msgType::NOT_ENOUGH_MONEY_FOR_ITEM);
             }
         }
     }
 }
 
-void Gameloop::showStatus() {
-    std::cout << escapeCode.eraseCurrentLine;
-    std::cout << "Cookies\t:\t";
-    if (getWallet().getCookieAmount() > 0)
-        std::cout << cp.print(getWallet().getCookieAmount());
-    std::cout << std::endl;
-    std::cout << escapeCode.eraseCurrentLine;
-    std::cout << "cps\t:\t";
-    if (getWallet().getCps() > 0)
-        std::cout << cp.print(getWallet().getCps());
-    std::cout << std::endl;
-    std::cout << escapeCode.eraseCurrentLine;
-}
 
 void Gameloop::incrementCookiesOnTime() {
     step_stop = std::chrono::high_resolution_clock::now();
@@ -364,10 +280,12 @@ void Gameloop::buyItem(const CookieNumber& amountToBuy, Item &item) {
     if (canPayForItem(amountToBuy, item) && amountToBuy > CookieNumber(0)) {
         auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, getInventory(), getWallet(), getStore());
         buyCommand->execute();
-        setMessage(BOUGHT_ITEM);
+        currentMessage.setLastItemBoughtName(item.name);
+        currentMessage.setLastItemBoughtAmount(amountToBuy);
+        currentMessage.setCurrentMessage(notifyMessage::msgType::BOUGHT_ITEM);
     } else {
-        failed_to_buy_item = item.name;
-        setMessage(NOT_ENOUGH_MONEY_FOR_ITEM);
+        currentMessage.setLastItemFailedToBuy(item.name);
+        currentMessage.setCurrentMessage(notifyMessage::msgType::NOT_ENOUGH_MONEY_FOR_ITEM);
     }
 }
 
@@ -378,10 +296,6 @@ bool Gameloop::canPayForItem(const CookieNumber &amountToBuy, Item &item) {
         return true;
 
     return canBuyOne(item);
-}
-
-void Gameloop::setMessageTime(const std::string &timeString) {
-    lastMessageTime = timeString;
 }
 
 Inventory &Gameloop::getInventory() {
@@ -476,12 +390,12 @@ void Gameloop::handleSaveLoadChoice(const std::string &input) {
     if (input == "s") {
         auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
         if (saveGame.save()) {
-            setMessage(SAVED);
+            currentMessage.setCurrentMessage(notifyMessage::msgType::SAVED);
         }
     } else if (input == "l") {
         auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
         if (saveGame.load()) {
-            setMessage(LOADED);
+            currentMessage.setCurrentMessage(notifyMessage::msgType::LOADED);
         }
     }
 }
@@ -504,13 +418,13 @@ void Gameloop::handleAchievementViewChoice(const std::string &input) {
 void Gameloop::handleDebugChoice(const std::string &input) {
     if (input == "7") {
         getWallet().incrementCookieAmount(CookieNumber(100));
-        setMessage(DEBUG);
+        currentMessage.setCurrentMessage(notifyMessage::msgType::DEBUG);
     } else if (input == "8") {
         getWallet().incrementCookieAmount(getWallet().getCookieAmount() * 2);
         getWallet().incrementCps(getWallet().getCps() * 2);
-        setMessage(DEBUG);
+        currentMessage.setCurrentMessage(notifyMessage::msgType::DEBUG);
     } else if (input == "9") {
-        setMessage(DEBUG);
+        currentMessage.setCurrentMessage(notifyMessage::msgType::DEBUG);
         CookieNumber a(
                 "115119036727821003870521051999708461"
                 "257642313059096215428937680038718894154"
