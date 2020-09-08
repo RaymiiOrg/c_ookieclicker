@@ -2,31 +2,33 @@
 #include "gtest/gtest.h"
 
 #define private public
+
 #include "Screen.h"
 
-struct ScreenTestSuite : public ::testing::Test
-{
+struct ScreenTestSuite : public ::testing::Test {
+    notifyMessage msg;
+    Wallet wallet;
 };
 
 TEST_F(ScreenTestSuite, defaultScreen) {
     //arrange
-    Screen screen(<#initializer#>, <#initializer#>);
+    Screen screen(wallet, msg);
     //act
     //assert
-    ASSERT_EQ(screen.activeView, dynamic_cast<View*>(&screen.storeview));
+    ASSERT_EQ(screen.activeView, dynamic_cast<View *>(&screen.storeview));
 }
 
 TEST_F(ScreenTestSuite, switchScreen) {
     //arrange
-    Screen screen1(<#initializer#>, <#initializer#>);
-    Screen screen2(<#initializer#>, <#initializer#>);
-    Screen screen3(<#initializer#>, <#initializer#>);
+    Screen screen1(wallet, msg);
+    Screen screen2(wallet, msg);
+    Screen screen3(wallet, msg);
     //act
     screen1.handleInput("3");
     screen2.handleInput("4");
     screen3.handleInput("5");
     //assert
-    ASSERT_EQ(screen1.activeView, dynamic_cast<View*>(&screen1.inventoryview));
-    ASSERT_EQ(screen2.activeView, dynamic_cast<View*>(&screen2.achievementview));
-    ASSERT_EQ(screen3.activeView, dynamic_cast<View*>(&screen3.optionsview));
+    ASSERT_EQ(screen1.activeView, dynamic_cast<View *>(&screen1.inventoryview));
+    ASSERT_EQ(screen2.activeView, dynamic_cast<View *>(&screen2.achievementview));
+    ASSERT_EQ(screen3.activeView, dynamic_cast<View *>(&screen3.optionsview));
 }

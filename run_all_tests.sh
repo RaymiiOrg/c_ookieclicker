@@ -27,6 +27,6 @@ for testexecutable in ${tests}; do
   echo
 done
 
-make checkstyle;
+#make checkstyle;
 
 cd ..
