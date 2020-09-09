@@ -9,7 +9,9 @@
 Gameloop::Gameloop() : running(true),
                        gameStepThread(&Gameloop::gameStep, this),
                        inputThread(&Gameloop::input, this) {
-    gamescreen = std::make_unique<Screen>(m_Wallet, currentMessage);
+    gamescreen = std::make_unique<Screen>(&m_Wallet,
+                                          &currentMessage,
+                                          &m_Inventory);
     loadCookieAmountAchievements();
 }
 
@@ -42,14 +44,14 @@ inline void Gameloop::quit() {
 
 void Gameloop::input() {
     while (running) {
-        showInput();
+        //showInput();
         std::lock_guard<std::mutex> locker(inputMutex);
         std::string input;
         std::getline(std::cin, input);
         for (char &c : input) {
             std::string choice(1,c);
             handleChoice(choice);
-            if(gamescreen)
+            if(gamescreen != nullptr)
                 gamescreen->handleInput(choice);
         }
     }
@@ -59,8 +61,10 @@ void Gameloop::gameStep() {
     while (running) {
         std::lock_guard<std::mutex> locker(gameStepMutex);
         auto startTime = std::chrono::high_resolution_clock::now();
-        if (gamescreen) {
+        if (gamescreen != nullptr) {
             gamescreen->render();
+        } else {
+            std::cout << "Loading screens..." << std::endl;
         }
 
         // end of cycle
@@ -81,7 +85,7 @@ void Gameloop::gameStep() {
 }
 
 void Gameloop::showFinalScore() {
-    std::cout << escapeCode.clearEntireScreen << escapeCode.cursorTo7x0;
+    std::cout << escapeCode.clearEntireScreen << escapeCode.cursorTo0x0;
     std::cout << "Well done.\n";
     std::cout << "Ended with " << cp.print(getWallet().getCookieAmount()) << " cookies.\n";
     std::cout << "Total cookies earned: " << cp.print(getWallet().getTotalcookies()) << "\n";
@@ -91,48 +95,32 @@ void Gameloop::showFinalScore() {
 }
 
 void Gameloop::showInput() {
-    std::cout << escapeCode.cursorTo7x0;
-    for (int line = 0; line < 150; ++line)
-        std::cout << escapeCode.cursorDownOneLine << escapeCode.eraseCurrentLine;
-    std::cout << escapeCode.cursorTo7x0;
-    std::cout << escapeCode.terminalBold;
-    if (getInventory().getCookiesPerTap() >= CookieNumber(1))
-        std::cout << "[c]\t:\t get cookie \n";
-    std::cout << escapeCode.terminalReset;
-
-    showInputBar();
-
-    switch (inputMode) {
-        case FIRST_MODE:
-        case ONE_ITEM:
-            showStoreInput(true);
-            break;
-        case ALL_ITEMS:
-            showStoreInput(false);
-            break;
-        case INVENTORY:
-            showInventory();
-            break;
-        case ACHIEVEMENTS:
-            showAchievements();
-            break;
-        case OPTIONS:
-            //showOptions();
-            break;
-        default:
-            break;
-    }
+//
+//
+//    switch (inputMode) {
+//        case FIRST_MODE:
+//        case ONE_ITEM:
+//            showStoreInput(true);
+//            break;
+//        case ALL_ITEMS:
+//            showStoreInput(false);
+//            break;
+//        case INVENTORY:
+//            showInventory();
+//            break;
+//        case ACHIEVEMENTS:
+//            showAchievements();
+//            break;
+//        case OPTIONS:
+//            //showOptions();
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 void Gameloop::showInventory() {
-    std::cout << "\n===== Inventory ====\n";
-    if (!getInventory().getInventory().empty()) {
-        for (auto &item : getInventory().getInventory()) {
-            if (item.second > 0) {
-                std::cout << item.first << ": " << cp.print(item.second) << "\n";
-            }
-        }
-    }
+
 }
 
 void Gameloop::showAchievements() {
@@ -154,20 +142,20 @@ void Gameloop::showAchievements() {
     }
 
 }
-
-void Gameloop::showInputBar() {
-    std::cout << std::endl;
-    for (int i = static_cast<int>(inputModes::FIRST_MODE); i < static_cast<int>(inputModes::LAST_MODE); ++i) {
-        if (inputMode == static_cast<inputModes>(i)) {
-            std::cout << escapeCode.terminalBold <<
-                      inputModeMapping(static_cast<inputModes>(i)) <<
-                      escapeCode.terminalReset;
-        } else {
-            std::cout << inputModeMapping(static_cast<inputModes>(i));
-        }
-    }
-    std::cout << std::endl;
-}
+//
+//void Gameloop::showInputBar() {
+//    std::cout << std::endl;
+//    for (int i = static_cast<int>(inputModes::FIRST_MODE); i < static_cast<int>(inputModes::LAST_MODE); ++i) {
+//        if (inputMode == static_cast<inputModes>(i)) {
+//            std::cout << escapeCode.terminalBold <<
+//                      inputModeMapping(static_cast<inputModes>(i)) <<
+//                      escapeCode.terminalReset;
+//        } else {
+//            std::cout << inputModeMapping(static_cast<inputModes>(i));
+//        }
+//    }
+//    std::cout << std::endl;
+//}
 
 void Gameloop::showStoreInput(bool oneItem) {
     std::cout << "\n===== Store ====\n";
@@ -353,23 +341,23 @@ int Gameloop::maxItemAmount(Item &item) {
     }
     return 0;
 }
-
-std::string Gameloop::inputModeMapping(Gameloop::inputModes mode) {
-    switch (mode) {
-        case ONE_ITEM:
-            return "[1]: Buildings | ";
-        case ALL_ITEMS:
-            return "[2]: Buildings (10/100) | ";
-        case INVENTORY:
-            return "[3]: Inventory | ";
-        case ACHIEVEMENTS:
-            return "[4]: Achievements | ";
-        case OPTIONS:
-            return "[5]: Options";
-        default:
-            return "";
-    }
-}
+//
+//std::string Gameloop::inputModeMapping(Gameloop::inputModes mode) {
+//    switch (mode) {
+//        case ONE_ITEM:
+//            return "[1]: Buildings | ";
+//        case ALL_ITEMS:
+//            return "[2]: Buildings (10/100) | ";
+//        case INVENTORY:
+//            return "[3]: Inventory | ";
+//        case ACHIEVEMENTS:
+//            return "[4]: Achievements | ";
+//        case OPTIONS:
+//            return "[5]: Options";
+//        default:
+//            return "";
+//    }
+//}
 
 void Gameloop::reset() {
     getWallet().reset();

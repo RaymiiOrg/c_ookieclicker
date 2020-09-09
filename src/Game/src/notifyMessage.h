@@ -6,6 +6,7 @@
 #define C_OOKIECLIKER_NOTIFYMESSAGE_H
 #include <string>
 #include <ostream>
+#include <atomic>
 #include "CookieNumbers.h"
 
 class notifyMessage {
@@ -26,7 +27,7 @@ public:
     void setLastItemBoughtName(const std::string &lastItemBoughtName);
     void setLastError(const std::string &lastError);
     void setLastAchievement(const std::string &lastAchievement);
-    msgType getCurrentMessage() const;
+    [[nodiscard]] msgType getCurrentMessage() const;
 
     friend std::ostream &operator<<(std::ostream &os, const notifyMessage &message);
 
@@ -34,7 +35,7 @@ public:
     void setLastItemBoughtAmount(const CookieNumber &lastItemBoughtAmount);
 
 private:
-    msgType currentMessage;
+    msgType currentMessage = msgType::NO_MSG;
     std::string lastMessageTime;
     CookieNumber lastItemBoughtAmount;
     std::string lastItemFailedToBuy;

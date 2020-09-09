@@ -2,7 +2,13 @@
 
 Release date: 2020-
 
-- Implemented Cookie Amount achievements
+- Removed screen rendering code from
+  main game loop into its own Screen class,
+  each `Screen` can have one or more `Views`,
+  each view has at least a `render()` and `handleInput()`
+  method. Views could have views as wel, as subviews.
+- Fix crash when loading savegame with space in its name.  
+- Implemented first type of Achievement: `Cookie Amount achievements`
   - Added observer pattern style notifications on Wallet->incrementCookieAmount
 - Display Cookienumbers more like javascript game, 
   with some numbers behind the comma.

@@ -9,8 +9,8 @@
 
 class Wallet : public Subject {
     public:
-    CookieNumber getCookieAmount();
-    CookieNumber getCps();
+    CookieNumber getCookieAmount() const;
+    CookieNumber getCps() const;
     void incrementCookieAmount(const CookieNumber& amount);
     void decrementCookieAmount(const CookieNumber& amount);
     void incrementCps(const CookieNumber& amount);

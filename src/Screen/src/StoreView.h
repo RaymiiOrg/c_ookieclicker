@@ -7,7 +7,10 @@
 #include "View.h"
 
 class StoreView : public View {
+    const std::string _name {"Store"};
+
 public:
+    const std::string &name() override { return _name; };
     void render() override;
     void handleInput(const std::string &input) override;
 };

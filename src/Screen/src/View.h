@@ -11,6 +11,7 @@ class View {
 public:
     virtual void render() = 0;
     virtual void handleInput(const std::string& input) = 0;
+    virtual const std::string& name() = 0;
 };
 
 

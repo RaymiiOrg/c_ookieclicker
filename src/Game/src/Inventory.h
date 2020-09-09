@@ -27,7 +27,7 @@ public:
     CookieNumber getCookiesPerTap();
     void incrementCookiesPerTap(const CookieNumber& amount);
     const std::string& getLastItemAdded();
-    std::map<std::string, CookieNumber>& getInventory() { return m_Inventory; };
+    const std::map<std::string, CookieNumber>& getInventory() const { return m_Inventory; };
 };
 
 

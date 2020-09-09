@@ -14,11 +14,11 @@ void Wallet::decrementCps(const CookieNumber& amount) {
     notify();
 }
 
-CookieNumber Wallet::getCookieAmount() {
+CookieNumber Wallet::getCookieAmount() const {
     return _cookieAmount;
 }
 
-CookieNumber Wallet::getCps() {
+CookieNumber Wallet::getCps() const {
     return _cps;
 }
 

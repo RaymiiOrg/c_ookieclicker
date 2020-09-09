@@ -8,15 +8,20 @@ void Screen::handleInput(const std::string &input) {
 
 void Screen::switchActiveView(const std::string &input) {
     if(input == "1") { activeView = dynamic_cast<View*>(&storeview);}
-    if(input == "2") { activeView = dynamic_cast<View*>(&storeview);}
-    if(input == "3") { activeView = dynamic_cast<View*>(&inventoryview);}
-    if(input == "4") { activeView = dynamic_cast<View*>(&achievementview);}
-    if(input == "5") { activeView = dynamic_cast<View*>(&optionsview);}
+    if(input == "2") { activeView = dynamic_cast<View*>(&inventoryview);}
+    if(input == "3") { activeView = dynamic_cast<View*>(&achievementview);}
+    if(input == "4") { activeView = dynamic_cast<View*>(&optionsview);}
+    inputmodeview.setCurrentActiveView(activeView);
 }
 
 void Screen::render() {
+    messageview.render();
     statusview.render();
+    inputmodeview.render();
     std::cout << std::endl;
-    if (activeView)
+    if (activeView) {
         activeView->render();
+    } else {
+        std::cout << "Loading Active View..." << std::endl;
+    }
 }

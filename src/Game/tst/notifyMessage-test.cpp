@@ -2,6 +2,8 @@
 #define private public
 #include "notifyMessage.h"
 
+
+
 TEST(notifyMessageTestSuite, setMessage)
 {
     //arrange
@@ -28,4 +30,18 @@ TEST(notifyMessageTestSuite, getMessage)
     //assert
     std::string output = testing::internal::GetCapturedStdout();
     ASSERT_EQ(output, msg.lastMessageTime + ": Achievement unlocked: testBla!");
+}
+
+TEST(notifyMessageTestSuite, printNothingWhenNoMessage)
+{
+    //arrange
+    testing::internal::CaptureStdout();
+    notifyMessage msg;
+
+    //act
+    std::cout << msg;
+
+    //assert
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_EQ(output, "");
 }

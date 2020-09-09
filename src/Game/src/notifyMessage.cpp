@@ -16,29 +16,29 @@ std::string notifyMessage::currentTime(const std::string &formatString)
     return os.str();
 }
 
-void notifyMessage::setLastItemFailedToBuy(const std::string &lastItemFailedToBuy)
+void notifyMessage::setLastItemFailedToBuy(const std::string &_lastItemFailedToBuy)
 {
-    notifyMessage::lastItemFailedToBuy = lastItemFailedToBuy;
+    lastItemFailedToBuy = _lastItemFailedToBuy;
 }
 
-void notifyMessage::setLastItemBoughtName(const std::string &lastItemBoughtName)
+void notifyMessage::setLastItemBoughtName(const std::string &_lastItemBoughtName)
 {
-    notifyMessage::lastItemBoughtName = lastItemBoughtName;
+    lastItemBoughtName = _lastItemBoughtName;
 }
 
-void notifyMessage::setLastItemBoughtAmount(const CookieNumber &lastItemBoughtAmount)
+void notifyMessage::setLastItemBoughtAmount(const CookieNumber &_lastItemBoughtAmount)
 {
-    notifyMessage::lastItemBoughtAmount = lastItemBoughtAmount;
+    lastItemBoughtAmount = _lastItemBoughtAmount;
 }
 
-void notifyMessage::setLastError(const std::string &lastError)
+void notifyMessage::setLastError(const std::string &_lastError)
 {
-    notifyMessage::lastError = lastError;
+    lastError = _lastError;
 }
 
-void notifyMessage::setLastAchievement(const std::string &lastAchievement)
+void notifyMessage::setLastAchievement(const std::string &_lastAchievement)
 {
-    notifyMessage::lastAchievement = lastAchievement;
+    lastAchievement = _lastAchievement;
 }
 
 notifyMessage::msgType notifyMessage::getCurrentMessage() const
@@ -46,10 +46,10 @@ notifyMessage::msgType notifyMessage::getCurrentMessage() const
     return currentMessage;
 }
 
-void notifyMessage::setCurrentMessage(notifyMessage::msgType currentMessage)
+void notifyMessage::setCurrentMessage(notifyMessage::msgType _currentMessage)
 {
     setMessageTime();
-    notifyMessage::currentMessage = currentMessage;
+    currentMessage = _currentMessage;
 }
 
 void notifyMessage::setMessageTime(const std::string &timeString)
@@ -59,7 +59,8 @@ void notifyMessage::setMessageTime(const std::string &timeString)
 
 std::ostream &operator<<(std::ostream &os, const notifyMessage &message)
 {
-    os << message.lastMessageTime << ": ";
+    if (!message.lastMessageTime.empty())
+        os << message.lastMessageTime << ": ";
     switch (message.getCurrentMessage())
     {
     case notifyMessage::msgType::NOT_ENOUGH_MONEY_FOR_ITEM:

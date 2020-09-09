@@ -20,6 +20,7 @@ struct escapeCodes {
     const std::string terminalUnderline {"\033[4m"};
     const std::string terminalDim {"\033[2m"};
     const std::string cursorTo0x0 {"\033[0;0f"};
+    const std::string cursorTo6x0 {"\033[6;0f"};
     const std::string cursorTo7x0 {"\033[7;0f"};
 };
 

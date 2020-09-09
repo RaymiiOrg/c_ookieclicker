@@ -5,16 +5,25 @@
 #ifndef C_OOKIECLIKER_MESSAGEVIEW_H
 #define C_OOKIECLIKER_MESSAGEVIEW_H
 #include "View.h"
+
+#include <utility>
 #include "notifyMessage.h"
 
 class MessageView : public View {
 private:
-    notifyMessage& msg;
+    const notifyMessage* msg;
+    void clearMessageView() const;
+    void showGameTitle() const;
+    void showMessage() const;
+    const std::string _name {"Messages"};
 
 public:
     void render() override;
+    const std::string &name() override { return _name; };
     void handleInput(const std::string &input) override {};
-    explicit MessageView(notifyMessage &msg) : msg(msg) {};
+    explicit MessageView(const notifyMessage* msg) : msg(msg) {};
+
+
 };
 
 
