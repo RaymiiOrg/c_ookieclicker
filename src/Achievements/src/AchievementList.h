@@ -8,6 +8,7 @@
 #include "CookieNumbers.h"
 #include "Achievement.h"
 #include "CookieAmountAchievement.h"
+#include "CookiesPerSecondAchievement.h"
 #include "Observer.h"
 #include "filesystem.h"
 #include <fstream>

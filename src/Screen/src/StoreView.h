@@ -5,6 +5,7 @@
 #ifndef C_OOKIECLIKER_STOREVIEW_H
 #define C_OOKIECLIKER_STOREVIEW_H
 #include "View.h"
+#include "Store.h"
 
 class StoreView : public View {
     const std::string _name {"Store"};
