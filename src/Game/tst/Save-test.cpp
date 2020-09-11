@@ -21,7 +21,7 @@ TEST_F(SaveTestSuite, saveBlankFile)
 {
     //arrange
     auto saveFile = testSaveFileFolder + "saveBlankFile.save";
-    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), game->getStore(), format1);
+    auto savegame = Save(saveFile, &game->getInventory(), &game->getWallet(), &game->getStore(), format1);
     //act
     auto result = savegame.save();
     //assert
@@ -33,7 +33,7 @@ TEST_F(SaveTestSuite, loadNonExistentFile)
 {
     //arrange
     auto saveFile = testSaveFileFolder + "nonExistentFile.save";
-    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), game->getStore(), format1);
+    auto savegame = Save(saveFile, &game->getInventory(), &game->getWallet(), &game->getStore(), format1);
     // act
     auto result = savegame.load();
     //assert
@@ -53,11 +53,11 @@ TEST_F(SaveTestSuite, saveThenLoad)
 
     game->getInventory().addItem("Grandma", largeNumber);
 
-    auto savegame = Save(saveFile, game->getInventory(), game->getWallet(), game->getStore(), format1);
+    auto savegame = Save(saveFile, &game->getInventory(), &game->getWallet(), &game->getStore(), format1);
     auto saveResult = savegame.save();
 
     std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(false);
-    auto saveload = Save(saveFile, gameLoad->getInventory(), gameLoad->getWallet(), gameLoad->getStore(), format1);
+    auto saveload = Save(saveFile, &gameLoad->getInventory(), &gameLoad->getWallet(), &gameLoad->getStore(), format1);
     auto loadResult = saveload.load();
 
     //assert
@@ -78,7 +78,7 @@ TEST_F(SaveTestSuite, justLoad)
     auto saveFile = testSaveFileFolder + "justLoad.save";
 
     //act
-    auto saveload = Save(saveFile, game->getInventory(), game->getWallet(), game->getStore(), format1);
+    auto saveload = Save(saveFile, &game->getInventory(), &game->getWallet(), &game->getStore(), format1);
     auto loadResult = saveload.load();
 
     //assert

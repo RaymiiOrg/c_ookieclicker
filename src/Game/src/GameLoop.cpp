@@ -11,7 +11,7 @@ Gameloop::Gameloop() : running(true),
                        inputThread(&Gameloop::input, this) {
     gamescreen = std::make_unique<Screen>(&m_Wallet,
                                           &currentMessage,
-                                          &m_Inventory);
+                                          &m_Inventory, &m_Store);
     loadCookieAmountAchievements();
 }
 
@@ -119,10 +119,6 @@ void Gameloop::showInput() {
 //    }
 }
 
-void Gameloop::showInventory() {
-
-}
-
 void Gameloop::showAchievements() {
     std::cout << "\n===== Achievements ====\n";
     for (const auto& mapping : achievementviewmap) {
@@ -142,20 +138,6 @@ void Gameloop::showAchievements() {
     }
 
 }
-//
-//void Gameloop::showInputBar() {
-//    std::cout << std::endl;
-//    for (int i = static_cast<int>(inputModes::FIRST_MODE); i < static_cast<int>(inputModes::LAST_MODE); ++i) {
-//        if (inputMode == static_cast<inputModes>(i)) {
-//            std::cout << escapeCode.terminalBold <<
-//                      inputModeMapping(static_cast<inputModes>(i)) <<
-//                      escapeCode.terminalReset;
-//        } else {
-//            std::cout << inputModeMapping(static_cast<inputModes>(i));
-//        }
-//    }
-//    std::cout << std::endl;
-//}
 
 void Gameloop::showStoreInput(bool oneItem) {
     std::cout << "\n===== Store ====\n";
@@ -218,22 +200,21 @@ void Gameloop::showStoreInput(bool oneItem) {
 void Gameloop::handleChoice(const std::string& input) {
 
     handleGenericChoice(input);
-    handleSaveLoadChoice(input);
-    handleInputSwitchChoice(input);
+    //handleInputSwitchChoice(input);
 
-    switch (inputMode) {
-        case FIRST_MODE:
-        case ONE_ITEM:
-            handleBuyItemChoice(input);
-            break;
-        case ALL_ITEMS:
-        case INVENTORY:
-        case ACHIEVEMENTS:
-            handleAchievementViewChoice(input);
-        case OPTIONS:
-        default:
-            break;
-    }
+//    switch (inputMode) {
+//        case FIRST_MODE:
+//        case ONE_ITEM:
+//            handleBuyItemChoice(input);
+//            break;
+//        case ALL_ITEMS:
+//        case INVENTORY:
+//        case ACHIEVEMENTS:
+//            handleAchievementViewChoice(input);
+//        case OPTIONS:
+//        default:
+//            break;
+//    }
 #ifndef NDEBUG
     handleDebugChoice(input);
 #endif
@@ -369,30 +350,21 @@ void Gameloop::handleGenericChoice(const std::string &input) {
     if (input == "c") {
         auto cmd = std::make_unique<UpdateCookiesCommand>(getInventory().getCookiesPerTap(), getWallet());
         cmd->execute();
-    } else if (input == "q") {
+    }
+    else if (input == "q") {
         quit();
     }
 }
 
-void Gameloop::handleSaveLoadChoice(const std::string &input) {
-    if (input == "s") {
-        auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
-        if (saveGame.save()) {
-            currentMessage.setCurrentMessage(notifyMessage::msgType::SAVED);
-        }
-    } else if (input == "l") {
-        auto saveGame = Save(saveFile, getInventory(), getWallet(), getStore(), 1);
-        if (saveGame.load()) {
-            currentMessage.setCurrentMessage(notifyMessage::msgType::LOADED);
-        }
-    }
-}
-
-void Gameloop::handleInputSwitchChoice(const std::string &input) {
-    if (input == "1" or input == "2" or input == "3" or input == "4" or input == "5") {
-        inputMode = static_cast<inputModes>(std::stoi(input));
-    }
-}
+//void Gameloop::handleSaveLoadChoice(const std::string &input) {
+//
+//}
+//
+//void Gameloop::handleInputSwitchChoice(const std::string &input) {
+//    if (input == "1" or input == "2" or input == "3" or input == "4" or input == "5") {
+//        inputMode = static_cast<inputModes>(std::stoi(input));
+//    }
+//}
 
 void Gameloop::handleAchievementViewChoice(const std::string &input) {
     for (const auto& map : achievementviewmap) {

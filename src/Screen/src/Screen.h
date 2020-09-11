@@ -13,14 +13,16 @@
 
 class Screen {
 private:
-    const Wallet* wallet = nullptr;
-    const notifyMessage* currentMsg = nullptr;
-    const Inventory* inventory = nullptr;
+    std::string saveFile = ".cookieclicker.save";
+    Wallet* wallet = nullptr;
+    notifyMessage* currentMsg = nullptr;
+    Inventory* inventory = nullptr;
+    Store* store = nullptr;
 
     /* lower part of screen, can switch between these views */
     StoreView storeview;
     InventoryView inventoryview = InventoryView(inventory);
-    OptionsView optionsview;
+    OptionsView optionsview = OptionsView(currentMsg, saveFile, wallet, inventory, store);
     AchievementView achievementview;
     View* activeView = dynamic_cast<View*>(&storeview);
     std::vector<View*> allViews = {
@@ -39,10 +41,10 @@ public:
     void render();
     void handleInput(const std::string& input);
     Screen() =default;
-    explicit Screen(const Wallet* wallet, const notifyMessage* currentMsg,
-                    const Inventory* inventory) :
+    explicit Screen(Wallet* wallet, notifyMessage* currentMsg,
+                    Inventory* inventory, Store* store) :
                     wallet(wallet), currentMsg(currentMsg),
-                    inventory(inventory) {};
+                    inventory(inventory), store(store) {};
     void switchActiveView(const std::string &input);
 };
 
