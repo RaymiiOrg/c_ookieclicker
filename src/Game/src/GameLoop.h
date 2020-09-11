@@ -89,7 +89,7 @@ private:
     void handleChoice(const std::string& input);
     void showFinalScore();
 
-
+    std::string saveFile = ".cookieclicker.save";
 
     std::shared_ptr<AchievementList<CookieAmountAchievement>> cookieAmountAchievements =
             std::make_shared<AchievementList<CookieAmountAchievement>>(std::vector<std::shared_ptr<CookieAmountAchievement>>());

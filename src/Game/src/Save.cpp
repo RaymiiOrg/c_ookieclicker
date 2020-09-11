@@ -4,22 +4,16 @@
 
 #include "Save.h"
 
-Save::Save(std::string filename, Inventory* Inventory, Wallet* wallet, Store* store, int format) : m_Filename(std::move(
+Save::Save(std::string filename, Inventory &Inventory, Wallet &wallet, Store &store, int format) : m_Filename(std::move(
         filename)), m_Inventory(Inventory), m_Wallet(wallet), m_Store(store), m_Format(format) {}
 
 
 bool Save::save() {
-    if (m_Inventory && m_Wallet && m_Format)
-        return saveFormatOne();
-    else
-        return false;
+    return saveFormatOne();
 }
 
 bool Save::load() {
-    if (m_Inventory && m_Wallet && m_Format)
-        return loadFormatOne();
-    else
-        return false;
+    return loadFormatOne();
 }
 
 bool Save::saveFormatOne() {
@@ -30,12 +24,12 @@ bool Save::saveFormatOne() {
     out << "# c_ookieClicker savegame, by https://raymii.org" << ";";
     out << std::to_string(m_Format) << ";";
 
-    out << m_Wallet->getCookieAmount().str(0, std::ios_base::fixed) << ";";
-    out << m_Wallet->getCps().str(0, std::ios_base::fixed) << ";";
-    out << m_Wallet->getTotalcookies().str(0, std::ios_base::fixed) << ";";
+    out << m_Wallet.getCookieAmount().str(0, std::ios_base::fixed) << ";";
+    out << m_Wallet.getCps().str(0, std::ios_base::fixed) << ";";
+    out << m_Wallet.getTotalcookies().str(0, std::ios_base::fixed) << ";";
 
-    out << m_Inventory->getInventory().size() << ";";
-    for (const auto& item : m_Inventory->getInventory())
+    out << m_Inventory.getInventory().size() << ";";
+    for (const auto& item : m_Inventory.getInventory())
     {
         out << item.first << "," << item.second.str(0, std::ios_base::fixed) << ";";
     }
@@ -48,9 +42,9 @@ bool Save::loadFormatOne() {
     if (!in.good()) {
         return false;
     }
-    m_Wallet->reset();
-    m_Inventory->reset();
-    m_Store->reset();
+    m_Wallet.reset();
+    m_Inventory.reset();
+    m_Store.reset();
 
     std::string current_line;
     while (std::getline(in, current_line, ';')) {
@@ -61,9 +55,9 @@ bool Save::loadFormatOne() {
 //        std::cout << count << "\n";
 //    }
 
-    m_Wallet->setCookieAmount(CookieNumber(inV.at(2)));
-    m_Wallet->setCps(CookieNumber(inV.at(3)));
-    m_Wallet->setTotalcookies(CookieNumber(inV.at(4)));
+    m_Wallet.setCookieAmount(CookieNumber(inV.at(2)));
+    m_Wallet.setCps(CookieNumber(inV.at(3)));
+    m_Wallet.setTotalcookies(CookieNumber(inV.at(4)));
 
     int amountOfItems = std::stoi(inV.at(5));
     if (amountOfItems > 0) {
@@ -76,7 +70,7 @@ bool Save::loadFormatOne() {
             }
             auto itemName = in_items.front();
             auto itemAmount = CookieNumber(in_items.back());
-            m_Inventory->addItem(itemName, itemAmount);
+            m_Inventory.addItem(itemName, itemAmount);
         }
     }
 
