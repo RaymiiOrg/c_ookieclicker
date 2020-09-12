@@ -6,6 +6,7 @@
 #define C_OOKIECLIKER_Achievements_H
 
 #include "Achievement.h"
+#include "notifyMessage.h"
 #include "CookieAmountAchievement.h"
 #include "CookieNumbers.h"
 #include "CookiesPerSecondAchievement.h"
@@ -17,10 +18,11 @@ template <typename T>
 class AchievementList : public Observer
 {
     std::vector<T *> achievements;
+    notifyMessage* msg;
 
 public:
-    explicit AchievementList(std::vector<T *> achievements) :
-        achievements(achievements) {};
+    explicit AchievementList(std::vector<T *> achievements, notifyMessage* msg) :
+        achievements(achievements), msg(msg) {};
     void update(Subject *_s) override;
     ~AchievementList() override;
 
@@ -57,7 +59,7 @@ void AchievementList<T>::loadAchievementsFromCSV(const std::string &filename)
                 params.push_back(data);
         }
         if (!params.empty())
-            achievements.push_back(new T(params));
+            achievements.push_back(new T(params, msg));
     }
 }
 

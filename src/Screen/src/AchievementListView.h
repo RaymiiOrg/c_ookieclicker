@@ -12,6 +12,12 @@
 #include "filesystem.h"
 #include "notifyMessage.h"
 
+
+/** Lists the different types of achievements,
+ * eg Cookie Amount, Cookies per second,
+ * creates and manages subviews per achievement category
+ * (AchievementView).
+ */
 class AchievementListView : public View
 {
     const std::string _name {"AchievementList"};
@@ -47,10 +53,10 @@ class AchievementListView : public View
         }
     }
 
-    AchievementList<CookieAmountAchievement> cookieAmountAchievementList = AchievementList<CookieAmountAchievement>(std::vector<CookieAmountAchievement *>());
+    AchievementList<CookieAmountAchievement> cookieAmountAchievementList = AchievementList<CookieAmountAchievement>(std::vector<CookieAmountAchievement *>(), msg);
     AchievementView cookieAmountAchievementView = AchievementView("Cookie Amount");
 
-    AchievementList<CookiesPerSecondAchievement> cookiesPerSecondAchievements = AchievementList<CookiesPerSecondAchievement>(std::vector<CookiesPerSecondAchievement *>());
+    AchievementList<CookiesPerSecondAchievement> cookiesPerSecondAchievements = AchievementList<CookiesPerSecondAchievement>(std::vector<CookiesPerSecondAchievement *>(), msg);
     AchievementView cookiesPerSecondView = AchievementView("Cookies Per Second");
 
     View *activeView = dynamic_cast<View *>(&cookieAmountAchievementView);

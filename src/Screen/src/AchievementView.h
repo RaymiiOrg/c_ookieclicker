@@ -12,6 +12,7 @@
 #include "notifyMessage.h"
 #include <utility>
 
+/** Shows the actual achievements **/
 class AchievementView : public View
 {
     const std::string _name {"Achievements"};
@@ -24,6 +25,11 @@ public:
     explicit AchievementView(std::string name) :
         _name(std::move(name)) {};
 
+    /** Due to threads, not everything is available at construction,
+     * thus we can set it later.
+     * @tparam T
+     * @param list AchievementList
+     */
     template <typename T>
     void setAchievementlist(T *list)
     {

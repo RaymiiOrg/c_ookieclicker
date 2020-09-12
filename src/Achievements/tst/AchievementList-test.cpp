@@ -5,7 +5,8 @@
 
 struct AchievementsTestSuite : public ::testing::Test
 {
-    AchievementList<CookieAmountAchievement> cookieAmountAchievements = AchievementList<CookieAmountAchievement>(std::vector<CookieAmountAchievement*>());
+    notifyMessage msg;
+    AchievementList<CookieAmountAchievement> cookieAmountAchievements = AchievementList<CookieAmountAchievement>(std::vector<CookieAmountAchievement*>(), &msg);
     fs::path current_source_file = fs::path(__FILE__);
     std::string testFileFolder = current_source_file.parent_path().string() + "/data/";
 };
