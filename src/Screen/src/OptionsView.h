@@ -25,7 +25,8 @@ public:
     void render() override;
     const std::string &name() override { return _name; };
     void handleInput(const std::string &input) override;
-    OptionsView(notifyMessage *msg, const std::string &savefilename, Wallet *wallet, Inventory *inventory, Store *store) :
+    OptionsView(notifyMessage *msg, Wallet *wallet, Inventory *inventory, Store *store,
+                const std::string &savefilename) :
         msg(msg), savefilename(savefilename),
         wallet(wallet), inventory(inventory), store(store) {};
 };

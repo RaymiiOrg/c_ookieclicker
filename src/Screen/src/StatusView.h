@@ -7,6 +7,7 @@
 #include "View.h"
 #include "Wallet.h"
 
+/** Current amount of cookies and cookies per second **/
 class StatusView : public View
 {
 private:

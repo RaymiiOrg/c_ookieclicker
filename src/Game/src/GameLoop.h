@@ -12,7 +12,7 @@
 #include "CookieNumbers.h"
 #include "Inventory.h"
 #include "Save.h"
-#include "Screen.h"
+#include "MainView.h"
 #include "Store.h"
 #include "UpdateCookiesCommand.h"
 #include "UpdateCpsCommand.h"
@@ -45,66 +45,40 @@ class Gameloop
     //const unsigned int _maxFrameTimeMs{500}; // 0.5 sec
     //const unsigned int _maxFrameTimeMs{1000}; // 1 sec
 
-    enum inputModes
-    {
-        FIRST_MODE,
-        ONE_ITEM,
-        ALL_ITEMS,
-        INVENTORY,
-        ACHIEVEMENTS,
-        OPTIONS,
-        LAST_MODE,
-    };
-    std::atomic<inputModes> inputMode = ONE_ITEM;
 
 private:
-    Inventory m_Inventory;
-    Wallet m_Wallet;
-    Store m_Store;
 
-    void showInput();
-    void showInputBar();
-    void showStoreInput(bool oneItem);
-    void showInventory();
-    void showAchievements();
-    notifyMessage currentMessage;
-    static std::string inputModeMapping(inputModes mode);
+    Wallet* wallet;
+    notifyMessage* msg;
+    Inventory* inventory;
+    Store* store;
+    MainView* gamescreen;
 
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
     void incrementCookiesOnTime();
 
-    void buyItem(const CookieNumber &amountToBuy, Item &item);
-    bool canPayForItem(const CookieNumber &amountToBuy, Item &item);
-    bool canBuyOne(Item &item);
-    bool canBuyTen(Item &item);
-    bool canBuyHundred(Item &item);
-    int canBuyTenOrHundred(Item &item);
-    int maxItemAmount(Item &item);
-    void handleChoice(const std::string &input);
     void showFinalScore();
-
-    void handleBuyItemChoice(const std::string &input);
     void handleGenericChoice(const std::string &input);
     void handleDebugChoice(const std::string &input);
 
-    std::unique_ptr<Screen> gamescreen;
+
 
     FRIEND_TEST(GameloopTestSuite, incrementCps);
     FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
     FRIEND_TEST(GameloopTestSuite, maxItemAmount);
 
 public:
-    Gameloop();
-    explicit Gameloop(bool isRunning);
+    Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory,
+             Store* store, MainView* gamescreen);
+
     ~Gameloop();
     void reset();
     inline void quit();
     void input();
     void gameStep();
-    Wallet &getWallet();
-    Inventory &getInventory();
-    Store &getStore();
+
+    void start();
 };
 
 #endif //C_OOKIECLIKER_GAMELOOP_H

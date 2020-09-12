@@ -8,6 +8,9 @@
 #include "View.h"
 #include <vector>
 
+/** The bar that shows which input mode we're in.
+ * e.g. store, inventory, upgrades.
+ */
 class InputModeView : public View
 {
     View *currentActiveView = nullptr;
