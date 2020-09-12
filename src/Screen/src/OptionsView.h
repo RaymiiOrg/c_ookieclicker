@@ -6,6 +6,9 @@
 #define C_OOKIECLIKER_OPTIONSVIEW_H
 #include "View.h"
 #include "notifyMessage.h"
+#include "Store.h"
+#include "Inventory.h"
+#include "Wallet.h"
 
 class OptionsView : public View
 {
