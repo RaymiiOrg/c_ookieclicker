@@ -20,7 +20,7 @@
  */
 class AchievementListView : public View
 {
-    const std::string _name {"AchievementList"};
+    const std::string _name {"Achievements"};
     Wallet *wallet;
     notifyMessage *msg;
     char getCookieInputKey = 'c';
