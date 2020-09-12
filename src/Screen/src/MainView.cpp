@@ -1,13 +1,13 @@
-#include "Screen.h"
+#include "MainView.h"
 
-void Screen::handleInput(const std::string &input)
+void MainView::handleInput(const std::string &input)
 {
     statusview.handleInput(input);
     switchActiveView(input);
     activeView->handleInput(input);
 }
 
-void Screen::switchActiveView(const std::string &input)
+void MainView::switchActiveView(const std::string &input)
 {
     if (input == "1")
     {
@@ -28,7 +28,7 @@ void Screen::switchActiveView(const std::string &input)
     inputmodeview.setCurrentActiveView(activeView);
 }
 
-void Screen::render()
+void MainView::render()
 {
     messageview.render();
     statusview.render();
