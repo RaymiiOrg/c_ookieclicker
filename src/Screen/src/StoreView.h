@@ -4,10 +4,11 @@
 
 #ifndef C_OOKIECLIKER_STOREVIEW_H
 #define C_OOKIECLIKER_STOREVIEW_H
-#include "View.h"
 #include "Store.h"
+#include "View.h"
 
-class StoreView : public View {
+class StoreView : public View
+{
     const std::string _name {"Store"};
 
 public:
@@ -15,6 +16,5 @@ public:
     void render() override;
     void handleInput(const std::string &input) override;
 };
-
 
 #endif //C_OOKIECLIKER_STOREVIEW_H

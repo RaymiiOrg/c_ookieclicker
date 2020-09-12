@@ -39,145 +39,165 @@
 
 // #ifdef __GNUC__ is too general here.  It is possible to use gcc without using
 // libstdc++ (which is where cxxabi.h comes from).
-# if GTEST_HAS_CXXABI_H_
-#  include <cxxabi.h>
-# elif defined(__HP_aCC)
-#  include <acxx_demangle.h>
-# endif  // GTEST_HASH_CXXABI_H_
+#if GTEST_HAS_CXXABI_H_
+#include <cxxabi.h>
+#elif defined(__HP_aCC)
+#include <acxx_demangle.h>
+#endif // GTEST_HASH_CXXABI_H_
 
-namespace testing {
-namespace internal {
+namespace testing
+{
+namespace internal
+{
 
-// Canonicalizes a given name with respect to the Standard C++ Library.
-// This handles removing the inline namespace within `std` that is
-// used by various standard libraries (e.g., `std::__1`).  Names outside
-// of namespace std are returned unmodified.
-inline std::string CanonicalizeForStdLibVersioning(std::string s) {
-  static const char prefix[] = "std::__";
-  if (s.compare(0, strlen(prefix), prefix) == 0) {
-    std::string::size_type end = s.find("::", strlen(prefix));
-    if (end != s.npos) {
-      // Erase everything between the initial `std` and the second `::`.
-      s.erase(strlen("std"), end - strlen("std"));
+    // Canonicalizes a given name with respect to the Standard C++ Library.
+    // This handles removing the inline namespace within `std` that is
+    // used by various standard libraries (e.g., `std::__1`).  Names outside
+    // of namespace std are returned unmodified.
+    inline std::string CanonicalizeForStdLibVersioning(std::string s)
+    {
+        static const char prefix[] = "std::__";
+        if (s.compare(0, strlen(prefix), prefix) == 0)
+        {
+            std::string::size_type end = s.find("::", strlen(prefix));
+            if (end != s.npos)
+            {
+                // Erase everything between the initial `std` and the second `::`.
+                s.erase(strlen("std"), end - strlen("std"));
+            }
+        }
+        return s;
     }
-  }
-  return s;
-}
 
-// GetTypeName<T>() returns a human-readable name of type T.
-// NB: This function is also used in Google Mock, so don't move it inside of
-// the typed-test-only section below.
-template <typename T>
-std::string GetTypeName() {
-# if GTEST_HAS_RTTI
+    // GetTypeName<T>() returns a human-readable name of type T.
+    // NB: This function is also used in Google Mock, so don't move it inside of
+    // the typed-test-only section below.
+    template <typename T>
+    std::string GetTypeName()
+    {
+#if GTEST_HAS_RTTI
 
-  const char* const name = typeid(T).name();
-#  if GTEST_HAS_CXXABI_H_ || defined(__HP_aCC)
-  int status = 0;
-  // gcc's implementation of typeid(T).name() mangles the type name,
-  // so we have to demangle it.
-#   if GTEST_HAS_CXXABI_H_
-  using abi::__cxa_demangle;
-#   endif  // GTEST_HAS_CXXABI_H_
-  char* const readable_name = __cxa_demangle(name, nullptr, nullptr, &status);
-  const std::string name_str(status == 0 ? readable_name : name);
-  free(readable_name);
-  return CanonicalizeForStdLibVersioning(name_str);
-#  else
-  return name;
-#  endif  // GTEST_HAS_CXXABI_H_ || __HP_aCC
+        const char *const name = typeid(T).name();
+#if GTEST_HAS_CXXABI_H_ || defined(__HP_aCC)
+        int status = 0;
+        // gcc's implementation of typeid(T).name() mangles the type name,
+        // so we have to demangle it.
+#if GTEST_HAS_CXXABI_H_
+        using abi::__cxa_demangle;
+#endif // GTEST_HAS_CXXABI_H_
+        char *const readable_name = __cxa_demangle(name, nullptr, nullptr, &status);
+        const std::string name_str(status == 0 ? readable_name : name);
+        free(readable_name);
+        return CanonicalizeForStdLibVersioning(name_str);
+#else
+        return name;
+#endif // GTEST_HAS_CXXABI_H_ || __HP_aCC
 
-# else
+#else
 
-  return "<type>";
+        return "<type>";
 
-# endif  // GTEST_HAS_RTTI
-}
+#endif // GTEST_HAS_RTTI
+    }
 
 #if GTEST_HAS_TYPED_TEST || GTEST_HAS_TYPED_TEST_P
 
-// A unique type indicating an empty node
-struct None {};
+    // A unique type indicating an empty node
+    struct None
+    {
+    };
 
-# define GTEST_TEMPLATE_ template <typename T> class
+#define GTEST_TEMPLATE_ template <typename T> \
+class
 
-// The template "selector" struct TemplateSel<Tmpl> is used to
-// represent Tmpl, which must be a class template with one type
-// parameter, as a type.  TemplateSel<Tmpl>::Bind<T>::type is defined
-// as the type Tmpl<T>.  This allows us to actually instantiate the
-// template "selected" by TemplateSel<Tmpl>.
-//
-// This trick is necessary for simulating typedef for class templates,
-// which C++ doesn't support directly.
-template <GTEST_TEMPLATE_ Tmpl>
-struct TemplateSel {
-  template <typename T>
-  struct Bind {
-    typedef Tmpl<T> type;
-  };
-};
+    // The template "selector" struct TemplateSel<Tmpl> is used to
+    // represent Tmpl, which must be a class template with one type
+    // parameter, as a type.  TemplateSel<Tmpl>::Bind<T>::type is defined
+    // as the type Tmpl<T>.  This allows us to actually instantiate the
+    // template "selected" by TemplateSel<Tmpl>.
+    //
+    // This trick is necessary for simulating typedef for class templates,
+    // which C++ doesn't support directly.
+    template <GTEST_TEMPLATE_ Tmpl>
+    struct TemplateSel
+    {
+        template <typename T>
+        struct Bind
+        {
+            typedef Tmpl<T> type;
+        };
+    };
 
-# define GTEST_BIND_(TmplSel, T) \
-  TmplSel::template Bind<T>::type
+#define GTEST_BIND_(TmplSel, T) \
+    TmplSel::template Bind<T>::type
 
-template <GTEST_TEMPLATE_ Head_, GTEST_TEMPLATE_... Tail_>
-struct Templates {
-  using Head = TemplateSel<Head_>;
-  using Tail = Templates<Tail_...>;
-};
+    template <GTEST_TEMPLATE_ Head_, GTEST_TEMPLATE_... Tail_>
+    struct Templates
+    {
+        using Head = TemplateSel<Head_>;
+        using Tail = Templates<Tail_...>;
+    };
 
-template <GTEST_TEMPLATE_ Head_>
-struct Templates<Head_> {
-  using Head = TemplateSel<Head_>;
-  using Tail = None;
-};
+    template <GTEST_TEMPLATE_ Head_>
+    struct Templates<Head_>
+    {
+        using Head = TemplateSel<Head_>;
+        using Tail = None;
+    };
 
-// Tuple-like type lists
-template <typename Head_, typename... Tail_>
-struct Types {
-  using Head = Head_;
-  using Tail = Types<Tail_...>;
-};
+    // Tuple-like type lists
+    template <typename Head_, typename... Tail_>
+    struct Types
+    {
+        using Head = Head_;
+        using Tail = Types<Tail_...>;
+    };
 
-template <typename Head_>
-struct Types<Head_> {
-  using Head = Head_;
-  using Tail = None;
-};
+    template <typename Head_>
+    struct Types<Head_>
+    {
+        using Head = Head_;
+        using Tail = None;
+    };
 
-// Helper metafunctions to tell apart a single type from types
-// generated by ::testing::Types
-template <typename... Ts>
-struct ProxyTypeList {
-  using type = Types<Ts...>;
-};
+    // Helper metafunctions to tell apart a single type from types
+    // generated by ::testing::Types
+    template <typename... Ts>
+    struct ProxyTypeList
+    {
+        using type = Types<Ts...>;
+    };
 
-template <typename>
-struct is_proxy_type_list : std::false_type {};
+    template <typename>
+    struct is_proxy_type_list : std::false_type
+    {
+    };
 
-template <typename... Ts>
-struct is_proxy_type_list<ProxyTypeList<Ts...>> : std::true_type {};
+    template <typename... Ts>
+    struct is_proxy_type_list<ProxyTypeList<Ts...>> : std::true_type
+    {
+    };
 
-// Generator which conditionally creates type lists.
-// It recognizes if a requested type list should be created
-// and prevents creating a new type list nested within another one.
-template <typename T>
-struct GenerateTypeList {
- private:
-  using proxy = typename std::conditional<is_proxy_type_list<T>::value, T,
-                                          ProxyTypeList<T>>::type;
+    // Generator which conditionally creates type lists.
+    // It recognizes if a requested type list should be created
+    // and prevents creating a new type list nested within another one.
+    template <typename T>
+    struct GenerateTypeList
+    {
+    private:
+        using proxy = typename std::conditional<is_proxy_type_list<T>::value, T, ProxyTypeList<T>>::type;
 
- public:
-  using type = typename proxy::type;
-};
+    public:
+        using type = typename proxy::type;
+    };
 
-#endif  // GTEST_HAS_TYPED_TEST || GTEST_HAS_TYPED_TEST_P
+#endif // GTEST_HAS_TYPED_TEST || GTEST_HAS_TYPED_TEST_P
 
-}  // namespace internal
+} // namespace internal
 
 template <typename... Ts>
 using Types = internal::ProxyTypeList<Ts...>;
 
-}  // namespace testing
+} // namespace testing
 
-#endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_TYPE_UTIL_H_
+#endif // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_TYPE_UTIL_H_

@@ -1,5 +1,5 @@
-#include <memory>
 #include "gtest/gtest.h"
+#include <memory>
 #define private public
 #include "AchievementList.h"
 
@@ -12,10 +12,10 @@ struct AchievementsTestSuite : public ::testing::Test
     {
         cookieAmountAchievements = std::make_shared<AchievementList<CookieAmountAchievement>>(std::vector<std::shared_ptr<CookieAmountAchievement>>());
     }
-
 };
 
-TEST_F(AchievementsTestSuite, loadCookieAchievementsfromCSV) {
+TEST_F(AchievementsTestSuite, loadCookieAchievementsfromCSV)
+{
     // arrange
 
     // act
@@ -29,7 +29,8 @@ TEST_F(AchievementsTestSuite, loadCookieAchievementsfromCSV) {
     ASSERT_EQ(cookieAmountAchievements->getAchievements().at(1)->_amountRequired, CookieNumber(1000));
 }
 
-TEST_F(AchievementsTestSuite, updateCookieAmountAchievements) {
+TEST_F(AchievementsTestSuite, updateCookieAmountAchievements)
+{
     // arrange
     cookieAmountAchievements->loadAchievementsFromCSV(testFileFolder + "amountachievements.csv");
     Wallet wallet;

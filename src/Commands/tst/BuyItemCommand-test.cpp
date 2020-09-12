@@ -1,7 +1,7 @@
-#include "Inventory.h"
 #include "BuyItemCommand.h"
-#include <memory>
+#include "Inventory.h"
 #include "gtest/gtest.h"
+#include <memory>
 
 struct BuyItemCommandTestSuite : public ::testing::Test
 {
@@ -16,7 +16,6 @@ struct BuyItemCommandTestSuite : public ::testing::Test
         wallet = std::make_unique<Wallet>();
         store = std::make_unique<Store>();
     }
-
 };
 
 TEST_F(BuyItemCommandTestSuite, before)
@@ -75,7 +74,6 @@ TEST_F(BuyItemCommandTestSuite, withMoney)
     EXPECT_EQ(cp->print(wallet->getCps()), cp->print(CookieNumber(0.31)));
     EXPECT_EQ(store->getPrice(cursor, inventory->getItemCount(cursor.name)), 23);
 }
-
 
 TEST_F(BuyItemCommandTestSuite, undo)
 {

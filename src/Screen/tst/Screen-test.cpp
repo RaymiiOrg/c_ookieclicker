@@ -1,9 +1,10 @@
-#include <memory>
 #include "gtest/gtest.h"
+#include <memory>
 #define private public
 #include "Screen.h"
 
-struct ScreenTestSuite : public ::testing::Test {
+struct ScreenTestSuite : public ::testing::Test
+{
     notifyMessage msg;
     Wallet wallet;
     Store store;
@@ -13,7 +14,8 @@ struct ScreenTestSuite : public ::testing::Test {
     std::string OptionsInputKey = "4";
 };
 
-TEST_F(ScreenTestSuite, defaultScreen) {
+TEST_F(ScreenTestSuite, defaultScreen)
+{
     //arrange
     Screen screen(&wallet, &msg, &inventory, &store);
     //act
@@ -21,7 +23,8 @@ TEST_F(ScreenTestSuite, defaultScreen) {
     ASSERT_EQ(screen.activeView, dynamic_cast<View *>(&screen.storeview));
 }
 
-TEST_F(ScreenTestSuite, switchScreen) {
+TEST_F(ScreenTestSuite, switchScreen)
+{
     //arrange
     Screen screen1(&wallet, &msg, &inventory, &store);
     Screen screen2(&wallet, &msg, &inventory, &store);

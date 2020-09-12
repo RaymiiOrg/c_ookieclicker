@@ -1,6 +1,6 @@
 #include "CookieAmountAchievement.h"
-#include <memory>
 #include "gtest/gtest.h"
+#include <memory>
 
 struct CookieAmountAchievementTestSuite : public ::testing::Test
 {
@@ -9,7 +9,6 @@ struct CookieAmountAchievementTestSuite : public ::testing::Test
     {
         wallet = std::make_unique<Wallet>();
     }
-
 };
 
 TEST_F(CookieAmountAchievementTestSuite, getAchievement)

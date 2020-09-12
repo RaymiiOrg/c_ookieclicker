@@ -6,7 +6,8 @@
 #include "terminalCodes.h"
 #include <iostream>
 
-void StatusView::render() {
+void StatusView::render()
+{
     std::cout << escapeCode.eraseCurrentLine;
     std::cout << "Cookies\t:\t";
     if (wallet != nullptr && wallet->getCookieAmount() > 0)
@@ -20,6 +21,6 @@ void StatusView::render() {
     std::cout << escapeCode.eraseCurrentLine;
 }
 
-void StatusView::handleInput(const std::string &input) {
-
+void StatusView::handleInput(const std::string &input)
+{
 }

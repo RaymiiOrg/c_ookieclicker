@@ -1,6 +1,6 @@
-#include <memory>
-#include "gtest/gtest.h"
 #include "GameLoop.h"
+#include "gtest/gtest.h"
+#include <memory>
 
 struct GameloopTestSuite : public ::testing::Test
 {
@@ -39,7 +39,7 @@ TEST_F(GameloopTestSuite, maxItemAmount)
     //act
     game0->getWallet().incrementCookieAmount(CookieNumber(15));
 
-    game1->getWallet().incrementCookieAmount(CookieNumber(15+18));
+    game1->getWallet().incrementCookieAmount(CookieNumber(15 + 18));
 
     game2->getWallet().incrementCookieAmount(CookieNumber(8));
 
@@ -63,7 +63,6 @@ TEST_F(GameloopTestSuite, maxItemAmount)
     EXPECT_EQ(result4, 27);
 }
 
-
 TEST_F(GameloopTestSuite, reset)
 {
     //arrange
@@ -80,8 +79,7 @@ TEST_F(GameloopTestSuite, reset)
     EXPECT_EQ(game->getWallet().getCps(), 0);
     EXPECT_EQ(game->getWallet().getTotalcookies(), 0);
     EXPECT_EQ(game->getWallet().getCookieAmount(), 0);
-    EXPECT_EQ(game->getInventory().getItemCount("Cursor"),0);
-    EXPECT_EQ(game->getInventory().getItemCount("Grandma"),0);
+    EXPECT_EQ(game->getInventory().getItemCount("Cursor"), 0);
+    EXPECT_EQ(game->getInventory().getItemCount("Grandma"), 0);
     EXPECT_EQ(game->getInventory().getLastItemAdded().empty(), true);
-
 }

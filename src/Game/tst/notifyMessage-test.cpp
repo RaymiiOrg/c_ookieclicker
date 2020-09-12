@@ -2,8 +2,6 @@
 #define private public
 #include "notifyMessage.h"
 
-
-
 TEST(notifyMessageTestSuite, setMessage)
 {
     //arrange

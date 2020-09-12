@@ -1,6 +1,6 @@
 #include "UpdateCookiesCommand.h"
-#include <memory>
 #include "gtest/gtest.h"
+#include <memory>
 
 struct UpdateCookiesCommandTestSuite : public ::testing::Test
 {
@@ -9,7 +9,6 @@ struct UpdateCookiesCommandTestSuite : public ::testing::Test
     {
         wallet = std::make_unique<Wallet>();
     }
-
 };
 
 TEST_F(UpdateCookiesCommandTestSuite, before)

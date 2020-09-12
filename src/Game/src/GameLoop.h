@@ -5,33 +5,34 @@
 #ifndef C_OOKIECLIKER_GAMELOOP_H
 #define C_OOKIECLIKER_GAMELOOP_H
 
-#include "Wallet.h"
-#include "Inventory.h"
-#include "BuyItemCommand.h"
-#include "UpdateCpsCommand.h"
-#include "UpdateCookiesCommand.h"
-#include "CookieAmountAchievement.h"
-#include "AchievementList.h"
-#include "notifyMessage.h"
 #include "Achievement.h"
-#include "Store.h"
+#include "AchievementList.h"
+#include "BuyItemCommand.h"
+#include "CookieAmountAchievement.h"
 #include "CookieNumbers.h"
+#include "Inventory.h"
 #include "Save.h"
 #include "Screen.h"
+#include "Store.h"
+#include "UpdateCookiesCommand.h"
+#include "UpdateCpsCommand.h"
+#include "Wallet.h"
+#include "notifyMessage.h"
 #include "terminalCodes.h"
-#include <iostream>
-#include <memory>
-#include <string>
-#include <vector>
-#include <thread>
-#include <mutex>
-#include <chrono>
 #include <atomic>
-#include <limits>
-#include <iomanip>
+#include <chrono>
 #include <gtest/gtest_prod.h>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <memory>
+#include <mutex>
+#include <string>
+#include <thread>
+#include <vector>
 
-class Gameloop {
+class Gameloop
+{
 
     std::atomic<bool> running {false};
     std::atomic<int> cookieStepIncrement {0};
@@ -40,11 +41,12 @@ class Gameloop {
     std::thread gameStepThread;
     std::thread inputThread;
 
-    const unsigned int _maxFrameTimeMs{200}; // 0.2 sec
+    const unsigned int _maxFrameTimeMs {200}; // 0.2 sec
     //const unsigned int _maxFrameTimeMs{500}; // 0.5 sec
     //const unsigned int _maxFrameTimeMs{1000}; // 1 sec
 
-    enum inputModes {
+    enum inputModes
+    {
         FIRST_MODE,
         ONE_ITEM,
         ALL_ITEMS,
@@ -54,8 +56,6 @@ class Gameloop {
         LAST_MODE,
     };
     std::atomic<inputModes> inputMode = ONE_ITEM;
-
-
 
 private:
     Inventory m_Inventory;
@@ -74,24 +74,21 @@ private:
     std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
     void incrementCookiesOnTime();
 
-    void buyItem(const CookieNumber& amountToBuy, Item &item);
-    bool canPayForItem(const CookieNumber& amountToBuy, Item &item);
+    void buyItem(const CookieNumber &amountToBuy, Item &item);
+    bool canPayForItem(const CookieNumber &amountToBuy, Item &item);
     bool canBuyOne(Item &item);
     bool canBuyTen(Item &item);
     bool canBuyHundred(Item &item);
     int canBuyTenOrHundred(Item &item);
     int maxItemAmount(Item &item);
-    void handleChoice(const std::string& input);
+    void handleChoice(const std::string &input);
     void showFinalScore();
-
 
     void handleBuyItemChoice(const std::string &input);
     void handleGenericChoice(const std::string &input);
-    void handleDebugChoice(const std::string& input);
+    void handleDebugChoice(const std::string &input);
 
     std::unique_ptr<Screen> gamescreen;
-
-
 
     FRIEND_TEST(GameloopTestSuite, incrementCps);
     FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
@@ -109,7 +106,5 @@ public:
     Inventory &getInventory();
     Store &getStore();
 };
-
-
 
 #endif //C_OOKIECLIKER_GAMELOOP_H

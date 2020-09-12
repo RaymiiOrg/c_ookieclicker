@@ -1,8 +1,8 @@
-#include <memory>
-#include <experimental/filesystem>
-#include "gtest/gtest.h"
 #include "GameLoop.h"
 #include "Save.h"
+#include "gtest/gtest.h"
+#include <experimental/filesystem>
+#include <memory>
 
 struct SaveTestSuite : public ::testing::Test
 {
@@ -67,8 +67,7 @@ TEST_F(SaveTestSuite, saveThenLoad)
     ASSERT_EQ(gameLoad->getWallet().getTotalcookies(), 3);
     ASSERT_EQ(gameLoad->getWallet().getCps(), 20);
     ASSERT_EQ(gameLoad->getInventory().getItemCount("Alchemy Lab"), 3);
-    ASSERT_EQ(gameLoad->getStore().getPrice(gameLoad->getStore().getItemByName("Alchemy Lab"),
-                                            gameLoad->getInventory().getItemCount("Alchemy Lab")), 114065625000);
+    ASSERT_EQ(gameLoad->getStore().getPrice(gameLoad->getStore().getItemByName("Alchemy Lab"), gameLoad->getInventory().getItemCount("Alchemy Lab")), 114065625000);
     ASSERT_EQ(gameLoad->getInventory().getItemCount("Grandma"), largeNumber);
 }
 

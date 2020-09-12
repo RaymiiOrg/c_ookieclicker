@@ -6,19 +6,19 @@
 #define C_OOKIECLIKER_Store_H
 #include "Item.h"
 
-class Store {
+class Store
+{
 public:
-    std::vector<Item>& getStoreInventory() { return storeInventory; };
+    std::vector<Item> &getStoreInventory() { return storeInventory; };
     static CookieNumber getPrice(Item &item, const CookieNumber &amountAlreadyHave);
     static CookieNumber getPriceOfTen(Item &item, const CookieNumber &amountAlreadyHave);
     static CookieNumber getPriceOfHundred(Item &item, const CookieNumber &amountAlreadyHave);
-    Item& getItemByName(const std::string& name);
+    Item &getItemByName(const std::string &name);
     void reset();
 
 private:
     Items m_baseItems;
     std::vector<Item> storeInventory = m_baseItems.getAllItems();
 };
-
 
 #endif

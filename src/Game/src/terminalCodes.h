@@ -7,7 +7,8 @@
 #include <string>
 
 /* ANSII escape codes for the terminal */
-struct escapeCodes {
+struct escapeCodes
+{
     const std::string hideCursor {"\033[?25l"};
     const std::string showCursor {"\033[?25h"};
     const std::string clearEntireScreen {"\033[2J"};

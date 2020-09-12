@@ -9,9 +9,10 @@
 #include "CookieNumbers.h"
 #include <vector>
 
-class CookiesPerSecondAchievement : public Achievement {
+class CookiesPerSecondAchievement : public Achievement
+{
 public:
-    explicit CookiesPerSecondAchievement(const std::vector<std::string>& params);
+    explicit CookiesPerSecondAchievement(const std::vector<std::string> &params);
     bool hasAchieved() override;
     std::string name() override;
     std::string description() override;
@@ -22,8 +23,6 @@ private:
     std::string _name;
     bool _hasAchieved = false;
     cnp cp;
-
 };
-
 
 #endif //C_OOKIECLIKER_COOKIESPERSECONDACHIEVEMENT_H

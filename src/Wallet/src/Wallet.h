@@ -7,16 +7,18 @@
 #include "CookieNumbers.h"
 #include "Subject.h"
 
-class Wallet : public Subject {
-    public:
+class Wallet : public Subject
+{
+public:
     CookieNumber getCookieAmount() const;
     CookieNumber getCps() const;
-    void incrementCookieAmount(const CookieNumber& amount);
-    void decrementCookieAmount(const CookieNumber& amount);
-    void incrementCps(const CookieNumber& amount);
-    void decrementCps(const CookieNumber& amount);
+    void incrementCookieAmount(const CookieNumber &amount);
+    void decrementCookieAmount(const CookieNumber &amount);
+    void incrementCps(const CookieNumber &amount);
+    void decrementCps(const CookieNumber &amount);
     CookieNumber getTotalcookies();
     void reset();
+
 private:
     CookieNumber _cps = 0;
     CookieNumber _cookieAmount = 0;
@@ -25,9 +27,6 @@ private:
     void setCookieAmount(const CookieNumber &cookieAmount);
     void setTotalcookies(const CookieNumber &totalcookies);
     friend class Save;
-
-
 };
-
 
 #endif

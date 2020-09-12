@@ -1,7 +1,7 @@
 #include "UpdateCpsCommand.h"
 #include "Wallet.h"
-#include <memory>
 #include "gtest/gtest.h"
+#include <memory>
 
 struct UpdateCpsCommandTestSuite : public ::testing::Test
 {
@@ -10,7 +10,6 @@ struct UpdateCpsCommandTestSuite : public ::testing::Test
     {
         wallet = std::make_unique<Wallet>();
     }
-
 };
 
 TEST_F(UpdateCpsCommandTestSuite, before)

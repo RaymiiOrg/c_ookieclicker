@@ -4,9 +4,10 @@
 
 #include "Inventory.h"
 
-void Inventory::addItem(const std::string& item, const CookieNumber& amountToAdd) {
+void Inventory::addItem(const std::string &item, const CookieNumber &amountToAdd)
+{
     bool found = false;
-    for (auto& i : m_Inventory)
+    for (auto &i : m_Inventory)
     {
         if (i.first == item)
         {
@@ -14,29 +15,35 @@ void Inventory::addItem(const std::string& item, const CookieNumber& amountToAdd
             found = true;
         }
     }
-    if (!found) {
+    if (!found)
+    {
         m_Inventory.insert(std::pair<std::string, CookieNumber>(item, amountToAdd));
     }
     last_item_added_amount = amountToAdd;
     last_item_added = item;
 }
 
-void Inventory::removeItem(const std::string& item, const CookieNumber& amountToRemove) {
-    for (auto& i : m_Inventory)
+void Inventory::removeItem(const std::string &item, const CookieNumber &amountToRemove)
+{
+    for (auto &i : m_Inventory)
     {
         if (i.first == item)
         {
-            if (i.second >= amountToRemove) {
+            if (i.second >= amountToRemove)
+            {
                 i.second -= amountToRemove;
-            } else {
+            }
+            else
+            {
                 i.second = CookieNumber(0);
             }
         }
     }
 }
 
-CookieNumber Inventory::getItemCount(const std::string& item) {
-    for (const auto& i : m_Inventory)
+CookieNumber Inventory::getItemCount(const std::string &item)
+{
+    for (const auto &i : m_Inventory)
     {
         if (i.first == item)
         {
@@ -46,23 +53,28 @@ CookieNumber Inventory::getItemCount(const std::string& item) {
     return CookieNumber(0);
 }
 
-CookieNumber Inventory::getLastItemAddedAmount() {
+CookieNumber Inventory::getLastItemAddedAmount()
+{
     return last_item_added_amount;
 }
 
-const std::string &Inventory::getLastItemAdded() {
+const std::string &Inventory::getLastItemAdded()
+{
     return last_item_added;
 }
 
-CookieNumber Inventory::getCookiesPerTap() {
+CookieNumber Inventory::getCookiesPerTap()
+{
     return _cookiesPerTap;
 }
 
-void Inventory::incrementCookiesPerTap(const CookieNumber& amount) {
+void Inventory::incrementCookiesPerTap(const CookieNumber &amount)
+{
     _cookiesPerTap += amount;
 }
 
-void Inventory::reset() {
+void Inventory::reset()
+{
     _cookiesPerTap = 0;
     last_item_added_amount = 0;
     last_item_added.clear();

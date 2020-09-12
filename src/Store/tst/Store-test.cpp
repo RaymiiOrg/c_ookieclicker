@@ -1,6 +1,6 @@
 #include "Store.h"
-#include <memory>
 #include "gtest/gtest.h"
+#include <memory>
 
 struct StoreTestSuite : public ::testing::Test
 {
@@ -9,9 +9,7 @@ struct StoreTestSuite : public ::testing::Test
     {
         m_store = std::make_unique<Store>();
     }
-
 };
-
 
 TEST_F(StoreTestSuite, priceCalculation)
 {

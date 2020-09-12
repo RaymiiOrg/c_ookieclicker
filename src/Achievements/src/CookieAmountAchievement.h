@@ -8,9 +8,10 @@
 #include "CookieNumbers.h"
 #include "Wallet.h"
 
-class CookieAmountAchievement : public Achievement {
+class CookieAmountAchievement : public Achievement
+{
 public:
-    explicit CookieAmountAchievement(const std::vector<std::string>& params);
+    explicit CookieAmountAchievement(const std::vector<std::string> &params);
     bool hasAchieved() override;
     std::string name() override;
     std::string description() override;
@@ -22,6 +23,5 @@ private:
     bool _hasAchieved = false;
     cnp cp;
 };
-
 
 #endif //C_OOKIECLIKER_COOKIEAMOUNTACHIEVEMENT_H

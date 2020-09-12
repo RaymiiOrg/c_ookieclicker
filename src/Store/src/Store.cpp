@@ -4,8 +4,8 @@
 
 #include "Store.h"
 
-
-CookieNumber Store::getPrice(Item &item, const CookieNumber &amountAlreadyHave) {
+CookieNumber Store::getPrice(Item &item, const CookieNumber &amountAlreadyHave)
+{
 
     if (amountAlreadyHave == 0)
         return item.baseCost;
@@ -21,25 +21,30 @@ CookieNumber Store::getPrice(Item &item, const CookieNumber &amountAlreadyHave) 
     return CookieNumber(result);
 }
 
-
-CookieNumber Store::getPriceOfTen(Item &item, const CookieNumber &amountAlreadyHave) {
+CookieNumber Store::getPriceOfTen(Item &item, const CookieNumber &amountAlreadyHave)
+{
     return getPrice(item, amountAlreadyHave) * CookieNumber(20);
 }
 
-CookieNumber Store::getPriceOfHundred(Item &item, const CookieNumber &amountAlreadyHave) {
+CookieNumber Store::getPriceOfHundred(Item &item, const CookieNumber &amountAlreadyHave)
+{
     return getPrice(item, amountAlreadyHave) * CookieNumber(7828749);
 }
 
-Item &Store::getItemByName(const std::string& name) {
-    for (auto& item : getStoreInventory()) {
-        if (item.name == name) {
+Item &Store::getItemByName(const std::string &name)
+{
+    for (auto &item : getStoreInventory())
+    {
+        if (item.name == name)
+        {
             return item;
         }
     }
     throw std::logic_error("Item not found");
 }
 
-void Store::reset() {
+void Store::reset()
+{
     storeInventory.clear();
     storeInventory = m_baseItems.getAllItems();
 }

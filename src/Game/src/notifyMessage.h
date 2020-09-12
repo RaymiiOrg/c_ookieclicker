@@ -4,14 +4,16 @@
 
 #ifndef C_OOKIECLIKER_NOTIFYMESSAGE_H
 #define C_OOKIECLIKER_NOTIFYMESSAGE_H
-#include <string>
-#include <ostream>
-#include <atomic>
 #include "CookieNumbers.h"
+#include <atomic>
+#include <ostream>
+#include <string>
 
-class notifyMessage {
+class notifyMessage
+{
 public:
-    enum class msgType {
+    enum class msgType
+    {
         NO_MSG,
         NOT_ENOUGH_MONEY_FOR_ITEM,
         BOUGHT_ITEM,
@@ -43,9 +45,7 @@ private:
     std::string lastError;
     std::string lastAchievement;
     static std::string currentTime(const std::string &formatString);
-    void setMessageTime(const std::string& timeString = "%H:%M:%S");
-
+    void setMessageTime(const std::string &timeString = "%H:%M:%S");
 };
-
 
 #endif //C_OOKIECLIKER_NOTIFYMESSAGE_H

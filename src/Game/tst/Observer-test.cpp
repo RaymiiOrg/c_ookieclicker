@@ -7,7 +7,8 @@
 
 class testSubject : public Subject
 {
-    int _test=0;
+    int _test = 0;
+
 public:
     void setTest(int test)
     {
@@ -15,32 +16,33 @@ public:
         this->_test = test;
         notify();
     }
-    [[nodiscard]] int getTest() const {return _test;};
-
-
+    [[nodiscard]] int getTest() const { return _test; };
 };
 
-class testObserver1: public Observer
-{
-    public:
-    void update(Subject* _s) override
-    {
-        if (dynamic_cast<testSubject*>(_s) != nullptr) {
-            _result = dynamic_cast<testSubject*>(_s)->getTest();
-        }
-    }
-    int _result=0;
-};
-
-class testObserver2: public Observer
+class testObserver1 : public Observer
 {
 public:
-    void update(Subject* _s) override {
-        if (dynamic_cast<testSubject*>(_s) != nullptr) {
-            _result = dynamic_cast<testSubject*>(_s)->getTest();
+    void update(Subject *_s) override
+    {
+        if (dynamic_cast<testSubject *>(_s) != nullptr)
+        {
+            _result = dynamic_cast<testSubject *>(_s)->getTest();
         }
     }
-    int _result=0;
+    int _result = 0;
+};
+
+class testObserver2 : public Observer
+{
+public:
+    void update(Subject *_s) override
+    {
+        if (dynamic_cast<testSubject *>(_s) != nullptr)
+        {
+            _result = dynamic_cast<testSubject *>(_s)->getTest();
+        }
+    }
+    int _result = 0;
 };
 
 TEST(ObserverTestSuite, notSubscribed)
@@ -54,7 +56,6 @@ TEST(ObserverTestSuite, notSubscribed)
     //assert
     ASSERT_EQ(testobs1._result, 0);
 }
-
 
 TEST(ObserverTestSuite, subscribeOneObserver)
 {
@@ -88,8 +89,6 @@ TEST(ObserverTestSuite, subscribeMultiple)
     ASSERT_EQ(testobs1._result, 10);
     ASSERT_EQ(testobs2._result, 10);
 }
-
-
 
 TEST(ObserverTestSuite, differentSubjects)
 {

@@ -1,6 +1,6 @@
 #include "Inventory.h"
-#include <memory>
 #include "gtest/gtest.h"
+#include <memory>
 
 struct InventoryTestSuite : public ::testing::Test
 {
@@ -10,7 +10,6 @@ struct InventoryTestSuite : public ::testing::Test
     {
         inventory = std::make_unique<Inventory>();
     }
-
 };
 
 TEST_F(InventoryTestSuite, getEmptyInventory)
@@ -40,7 +39,6 @@ TEST_F(InventoryTestSuite, addItems)
     ASSERT_EQ(inventory->getInventory().size(), 2);
 }
 
-
 TEST_F(InventoryTestSuite, removeItems)
 {
     //arrange
@@ -62,7 +60,6 @@ TEST_F(InventoryTestSuite, removeItems)
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(1));
     ASSERT_EQ(inventory->getInventory().size(), 2);
 }
-
 
 TEST_F(InventoryTestSuite, cookiesPerTap)
 {

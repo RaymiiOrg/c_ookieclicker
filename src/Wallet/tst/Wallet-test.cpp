@@ -1,7 +1,7 @@
-#include "Wallet.h"
 #include "Observer.h"
-#include <memory>
+#include "Wallet.h"
 #include "gtest/gtest.h"
+#include <memory>
 
 struct WalletTestSuite : public ::testing::Test
 {
@@ -10,9 +10,7 @@ struct WalletTestSuite : public ::testing::Test
     {
         wallet = std::make_unique<Wallet>();
     }
-
 };
-
 
 TEST_F(WalletTestSuite, getEmptyWallet)
 {
@@ -46,7 +44,6 @@ TEST_F(WalletTestSuite, decrementCookies)
     ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(110));
 }
 
-
 TEST_F(WalletTestSuite, reset)
 {
     //arrange
@@ -60,4 +57,3 @@ TEST_F(WalletTestSuite, reset)
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
     ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(0));
 }
-

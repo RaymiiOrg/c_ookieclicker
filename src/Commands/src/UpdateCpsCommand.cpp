@@ -4,15 +4,17 @@
 
 #include "UpdateCpsCommand.h"
 
-UpdateCpsCommand::UpdateCpsCommand(const CookieNumber& amount, Wallet &wallet)
-: m_Amount(amount), m_Wallet(wallet)
+UpdateCpsCommand::UpdateCpsCommand(const CookieNumber &amount, Wallet &wallet) :
+    m_Amount(amount), m_Wallet(wallet)
 {
 }
 
-void UpdateCpsCommand::execute() {
+void UpdateCpsCommand::execute()
+{
     m_Wallet.incrementCps(m_Amount);
 }
 
-void UpdateCpsCommand::undo() {
+void UpdateCpsCommand::undo()
+{
     m_Wallet.decrementCps(m_Amount);
 }

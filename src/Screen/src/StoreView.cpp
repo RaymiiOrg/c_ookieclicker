@@ -4,11 +4,11 @@
 
 #include "StoreView.h"
 
-
-void StoreView::render() {
+void StoreView::render()
+{
     std::cout << "storeview" << std::endl;
 }
 
-void StoreView::handleInput(const std::string &input) {
-
+void StoreView::handleInput(const std::string &input)
+{
 }
