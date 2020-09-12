@@ -2,17 +2,29 @@
 
 Release date: 2020-
 
+Big new feature:
+
+- Implemented first two types of Achievement: `Cookie Amount achievements` 
+  & `Cookies per Second achievements`.
+  - Experimenting with the Observer design pattern for this one:
+    added observer pattern style notifications on Wallet->incrementCookieAmount
+
+Improvements: 
+- Moved over construction of objects to main.cpp, now
+  better dependency injection.
 - Removed screen rendering code from
-  main game loop into its own Screen class,
-  each `Screen` can have one or more `Views`,
+  main game loop into its own View class,
+  each `View` can have one or more `Views`,
   each view has at least a `render()` and `handleInput()`
   method. Views could have views as wel, as subviews.
-- Fix crash when loading savegame with space in its name.  
-- Implemented first type of Achievement: `Cookie Amount achievements`
-  - Added observer pattern style notifications on Wallet->incrementCookieAmount
 - Display Cookienumbers more like javascript game, 
   with some numbers behind the comma.
 - Added coding style check (clang-format)
+
+Bug fixes:
+
+- Fix segfault when threading went haywire on starting.
+- Fix crash when loading savegame with space in its name.  
 
 
 # Version 104
