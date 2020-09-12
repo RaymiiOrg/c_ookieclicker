@@ -15,17 +15,19 @@
 
 template <typename T>
 class AchievementList : public Observer {
-    std::vector<std::shared_ptr<T>> achievements;
+    std::vector<T*> achievements;
 public:
-    explicit AchievementList(std::vector<std::shared_ptr<T>> achievements) : achievements(achievements) {};
+    explicit AchievementList(std::vector<T*> achievements) : achievements(achievements) {};
     void update(Subject* _s) override;
+    ~AchievementList() override;
+
     void loadAchievementsFromCSV(const std::string& filename);
-    std::vector<std::shared_ptr<T>> getAchievements() const { return achievements; };
+    std::vector<T*> getAchievements() const { return achievements; };
 };
 
 template<typename T>
 void AchievementList<T>::update(Subject *_s) {
-        for (std::shared_ptr<T> a : achievements) {
+        for (T* a : achievements) {
             if (a != nullptr)
                 a->update(_s);
         }
@@ -48,8 +50,16 @@ void AchievementList<T>::loadAchievementsFromCSV(const std::string &filename) {
                 params.push_back(data);
         }
         if (!params.empty())
-            achievements.push_back(std::make_shared<T>(params));
+            achievements.push_back(new T(params));
     }
+}
+
+template<typename T>
+AchievementList<T>::~AchievementList() {
+    for (auto p : achievements) {
+        delete p;
+    }
+    achievements.clear();
 }
 
 #endif

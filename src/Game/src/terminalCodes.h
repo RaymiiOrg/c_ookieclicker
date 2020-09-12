@@ -9,8 +9,9 @@
 /* ANSII escape codes for the terminal */
 struct escapeCodes {
     const std::string hideCursor {"\033[?25l"};
+    const std::string showCursor {"\033[?25h"};
     const std::string clearEntireScreen {"\033[2J"};
-    const std::string placeCursorAt1x1 {"\033[1;1H"};
+    const std::string cursorTo1x1 {"\033[1;1H"};
     const std::string cursorUpOneLine {"\033[A"};
     const std::string cursorDownOneLine {"\033[B"};
     const std::string eraseCurrentLine {"\033[2K"};

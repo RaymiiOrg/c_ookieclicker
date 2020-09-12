@@ -32,6 +32,6 @@ TEST_F(ScreenTestSuite, switchScreen) {
     screen3.handleInput(OptionsInputKey);
     //assert
     ASSERT_EQ(screen1.activeView, dynamic_cast<View *>(&screen1.inventoryview));
-    ASSERT_EQ(screen2.activeView, dynamic_cast<View *>(&screen2.achievementview));
+    ASSERT_EQ(screen2.activeView, dynamic_cast<View *>(&screen2.achievementlistview));
     ASSERT_EQ(screen3.activeView, dynamic_cast<View *>(&screen3.optionsview));
 }

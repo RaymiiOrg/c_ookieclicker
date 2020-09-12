@@ -3,6 +3,7 @@
 //
 
 #include "CookiesPerSecondAchievement.h"
+#include "Wallet.h"
 
 bool CookiesPerSecondAchievement::hasAchieved() {
     return _hasAchieved;
@@ -20,7 +21,11 @@ std::string CookiesPerSecondAchievement::description() {
 }
 
 void CookiesPerSecondAchievement::update(Subject *subject) {
-
+    if(dynamic_cast<Wallet*>(subject) != nullptr) {
+        if (dynamic_cast<Wallet*>(subject)->getCps() >= _amountRequired) {
+            _hasAchieved = true;
+        }
+    }
 }
 
 CookiesPerSecondAchievement::CookiesPerSecondAchievement(const std::vector<std::string> &params) {

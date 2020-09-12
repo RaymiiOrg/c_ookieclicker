@@ -9,7 +9,7 @@ void Screen::handleInput(const std::string &input) {
 void Screen::switchActiveView(const std::string &input) {
     if(input == "1") { activeView = dynamic_cast<View*>(&storeview);}
     if(input == "2") { activeView = dynamic_cast<View*>(&inventoryview);}
-    if(input == "3") { activeView = dynamic_cast<View*>(&achievementview);}
+    if(input == "3") { activeView = dynamic_cast<View*>(&achievementlistview);}
     if(input == "4") { activeView = dynamic_cast<View*>(&optionsview);}
     inputmodeview.setCurrentActiveView(activeView);
 }

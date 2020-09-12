@@ -6,7 +6,7 @@
 #include "StoreView.h"
 #include "InventoryView.h"
 #include "OptionsView.h"
-#include "AchievementView.h"
+#include "AchievementListView.h"
 #include "MessageView.h"
 #include "InputModeView.h"
 #include <string>
@@ -23,12 +23,12 @@ private:
     StoreView storeview;
     InventoryView inventoryview = InventoryView(inventory);
     OptionsView optionsview = OptionsView(msg, saveFile, wallet, inventory, store);
-    AchievementView achievementview = AchievementView(wallet, msg);
+    AchievementListView achievementlistview = AchievementListView(wallet, msg);
     View* activeView = dynamic_cast<View*>(&storeview);
     std::vector<View*> allViews = {
             dynamic_cast<View*>(&storeview),
             dynamic_cast<View*>(&inventoryview),
-            dynamic_cast<View*>(&achievementview),
+            dynamic_cast<View*>(&achievementlistview),
             dynamic_cast<View*>(&optionsview),
             };
 
