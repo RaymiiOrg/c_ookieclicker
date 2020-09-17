@@ -10,26 +10,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Cache boost
-      uses: actions/cache@v1.0.3
-      id: cache-boost
-      with:
-        path: "~/boost"
-        key: libboost1.65-dev-2
-    - name: Install boost
-      env:
-        CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
-      run: |
-        if [[ "$CACHE_HIT" == 'true' ]]; then
-          sudo cp --force --recursive ~/boost/* /
-        else
-          sudo sudo apt-get update && sudo apt-get install -yq libboost1.65-dev clang-format-9
-          mkdir -p ~/boost
-          for dep in libboost1.65-dev clang-format-9; do
-              dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/boost/
-          done
-        fi
+#    - uses: actions/checkout@v2
+#    - name: Cache boost
+#      uses: actions/cache@v1.0.3
+#      id: cache-boost
+#      with:
+#        path: "~/boost"
+#        key: libboost1.65-dev-2
+#    - name: Install boost
+#      env:
+#        CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
+#      run: |
+#        if [[ "$CACHE_HIT" == 'true' ]]; then
+#          sudo cp --force --recursive ~/boost/* /
+#        else
+#          sudo sudo apt-get update && sudo apt-get install -yq libboost1.65-dev clang-format-9
+#          mkdir -p ~/boost
+#          for dep in libboost1.65-dev clang-format-9; do
+#              dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/boost/
+#          done
+#        fi
 
 
     - name: mkdir
