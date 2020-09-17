@@ -13,7 +13,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -lrt -pthread -Wl,--whole-archiv
 set(GOOGLETEST_VERSION 3.14)
 add_subdirectory(lib/googletest)
 
-message("env BOOST_ROOT_1_72_0:" $ENV{BOOST_ROOT_1_72_0})
+# For github actions, use boost from their non standard directory
 if(DEFINED ENV{BOOST_ROOT_1_72_0})
     SET (BOOST_ROOT "$ENV{BOOST_ROOT_1_72_0}")
     message(STATUS "Boost root from github found, using that.")
