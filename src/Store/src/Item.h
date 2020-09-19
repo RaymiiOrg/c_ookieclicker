@@ -39,93 +39,93 @@ struct Item {
 class Items {
 private:
     Item Cursor{"Cursor",
-                "a",
+                "e",
                 CookieNumber(15),
                 CookieNumber(".1")
     };
     Item Grandma{"Grandma",
-                 "b",
+                 "f",
                  CookieNumber(100),
                  CookieNumber(1)
     };
     Item Farm{"Farm",
-              "d",
+              "g",
               CookieNumber(1100),
               CookieNumber(8)
     };
     Item Mine{"Mine",
-              "e",
+              "h",
               CookieNumber(12000),
               CookieNumber(47)
     };
     Item Factory{"Factory",
-                 "f",
+                 "i",
                  CookieNumber(130000),
                  CookieNumber(260)
     };
     Item Bank{"Bank",
-              "g",
+              "j",
               CookieNumber(1400000),
               CookieNumber(1400)
     };
     Item Temple{"Temple",
-                "h",
+                "k",
                 CookieNumber(20000000),
                 CookieNumber(7800)
     };
     Item WizardTower{"Wizard Tower",
-                     "i",
+                     "l",
                      CookieNumber(330000000),
                      CookieNumber(44000)
     };
     Item Shipment{"Shipment",
-                  "j",
+                  "m",
                   CookieNumber(5100000000),
                   CookieNumber(260000)
     };
     Item Alchemylab{"Alchemy Lab",
-                    "k",
+                    "n",
                     CookieNumber("75000000000"),
                     CookieNumber(1600000)
     };
     Item Portal{"Portal",
-                "l",
+                "o",
                 CookieNumber("1000000000000"),
                 CookieNumber(10000000)
     };
     Item Timemachine{
             "Time Machine",
-            "m",
+            "p",
             CookieNumber("14000000000000"),
             CookieNumber(65000000),
     };
     Item Antimattercondenser{
             "Antimatter Condenser",
-            "n",
+            "q",
             CookieNumber("170000000000000"),
             CookieNumber(430000000),
     };
     Item Prism{
             "Prism",
-            "o",
+            "r",
             CookieNumber("2100000000000000"),
             CookieNumber("2900000000"),
     };
     Item Chancemaker{
             "Chance maker",
-            "p",
+            "s",
             CookieNumber("26000000000000000"),
             CookieNumber("21000000000"),
     };
     Item FractalEngine{
             "Fractal Engine",
-            "q",
+            "t",
             CookieNumber("310000000000000000"),
             CookieNumber("150000000000"),
     };
     Item JavascriptConsole{
             "Javascript Console",
-            "r",
+            "u",
             CookieNumber("71000000000000000000"),
             CookieNumber("1100000000000"),
     };

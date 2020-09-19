@@ -45,7 +45,7 @@ TEST_F(ScreenTestSuite, getItem) {
     MainView screen1(&msg, &wallet, &inventory, &store);
     wallet.setCookieAmount(15);
     //act
-    screen1.handleInput("a");
+    screen1.handleInput("e");
     //assert
     ASSERT_EQ(inventory.getItemCount("Cursor"), 1);
 }
