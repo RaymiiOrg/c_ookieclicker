@@ -38,3 +38,14 @@ TEST_F(ScreenTestSuite, switchScreen)
     ASSERT_EQ(screen2.activeView, dynamic_cast<View *>(&screen2.achievementlistview));
     ASSERT_EQ(screen3.activeView, dynamic_cast<View *>(&screen3.optionsview));
 }
+
+
+TEST_F(ScreenTestSuite, getItem) {
+    //arrange
+    MainView screen1(&msg, &wallet, &inventory, &store);
+    wallet.setCookieAmount(15);
+    //act
+    screen1.handleInput("a");
+    //assert
+    ASSERT_EQ(inventory.getItemCount("Cursor"), 1);
+}
