@@ -43,7 +43,7 @@ void CookieAmountAchievement::update(Subject *subject)
 void CookieAmountAchievement::unlockAchievement() {
     _hasAchieved = true;
     if (msg) {
-        msg->setLastAchievement(_name);
+        msg->setLastAchievement(_name + ": " + description());
         msg->setCurrentMessage(notifyMessage::msgType::ACHIEVEMENT_UNLOCKED);
     }
 }

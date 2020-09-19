@@ -2,7 +2,7 @@
 
 <a href="https://github.com/RaymiiOrg/c_ookieclicker/actions"><img src="https://github.com/RaymiiOrg/c_ookieclicker/workflows/C/C++%20CI/badge.svg" alt="ci badge"></a>
 
-![demo.gif][2]
+![demo][3]
 
 [More (1)][3] [screenshots (2)][4] [here (3)][5].
 

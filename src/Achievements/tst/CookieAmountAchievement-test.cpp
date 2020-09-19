@@ -25,8 +25,6 @@ TEST_F(CookieAmountAchievementTestSuite, getAchievement)
     wallet->incrementCookieAmount(CookieNumber(2));
 
     // assert
-    std::cout << oneCookie.name() << ": " << oneCookie.description() << std::endl;
-    std::cout << thousandCookies.name() << ": " << thousandCookies.description() << std::endl;
     ASSERT_EQ(oneCookie.hasAchieved(), true);
     ASSERT_EQ(thousandCookies.hasAchieved(), false);
 }

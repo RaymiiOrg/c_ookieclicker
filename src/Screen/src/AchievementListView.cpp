@@ -27,7 +27,7 @@ void AchievementListView::listAchievementViews() const
             if (view == activeView)
                 std::cout << escapeCode.terminalReset;
 
-            if (count % 4 == 0)
+            if (count % 2 == 0)
                 std::cout << std::endl;
             else
                 std::cout << " | ";

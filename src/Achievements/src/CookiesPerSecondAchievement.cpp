@@ -19,9 +19,9 @@ std::string CookiesPerSecondAchievement::name()
 std::string CookiesPerSecondAchievement::description()
 {
     if (_amountRequired == CookieNumber(1))
-        return "Baking " + cp.print(_amountRequired) + " cookie per second";
+        return "Bake " + cp.print(_amountRequired) + " cookie per second";
     else
-        return "Baking " + cp.print(_amountRequired) + " cookies per second";
+        return "Bake " + cp.print(_amountRequired) + " cookies per second";
 }
 
 void CookiesPerSecondAchievement::update(Subject *subject)
@@ -39,7 +39,7 @@ void CookiesPerSecondAchievement::update(Subject *subject)
 void CookiesPerSecondAchievement::unlockAchievement() {
     _hasAchieved = true;
     if (msg) {
-        msg->setLastAchievement(_name);
+        msg->setLastAchievement(_name + ": " + description());
         msg->setCurrentMessage(notifyMessage::msgType::ACHIEVEMENT_UNLOCKED);
     }
 }
