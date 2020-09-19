@@ -27,15 +27,7 @@ void StoreShelfView::render()
 }
 
 CookieNumber StoreShelfView::getPriceOfItem(const CookieNumber &itemAmountInInventory, Item &item) const {
-    switch (itemQuantity) {
-        case 1:
-            return Store::getPrice(item, itemAmountInInventory);
-        case 10:
-            return Store::getPriceOfTen(item, itemAmountInInventory);
-        case 100:
-            return Store::getPriceOfHundred(item, itemAmountInInventory);
-    }
-    return CookieNumber(1);
+    return Store::getPriceOf(item, itemAmountInInventory, itemQuantity);
 }
 
 void StoreShelfView::renderNotEnoughMoneyButDoHaveItemsInInventoryOutput(Item &item,
@@ -100,38 +92,8 @@ void StoreShelfView::buyItem(const CookieNumber &amountToBuy, Item &item)
 
 bool StoreShelfView::canPayForItem(Item &item)
 {
-    if (itemQuantity == 100 && canBuyHundred(item))
-        return true;
-    if (itemQuantity == 10 && canBuyTen(item))
-        return true;
-
-    return canBuyOne(item);
-}
-
-bool StoreShelfView::canBuyOne(Item &item)
-{
     auto itemCount = inventory->getItemCount(item.name);
-    return wallet->getCookieAmount() >= Store::getPrice(item, itemCount);
-}
-
-bool StoreShelfView::canBuyTen(Item &item)
-{
-    if (!canBuyOne(item))
-        return false;
-    auto itemCount = inventory->getItemCount(item.name);
-    if (Store::getPriceOfTen(item, itemCount) > wallet->getCookieAmount())
-        return false;
-    return true;
-}
-
-bool StoreShelfView::canBuyHundred(Item &item)
-{
-    if (!canBuyTen(item))
-        return false;
-    auto itemCount = inventory->getItemCount(item.name);
-    if (Store::getPriceOfHundred(item, itemCount) > wallet->getCookieAmount())
-        return false;
-    return true;
+    return wallet->getCookieAmount() >= Store::getPriceOf(item, itemCount, itemQuantity);
 }
 
 void StoreShelfView::renderCanBuy(Item &item, const CookieNumber &itemAmountInInventory, const CookieNumber & price) const {

@@ -14,21 +14,21 @@ CookieNumber BuyItemCommand::getPriceOf()
     CookieNumber price;
     if (m_Amount == 1)
     {
-        price = Store::getPrice(m_Item, m_Inventory.getItemCount(m_Item.name));
+        price = Store::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name), 1);
     }
     else if (m_Amount == 10)
     {
-        price = Store::getPriceOfTen(m_Item, m_Inventory.getItemCount(m_Item.name));
+        price = Store::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name), 10);
     }
     else if (m_Amount == 100)
     {
-        price = Store::getPriceOfHundred(m_Item, m_Inventory.getItemCount(m_Item.name));
+        price = Store::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name), 100);
     }
     else
     {
         for (CookieNumber i = 0; i < m_Amount; ++i)
         {
-            price += Store::getPrice(m_Item, m_Inventory.getItemCount(m_Item.name) + i);
+            price += Store::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name) + i, 1);
         }
     }
     return price;

@@ -23,11 +23,11 @@ struct Item {
         return cps < rhs.cps;
     }
 
-    bool operator>(const Item &rhs) {
+    bool operator>(const Item &rhs) const {
         return rhs < *this;
     }
 
-    bool operator<=(const Item &rhs) {
+    bool operator<=(const Item &rhs) const {
         return !(rhs < *this);
     }
 
@@ -39,69 +39,69 @@ struct Item {
 class Items {
 private:
     Item Cursor{"Cursor",
-                "k",
+                "a",
                 CookieNumber(15),
                 CookieNumber(".1")
     };
     Item Grandma{"Grandma",
-                 "g",
+                 "b",
                  CookieNumber(100),
                  CookieNumber(1)
     };
     Item Farm{"Farm",
-              "f",
+              "d",
               CookieNumber(1100),
               CookieNumber(8)
     };
     Item Mine{"Mine",
-              "m",
+              "e",
               CookieNumber(12000),
               CookieNumber(47)
     };
     Item Factory{"Factory",
-                 "t",
+                 "f",
                  CookieNumber(130000),
                  CookieNumber(260)
     };
     Item Bank{"Bank",
-              "b",
+              "g",
               CookieNumber(1400000),
               CookieNumber(1400)
     };
     Item Temple{"Temple",
-                "e",
+                "h",
                 CookieNumber(20000000),
                 CookieNumber(7800)
     };
     Item WizardTower{"Wizard Tower",
-                     "w",
+                     "i",
                      CookieNumber(330000000),
                      CookieNumber(44000)
     };
     Item Shipment{"Shipment",
-                  "o",
+                  "j",
                   CookieNumber(5100000000),
                   CookieNumber(260000)
     };
     Item Alchemylab{"Alchemy Lab",
-                    "a",
+                    "k",
                     CookieNumber("75000000000"),
                     CookieNumber(1600000)
     };
     Item Portal{"Portal",
-                "p",
+                "l",
                 CookieNumber("1000000000000"),
                 CookieNumber(10000000)
     };
     Item Timemachine{
             "Time Machine",
-            "i",
+            "m",
             CookieNumber("14000000000000"),
             CookieNumber(65000000),
     };
     Item Antimattercondenser{
             "Antimatter Condenser",
-            "y",
+            "n",
             CookieNumber("170000000000000"),
             CookieNumber(430000000),
     };
@@ -113,19 +113,19 @@ private:
     };
     Item Chancemaker{
             "Chance maker",
-            "z",
+            "p",
             CookieNumber("26000000000000000"),
             CookieNumber("21000000000"),
     };
     Item FractalEngine{
             "Fractal Engine",
-            "h",
+            "q",
             CookieNumber("310000000000000000"),
             CookieNumber("150000000000"),
     };
     Item JavascriptConsole{
             "Javascript Console",
-            "j",
+            "r",
             CookieNumber("71000000000000000000"),
             CookieNumber("1100000000000"),
     };
