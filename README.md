@@ -2,6 +2,7 @@
 
 <a href="https://github.com/RaymiiOrg/c_ookieclicker/actions"><img src="https://github.com/RaymiiOrg/c_ookieclicker/workflows/C/C++%20CI/badge.svg" alt="ci badge"></a>
 
+
 ![demo][3]
 
 [More (1)][3] [screenshots (2)][4] [here (3)][5].
@@ -191,3 +192,4 @@ it has a version number in the savegame.
 [3]: screenshots/105_main.png
 [4]: screenshots/105_achievements.png
 [5]: screenshots/105_inventory.png
+[6]: screenshots/demo_105.gif
