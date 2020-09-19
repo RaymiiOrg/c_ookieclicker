@@ -45,5 +45,5 @@ TEST_F(ItemTestSuite, noDoubleItemKeys)
     bool noDuplicateItemKeys = (it == allItemKeys.end() );
 
     //assert
-    ASSERT_FALSE(noDuplicateItemKeys);
+    ASSERT_TRUE(noDuplicateItemKeys);
 }
