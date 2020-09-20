@@ -7,16 +7,16 @@
 #include "Command.h"
 #include "Wallet.h"
 
-class UpdateCookiesCommand : public Command
+class UpdateCookiesViaInputCommand : public Command
 {
 public:
-    UpdateCookiesCommand(const CookieNumber &amount, Wallet &wallet);
+    UpdateCookiesViaInputCommand(CookieNumber amount, Wallet &wallet);
     void execute() override;
     void undo() override;
 
 private:
     Wallet &m_Wallet;
-    CookieNumber m_Amount;
+    CookieNumber amount;
 };
 
 #endif //C_OOKIECLIKER_UpdateCookiesCommand_H

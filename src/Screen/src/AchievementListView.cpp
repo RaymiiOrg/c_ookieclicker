@@ -27,7 +27,7 @@ void AchievementListView::listAchievementViews() const
             if (view == activeView)
                 std::cout << escapeCode.terminalReset;
 
-            if (count % 2 == 0)
+            if (count % 3 == 0)
                 std::cout << std::endl;
             else
                 std::cout << " | ";
@@ -48,7 +48,7 @@ void AchievementListView::handleInput(const std::string &input)
     if (input == "b")
         activeView = &cookiesPerSecondView;
     if (input == "d") // skip c, it's get cookie input key. this code is a reminder.
-        ;
+        activeView = &cookiesViaInputView;
 }
 
 const std::string &AchievementListView::name()
@@ -60,5 +60,6 @@ AchievementListView::AchievementListView(Wallet *wallet, notifyMessage *msg) :
     wallet(wallet), msg(msg)
 {
     createAchievementView(&cookieAmountAchievementList, &cookieAmountAchievementView, "/gamedata/achievements/CookieAmountAchievements.csv");
-    createAchievementView(&cookiesPerSecondAchievements, &cookiesPerSecondView, "/gamedata/achievements/CookiesPerSecondAchievements.csv");
+    createAchievementView(&cookiesPerSecondAchievementList, &cookiesPerSecondView, "/gamedata/achievements/CookiesPerSecondAchievements.csv");
+    createAchievementView(&cookiesViaInputAchievementList, &cookiesViaInputView, "/gamedata/achievements/CookiesViaInputAchievements.csv");
 }

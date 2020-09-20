@@ -7,9 +7,10 @@
 
 #include "Achievement.h"
 #include "notifyMessage.h"
-#include "CookieAmountAchievement.h"
 #include "CookieNumbers.h"
+#include "CookieAmountAchievement.h"
 #include "CookiesPerSecondAchievement.h"
+#include "CookiesViaInputAchievement.h"
 #include "Observer.h"
 #include "filesystem.h"
 #include <fstream>

@@ -56,13 +56,17 @@ class AchievementListView : public View
     AchievementList<CookieAmountAchievement> cookieAmountAchievementList = AchievementList<CookieAmountAchievement>(std::vector<CookieAmountAchievement *>(), msg);
     AchievementView cookieAmountAchievementView = AchievementView("Cookie Amount");
 
-    AchievementList<CookiesPerSecondAchievement> cookiesPerSecondAchievements = AchievementList<CookiesPerSecondAchievement>(std::vector<CookiesPerSecondAchievement *>(), msg);
+    AchievementList<CookiesPerSecondAchievement> cookiesPerSecondAchievementList = AchievementList<CookiesPerSecondAchievement>(std::vector<CookiesPerSecondAchievement *>(), msg);
     AchievementView cookiesPerSecondView = AchievementView("Cookies Per Second");
+
+    AchievementList<CookiesViaInputAchievement> cookiesViaInputAchievementList = AchievementList<CookiesViaInputAchievement>(std::vector<CookiesViaInputAchievement *>(), msg);
+    AchievementView cookiesViaInputView = AchievementView("Cookies via input");
 
     View *activeView = dynamic_cast<View *>(&cookieAmountAchievementView);
     std::vector<View *> allviews = {
         dynamic_cast<View *>(&cookieAmountAchievementView),
         dynamic_cast<View *>(&cookiesPerSecondView),
+        dynamic_cast<View *>(&cookiesViaInputView),
     };
 
 public:
