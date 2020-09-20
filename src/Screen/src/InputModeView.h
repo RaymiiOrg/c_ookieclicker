@@ -16,6 +16,9 @@ class InputModeView : public View
     View *currentActiveView = nullptr;
     const std::string _name {"InputMode"};
     const std::vector<View *> &allviews;
+    void inputBar();
+    static void clearLines() ;
+    static void renderGetCookie() ;
 
 public:
     void render() override;
@@ -25,7 +28,6 @@ public:
     explicit InputModeView(const std::vector<View *> &allViews) :
         allviews(allViews) {};
 
-    void inputBar();
 };
 
 #endif //C_OOKIECLIKER_INPUTMODEVIEW_H
