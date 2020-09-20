@@ -14,7 +14,7 @@
 #include "Save.h"
 #include "MainView.h"
 #include "Store.h"
-#include "UpdateCookiesCommand.h"
+#include "UpdateCookiesViaInputCommand.h"
 #include "UpdateCpsCommand.h"
 #include "Wallet.h"
 #include "notifyMessage.h"
@@ -59,7 +59,7 @@ private:
     void incrementCookiesOnTime();
 
     void showFinalScore();
-    void handleGenericChoice(const std::string &input);
+    void handleCookieOrQuitChoice(const std::string &input);
     void handleDebugChoice(const std::string &input);
 
 

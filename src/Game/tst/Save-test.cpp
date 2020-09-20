@@ -1,8 +1,10 @@
-#include "GameLoop.h"
-#include "Save.h"
 #include "gtest/gtest.h"
 #include <experimental/filesystem>
 #include <memory>
+
+#define private public
+#include "Save.h"
+#include "GameLoop.h"
 
 struct SaveTestSuite : public ::testing::Test
 {
@@ -28,13 +30,13 @@ struct SaveTestSuite : public ::testing::Test
     }
 };
 
-TEST_F(SaveTestSuite, saveBlankFile)
+TEST_F(SaveTestSuite, saveBlankFile_v1)
 {
     //arrange
-    auto saveFile = testSaveFileFolder + "saveBlankFile.save";
+    auto saveFile = testSaveFileFolder + "saveBlankFile.save1";
     auto savegame = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
     //act
-    auto result = savegame.save();
+    auto result = savegame.saveFormatOne();
     //assert
     ASSERT_EQ(std::experimental::filesystem::exists(saveFile), true);
     ASSERT_EQ(result, true);
@@ -55,7 +57,7 @@ TEST_F(SaveTestSuite, loadNonExistentFile)
 TEST_F(SaveTestSuite, saveThenLoad)
 {
     //arrange
-    auto saveFile = testSaveFileFolder + "saveThenLoad.save";
+    auto saveFile = testSaveFileFolder + "saveThenLoad.save1";
     std::unique_ptr<Inventory> loadinventory = std::make_unique<Inventory>();
     std::unique_ptr<Wallet> loadwallet = std::make_unique<Wallet>();
     std::unique_ptr<Store> loadstore = std::make_unique<Store>();
@@ -71,13 +73,13 @@ TEST_F(SaveTestSuite, saveThenLoad)
     inventory->addItem("Grandma", largeNumber);
 
     auto savegame =  Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
-    auto saveResult = savegame.save();
+    auto saveResult = savegame.saveFormatOne();
 
     std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(loadmsg.get(), loadwallet.get(), 
                                                                     loadinventory.get(), loadstore.get(), 
                                                                     loadgamescreen.get());
     auto saveload = Save(saveFile, loadinventory.get(), loadwallet.get(), loadstore.get(), format1);
-    auto loadResult = saveload.load();
+    auto loadResult = saveload.loadFormatOne();
 
     //assert
     ASSERT_EQ(std::experimental::filesystem::exists(saveFile), true);
@@ -90,14 +92,14 @@ TEST_F(SaveTestSuite, saveThenLoad)
     ASSERT_EQ(loadinventory->getItemCount("Grandma"), largeNumber);
 }
 
-TEST_F(SaveTestSuite, justLoad)
+TEST_F(SaveTestSuite, justLoad_v1)
 {
     //arrange
-    auto saveFile = testSaveFileFolder + "justLoad.save";
+    auto saveFile = testSaveFileFolder + "justLoad.save1";
 
     //act
     auto saveload = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
-    auto loadResult = saveload.load();
+    auto loadResult = saveload.loadFormatOne();
 
     //assert
     ASSERT_EQ(loadResult, true);
@@ -106,4 +108,46 @@ TEST_F(SaveTestSuite, justLoad)
     ASSERT_EQ(inventory->getItemCount("Cursor"), 3);
     ASSERT_EQ(store->getPrice(store->getItemByName("Cursor"), inventory->getItemCount("Cursor")), 23);
     ASSERT_EQ(inventory->getItemCount("Grandma"), largeNumber);
+}
+
+
+TEST_F(SaveTestSuite, getFormat)
+{
+    //arrange
+    auto saveFile = testSaveFileFolder + "justLoad.save1";
+    auto saveFile_v2 = testSaveFileFolder + "justLoad.save2";
+
+    //act
+    auto saveload = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    auto loadResult = saveload.getFormat();
+
+    auto saveload_v2 = Save(saveFile_v2, inventory.get(), wallet.get(), store.get(), format1);
+    auto loadResult_v2 = saveload_v2.getFormat();
+
+    //assert
+    ASSERT_EQ(loadResult, 1);
+    ASSERT_EQ(loadResult_v2, 2);
+}
+
+
+TEST_F(SaveTestSuite, convertV1toV2)
+{
+    //arrange
+    auto saveFile = testSaveFileFolder + "justLoad.save1";
+    auto saveFile_v2 = testSaveFileFolder + "saveConvertv1_v2";
+
+    //act
+    auto saveload = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    saveload.loadFormatOne();
+    auto firstFormat = saveload.getFormat();
+
+    saveload.saveFileName = saveFile_v2;
+    saveload.saveFormatTwo();
+
+    auto saveload_v2 = Save(saveFile_v2, inventory.get(), wallet.get(), store.get(), format1);
+    auto convertFormat = saveload.getFormat();
+
+    //assert
+    ASSERT_EQ(firstFormat, 1);
+    ASSERT_EQ(convertFormat, 2);
 }

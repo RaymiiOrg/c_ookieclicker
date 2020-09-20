@@ -44,7 +44,7 @@ void Gameloop::input()
         {
             std::string choice(1, c);
             /** handles get cookie or quit **/
-            handleGenericChoice(input);
+            handleCookieOrQuitChoice(input);
 #ifndef NDEBUG
             handleDebugChoice(input);
 #endif
@@ -119,12 +119,12 @@ void Gameloop::reset()
     store->reset();
 }
 
-void Gameloop::handleGenericChoice(const std::string &input)
+void Gameloop::handleCookieOrQuitChoice(const std::string &input)
 {
     if (input == "c")
     {
         if (inventory && wallet) {
-            auto cmd = std::make_unique<UpdateCookiesCommand>(inventory->getCookiesPerTap(), *wallet);
+            auto cmd = std::make_unique<UpdateCookiesViaInputCommand>(inventory->getCookiesPerTap(), *wallet);
             cmd->execute();
         }
     }
