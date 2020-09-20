@@ -33,7 +33,7 @@ void OptionsView::load()
 {
     if (inventory && wallet && store && msg)
     {
-        auto saveGame = Save(savefilename, inventory, wallet, store, 1);
+        auto saveGame = Save(savefilename, inventory, wallet, store, 2);
         if (saveGame.load())
         {
             msg->setCurrentMessage(notifyMessage::msgType::LOADED);
@@ -50,7 +50,7 @@ void OptionsView::save()
 {
     if (inventory && wallet && store && msg)
     {
-        auto saveGame = Save(savefilename, inventory, wallet, store, 1);
+        auto saveGame = Save(savefilename, inventory, wallet, store, 2);
         if (saveGame.save())
         {
             msg->setCurrentMessage(notifyMessage::msgType::SAVED);

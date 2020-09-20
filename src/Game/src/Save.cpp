@@ -7,19 +7,23 @@
 Save::Save(std::string filename, Inventory *Inventory, Wallet *wallet, Store *store, int format) :
         saveFileName(std::move(
         filename)),
-        m_Inventory(Inventory), m_Wallet(wallet), m_Store(store), m_Format(format) {}
+        inventory(Inventory), wallet(wallet), store(store), format(format) {}
 
 bool Save::save()
 {
-    if (m_Inventory && m_Wallet && m_Format)
-        return saveFormatTwo();
-    else
+    if (!inventory || !wallet || !format)
         return false;
+
+    switch (format) {
+        case 1:     return saveFormatOne();
+        case 2:     return saveFormatTwo();
+        default:    return false;
+    }
 }
 
 bool Save::load()
 {
-    if (!m_Inventory || !m_Wallet || !m_Format)
+    if (!inventory || !wallet || !format)
         return false;
 
     switch (getFormat()) {
@@ -27,7 +31,12 @@ bool Save::load()
         case 2:     return loadFormatTwo();
         default:    return false;
     }
+}
 
+void Save::resetGameData() {
+    wallet->reset();
+    inventory->reset();
+    store->reset();
 }
 
 bool Save::saveFormatOne()
@@ -36,24 +45,14 @@ bool Save::saveFormatOne()
     if (out.fail())
         return false;
 
-    out << "# c_ookieClicker savegame, by https://raymii.org"
-        << ";";
-    out << std::to_string(m_Format) << ";";
+    save_step_1_Header(out);
+    save_step_2_Format(out);
+    save_step_3_CookieAmount(out);
+    save_step_4_CPS(out);
+    save_step_5_TotalCookies(out);
+    save_step_6_Items(out);
 
-    out << m_Wallet->getCookieAmount().str(0, std::ios_base::fixed) << ";";
-    out << m_Wallet->getCps().str(0, std::ios_base::fixed) << ";";
-    out << m_Wallet->getTotalcookies().str(0, std::ios_base::fixed) << ";";
-
-    saveItems(out);
     return true;
-}
-
-void Save::saveItems(std::ofstream &out) const {
-    out << m_Inventory->getInventory().size() << ";";
-    for (const auto &item : m_Inventory->getInventory())
-    {
-        out << item.first << "," << item.second.str(0, std::ios_base::fixed) << ";";
-    }
 }
 
 bool Save::loadFormatOne()
@@ -64,51 +63,44 @@ bool Save::loadFormatOne()
 
     resetGameData();
 
-    //    for (auto & count : inV) {
-    //        std::cout << count << "\n";
-    //    }
-
-    m_Wallet->setCookieAmount(CookieNumber(inV.at(2)));
-    m_Wallet->setCps(CookieNumber(inV.at(3)));
-    m_Wallet->setTotalcookies(CookieNumber(inV.at(4)));
-
-    loadItems(inV);
+    load_step_3_CookieAmount(inV);
+    load_step_4_CPS(inV);
+    load_step_5_TotalCookies(inV);
+    load_step_6_Items(inV);
 
     return true;
 }
 
-void Save::loadItems(std::vector<std::string> &inV) {
-    int amountOfItems = std::stoi(inV.at(5));
-    if (amountOfItems > 0)
-    {
-        for (int i = 0; i < amountOfItems; ++i)
-        {
-            std::string current_item_line;
-            std::vector<std::string> in_items;
-            std::istringstream itemstream(inV.at(6 + i));
-            while (std::getline(itemstream, current_item_line, ','))
-            {
-                in_items.push_back(current_item_line);
-            }
-            auto itemName = in_items.front();
-            auto itemAmount = CookieNumber(in_items.back());
-            m_Inventory->addItem(itemName, itemAmount);
-        }
-    }
-}
-
-void Save::resetGameData() {
-    m_Wallet->reset();
-    m_Inventory->reset();
-    m_Store->reset();
-}
-
 bool Save::loadFormatTwo() {
-    return false;
+    auto inV = getSaveData();
+    if (inV.empty())
+        return false;
+
+    resetGameData();
+
+    load_step_3_CookieAmount(inV);
+    load_step_4_CPS(inV);
+    load_step_5_TotalCookies(inV);
+    load_step_6_Items(inV);
+    load_step_7_CookiesViaInput(inV);
+
+    return true;
 }
 
 bool Save::saveFormatTwo() {
-    return false;
+    std::ofstream out(saveFileName);
+    if (out.fail())
+        return false;
+
+    save_step_1_Header(out);
+    save_step_2_Format(out);
+    save_step_3_CookieAmount(out);
+    save_step_4_CPS(out);
+    save_step_5_TotalCookies(out);
+    save_step_6_Items(out);
+    save_step_7_CookiesViaInput(out);
+
+    return true;
 }
 
 int Save::getFormat() {
@@ -134,4 +126,72 @@ std::vector<std::string> Save::getSaveData() {
         inV.push_back(current_line);
     }
     return inV;
+}
+
+void Save::save_step_1_Header(std::ofstream &out) const {
+    out << "# c_ookieClicker savegame, by https://raymii.org"
+        << ";";
+}
+
+void Save::save_step_2_Format(std::ofstream &out) const {
+    out << std::to_string(format) << ";";
+}
+
+void Save::save_step_3_CookieAmount(std::ofstream &out) const {
+    out << wallet->getCookieAmount().str(0, std::ios_base::fixed) << ";";
+}
+
+void Save::save_step_4_CPS(std::ofstream &out) const {
+    out << wallet->getCps().str(0, std::ios_base::fixed) << ";";
+}
+
+void Save::save_step_5_TotalCookies(std::ofstream &out) {
+    out << wallet->getTotalcookies().str(0, std::ios_base::fixed) << ";";
+}
+
+void Save::save_step_6_Items(std::ofstream &out) const {
+    out << inventory->getInventory().size() << ";";
+    for (const auto &item : inventory->getInventory())
+    {
+        out << item.first << "," << item.second.str(0, std::ios_base::fixed) << ";";
+    }
+}
+
+void Save::save_step_7_CookiesViaInput(std::ofstream &out) {
+    out << wallet->getCookiesViaInput().str(0, std::ios_base::fixed) << ";";
+}
+
+void Save::load_step_3_CookieAmount(std::vector<std::string> &inV) { wallet->setCookieAmount(CookieNumber(inV.at(2))); }
+
+void Save::load_step_4_CPS(std::vector<std::string> &inV) { wallet->setCps(CookieNumber(inV.at(3))); }
+
+void Save::load_step_5_TotalCookies(std::vector<std::string> &inV) { wallet->setTotalcookies(CookieNumber(inV.at(4))); }
+
+void Save::load_step_6_Items(std::vector<std::string> &inV) {
+    int amountOfItems = loadAmountOfItems(inV);
+    if (amountOfItems > 0)
+    {
+        for (int i = 0; i < amountOfItems; ++i)
+        {
+            std::string current_item_line;
+            std::vector<std::string> in_items;
+            std::istringstream itemstream(inV.at(6 + i));
+            while (std::getline(itemstream, current_item_line, ','))
+            {
+                in_items.push_back(current_item_line);
+            }
+            auto itemName = in_items.front();
+            auto itemAmount = CookieNumber(in_items.back());
+            inventory->addItem(itemName, itemAmount);
+        }
+    }
+}
+
+int Save::loadAmountOfItems(std::vector<std::string> &inV) const {
+    return std::stoi(inV.at(5));
+}
+
+void Save::load_step_7_CookiesViaInput(std::vector<std::string> &inV) {
+    int positionInSave = loadAmountOfItems(inV) + 1;
+    wallet->incrementCookieViaInput(CookieNumber(positionInSave));
 }

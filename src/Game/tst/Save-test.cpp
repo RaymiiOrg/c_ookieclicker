@@ -17,6 +17,7 @@ struct SaveTestSuite : public ::testing::Test
                                                                       inventory.get(), store.get());
 
     int format1 = 1;
+    int format2 = 2;
     CookieNumber largeNumber = CookieNumber("354863150980540376871924332068218985606788610769886127757294461121501888");
     std::experimental::filesystem::path current_source_file = std::experimental::filesystem::path(__FILE__);
     std::string testSaveFileFolder = current_source_file.parent_path().string() + "/data/";
@@ -54,7 +55,7 @@ TEST_F(SaveTestSuite, loadNonExistentFile)
     ASSERT_EQ(result, false);
 }
 
-TEST_F(SaveTestSuite, saveThenLoad)
+TEST_F(SaveTestSuite, saveThenLoad_v1)
 {
     //arrange
     auto saveFile = testSaveFileFolder + "saveThenLoad.save1";
@@ -134,20 +135,58 @@ TEST_F(SaveTestSuite, convertV1toV2)
 {
     //arrange
     auto saveFile = testSaveFileFolder + "justLoad.save1";
-    auto saveFile_v2 = testSaveFileFolder + "saveConvertv1_v2";
+    auto saveFile_v2 = testSaveFileFolder + "saveConvert_v1_to_v2";
 
     //act
     auto saveload = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
     saveload.loadFormatOne();
     auto firstFormat = saveload.getFormat();
 
-    saveload.saveFileName = saveFile_v2;
+    auto saveload_v2 = Save(saveFile_v2, inventory.get(), wallet.get(), store.get(), format2);
     saveload.saveFormatTwo();
 
-    auto saveload_v2 = Save(saveFile_v2, inventory.get(), wallet.get(), store.get(), format1);
-    auto convertFormat = saveload.getFormat();
+    auto convertFormat = saveload_v2.getFormat();
 
     //assert
     ASSERT_EQ(firstFormat, 1);
     ASSERT_EQ(convertFormat, 2);
+}
+
+TEST_F(SaveTestSuite, saveThenLoad_v2)
+{
+    //arrange
+    auto saveFile = testSaveFileFolder + "saveThenLoad.save2";
+    std::unique_ptr<Inventory> loadinventory = std::make_unique<Inventory>();
+    std::unique_ptr<Wallet> loadwallet = std::make_unique<Wallet>();
+    std::unique_ptr<Store> loadstore = std::make_unique<Store>();
+    std::unique_ptr<notifyMessage> loadmsg = std::make_unique<notifyMessage>();
+    std::unique_ptr<MainView> loadgamescreen = std::make_unique<MainView>(loadmsg.get(), loadwallet.get(),
+                                                                          loadinventory.get(), loadstore.get());
+
+    //act
+    wallet->incrementCookieAmount(CookieNumber(3));
+    wallet->incrementCookieViaInput(CookieNumber(3));
+    wallet->incrementCps(CookieNumber(20));
+    inventory->addItem("Alchemy Lab", 3);
+    inventory->addItem("Grandma", largeNumber);
+
+    auto savegame =  Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    auto saveResult = savegame.saveFormatTwo();
+
+    std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(loadmsg.get(), loadwallet.get(),
+                                                                    loadinventory.get(), loadstore.get(),
+                                                                    loadgamescreen.get());
+    auto saveload = Save(saveFile, loadinventory.get(), loadwallet.get(), loadstore.get(), format2);
+    auto loadResult = saveload.loadFormatTwo();
+
+    //assert
+    ASSERT_EQ(std::experimental::filesystem::exists(saveFile), true);
+    ASSERT_EQ(saveResult, true);
+    ASSERT_EQ(loadResult, true);
+    ASSERT_EQ(loadwallet->getTotalcookies(), 9);
+    ASSERT_EQ(loadwallet->getCps(), 20);
+    ASSERT_EQ(loadwallet->getCookiesViaInput(), 3);
+    ASSERT_EQ(loadinventory->getItemCount("Alchemy Lab"), 3);
+    ASSERT_EQ(loadstore->getPrice(loadstore->getItemByName("Alchemy Lab"), loadinventory->getItemCount("Alchemy Lab")), 114065625000);
+    ASSERT_EQ(loadinventory->getItemCount("Grandma"), largeNumber);
 }

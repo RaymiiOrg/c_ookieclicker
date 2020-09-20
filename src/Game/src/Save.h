@@ -16,23 +16,35 @@ public:
     bool load();
 
 private:
+    std::string saveFileName;
+    Inventory *inventory;
+    Wallet *wallet;
+    Store *store;
+    int format;
+
     int getFormat();
     std::vector<std::string> getSaveData();
     bool loadFormatOne();
     bool saveFormatOne();
     bool loadFormatTwo();
     bool saveFormatTwo();
-    std::string saveFileName;
-    Inventory *m_Inventory;
-    Wallet *m_Wallet;
-    Store *m_Store;
-    int m_Format;
-
     void resetGameData();
 
-    void loadItems(std::vector<std::string> &inV);
+    void load_step_3_CookieAmount(std::vector<std::string> &inV);
+    void load_step_4_CPS(std::vector<std::string> &inV);
+    void load_step_5_TotalCookies(std::vector<std::string> &inV);
+    void load_step_7_CookiesViaInput(std::vector<std::string> &inV);
+    void load_step_6_Items(std::vector<std::string> &inV);
 
-    void saveItems(std::ofstream &out) const;
+    void save_step_1_Header(std::ofstream &out) const;
+    void save_step_2_Format(std::ofstream &out) const;
+    void save_step_3_CookieAmount(std::ofstream &out) const;
+    void save_step_4_CPS(std::ofstream &out) const;
+    void save_step_5_TotalCookies(std::ofstream &out);
+    void save_step_6_Items(std::ofstream &out) const;
+    void save_step_7_CookiesViaInput(std::ofstream &out);
+
+    int loadAmountOfItems(std::vector<std::string> &inV) const;
 };
 
 #endif //C_OOKIECLIKER_SAVE_H
