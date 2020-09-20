@@ -10,9 +10,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread" )
 # https://stackoverflow.com/questions/35116327/when-g-static-link-pthread-cause-segmentation-fault-why
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -lrt -pthread -Wl,--whole-archive -lpthread -Wl,--no-whole-archive")
 
-set(GOOGLETEST_VERSION 3.14)
-add_subdirectory(lib/googletest)
-
 # For github actions, use boost from their non standard directory
 if(DEFINED ENV{BOOST_ROOT_1_72_0})
     SET (BOOST_ROOT "$ENV{BOOST_ROOT_1_72_0}")
@@ -34,14 +31,15 @@ SET(CMAKE_EXE_LINKER_FLAGS "-static")
 SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 SET(BUILD_SHARED_LIBS OFF)
 
-
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -U_FORTIFY_SOURCE -ggdb")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -U_FORTIFY_SOURCE -ggdb")
+    set(GOOGLETEST_VERSION 3.14)
+    add_subdirectory(lib/googletest)
 elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -DNDEBUG")
 endif()
