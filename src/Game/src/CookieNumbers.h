@@ -26,7 +26,7 @@ typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> C
 
 namespace game
 {
-const int gameVersion = 105;
+const int gameVersion = 106;
 }
 
 class CookieNumberPrinter
