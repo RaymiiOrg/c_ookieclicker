@@ -4,7 +4,7 @@ mkdir -p cmake-build-debug
 cd cmake-build-debug
 
 if [[ $1 == "runcmake" ]]; then
-  cmake ..
+  cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles"
   make -j8 all
   if [[ $? != 0 ]]; then
     echo "Make failed"
