@@ -1,6 +1,22 @@
-# Version 105
+# Version 106 - current development
 
 Release date: 2020-
+
+New features:
+
+- Building upgrades
+
+Improvements
+
+- Added Cookies via Input Achievement
+
+Bug fixes
+
+- 
+
+# Version 105
+
+Release date: 2020-09-19
 
 Big new feature:
 
