@@ -101,31 +101,31 @@ private:
     };
     Item Antimattercondenser{
             "Antimatter Condenser",
-            "q",
+            "r",
             CookieNumber("170000000000000"),
             CookieNumber(430000000),
     };
     Item Prism{
             "Prism",
-            "r",
+            "s",
             CookieNumber("2100000000000000"),
             CookieNumber("2900000000"),
     };
     Item Chancemaker{
             "Chance maker",
-            "s",
+            "t",
             CookieNumber("26000000000000000"),
             CookieNumber("21000000000"),
     };
     Item FractalEngine{
             "Fractal Engine",
-            "t",
+            "u",
             CookieNumber("310000000000000000"),
             CookieNumber("150000000000"),
     };
     Item JavascriptConsole{
             "Javascript Console",
-            "u",
+            "v",
             CookieNumber("71000000000000000000"),
             CookieNumber("1100000000000"),
     };
