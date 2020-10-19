@@ -21,7 +21,7 @@
 #include "terminalCodes.h"
 #include <atomic>
 #include <chrono>
-#include <gtest/gtest_prod.h>
+#include <gtest/gtest.h>
 #include <iomanip>
 #include <iostream>
 #include <limits>
