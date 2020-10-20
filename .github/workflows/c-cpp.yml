@@ -37,7 +37,7 @@ jobs:
     - name: cmake build
       run: cmake -Bbuild -H.  -DCMAKE_BUILD_TYPE=Debug
     - name: cmake make
-      run: cmake --build build/ --target all  -DCMAKE_BUILD_TYPE=Debug
+      run: cmake --build build/ --target all
       env:
         MAKEFLAGS: "-j2"
 
