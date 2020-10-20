@@ -131,26 +131,26 @@ TEST_F(SaveTestSuite, getFormat)
 }
 
 
-TEST_F(SaveTestSuite, convertV1toV2)
-{
-    //arrange
-    auto saveFile = testSaveFileFolder + "justLoad.save1";
-    auto saveFile_v2 = testSaveFileFolder + "saveConvert_v1_to_v2";
-
-    //act
-    auto saveload = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
-    saveload.loadFormatOne();
-    auto firstFormat = saveload.getFormat();
-
-    auto saveload_v2 = Save(saveFile_v2, inventory.get(), wallet.get(), store.get(), format2);
-    saveload.saveFormatTwo();
-
-    auto convertFormat = saveload_v2.getFormat();
-
-    //assert
-    ASSERT_EQ(firstFormat, 1);
-    ASSERT_EQ(convertFormat, 2);
-}
+//TEST_F(SaveTestSuite, convertV1toV2)
+//{
+//    //arrange
+//    auto saveFile = testSaveFileFolder + "justLoad.save1";
+//    auto saveFile_v2 = testSaveFileFolder + "saveConvert_v1_to_v2";
+//
+//    //act
+//    auto saveload = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+//    saveload.loadFormatOne();
+//    auto firstFormat = saveload.getFormat();
+//
+//    auto saveload_v2 = Save(saveFile_v2, inventory.get(), wallet.get(), store.get(), format2);
+//    saveload.saveFormatTwo();
+//
+//    auto convertFormat = saveload_v2.getFormat();
+//
+//    //assert
+//    ASSERT_EQ(firstFormat, 1);
+//    ASSERT_EQ(convertFormat, 2);
+//}
 
 TEST_F(SaveTestSuite, saveThenLoad_v2)
 {
