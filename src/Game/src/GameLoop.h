@@ -21,7 +21,6 @@
 #include "terminalCodes.h"
 #include <atomic>
 #include <chrono>
-#include <gtest/gtest_prod.h>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -64,9 +63,9 @@ private:
 
 
 
-    FRIEND_TEST(GameloopTestSuite, incrementCps);
-    FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
-    FRIEND_TEST(GameloopTestSuite, maxItemAmount);
+    //FRIEND_TEST(GameloopTestSuite, incrementCps);
+    //FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
+    //FRIEND_TEST(GameloopTestSuite, maxItemAmount);
 
 public:
     Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory,

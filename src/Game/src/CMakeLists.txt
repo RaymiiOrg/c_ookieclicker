@@ -13,7 +13,6 @@ target_link_libraries(${LIBRARY} PUBLIC
         Store
         Achievements
         Screen
-        gtest
         )
 target_link_libraries(${LIBRARY} PUBLIC stdc++fs)
 
