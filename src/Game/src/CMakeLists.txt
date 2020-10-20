@@ -13,7 +13,6 @@ target_link_libraries(${LIBRARY} PUBLIC
         Store
         Achievements
         Screen
-        gtest
         )
 target_link_libraries(${LIBRARY} PUBLIC stdc++fs)
 
@@ -26,7 +25,6 @@ target_link_libraries(${LIBRARY}_linux PUBLIC
         Wallet
         Achievements
         Screen
-        gtest
         Store)
 target_link_libraries(${LIBRARY}_linux PUBLIC stdc++fs)
 target_include_directories(${LIBRARY}_linux PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
