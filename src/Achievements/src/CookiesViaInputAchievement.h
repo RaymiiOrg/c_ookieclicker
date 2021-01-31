@@ -1,7 +1,3 @@
-//
-// Created by remy on 11-09-20.
-//
-
 #ifndef C_OOKIECLIKER_CookiesViaInputAchievement_H
 #define C_OOKIECLIKER_CookiesViaInputAchievement_H
 

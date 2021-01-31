@@ -1,7 +1,3 @@
-//
-// Created by remy on 24-04-20.
-//
-
 #include "GameLoop.h"
 #include "filesystem.h"
 

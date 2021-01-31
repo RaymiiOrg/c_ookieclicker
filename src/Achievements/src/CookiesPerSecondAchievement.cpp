@@ -1,7 +1,3 @@
-//
-// Created by remy on 11-09-20.
-//
-
 #include <Game/src/notifyMessage.h>
 #include "CookiesPerSecondAchievement.h"
 #include "Wallet.h"

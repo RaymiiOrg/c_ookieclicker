@@ -1,7 +1,3 @@
-//
-// Created by remy on 08-09-20.
-//
-
 #include "OptionsView.h"
 #include <CookieNumbers.h>
 #include <Game/src/Save.h>

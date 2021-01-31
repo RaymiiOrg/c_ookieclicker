@@ -1,7 +1,3 @@
-//
-// Created by remy on 08-09-20.
-//
-
 #ifndef C_OOKIECLIKER_INVENTORYVIEW_H
 #define C_OOKIECLIKER_INVENTORYVIEW_H
 #include "Inventory.h"

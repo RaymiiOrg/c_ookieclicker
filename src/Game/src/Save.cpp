@@ -1,7 +1,3 @@
-//
-// Created by remy on 31-05-20.
-//
-
 #include "Save.h"
 
 Save::Save(std::string filename, Inventory *Inventory, Wallet *wallet, Store *store, int format) :

@@ -1,7 +1,3 @@
-//
-// Created by remy on 08-09-20.
-//
-
 #include "MessageView.h"
 #include "terminalCodes.h"
 

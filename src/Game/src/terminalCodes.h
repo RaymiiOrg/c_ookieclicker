@@ -1,7 +1,3 @@
-//
-// Created by remy on 08-09-20.
-//
-
 #ifndef C_OOKIECLIKER_TERMINALCODES_H
 #define C_OOKIECLIKER_TERMINALCODES_H
 #include <string>

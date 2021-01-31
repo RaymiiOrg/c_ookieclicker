@@ -1,7 +1,3 @@
-//
-// Created by remy on 17-05-20.
-//
-
 #include "Store.h"
 
 CookieNumber Store::getPrice(Item &item, const CookieNumber &amountAlreadyHave)

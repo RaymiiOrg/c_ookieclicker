@@ -1,7 +1,3 @@
-//
-// Created by remy on 20-04-20.
-//
-
 #ifndef C_OOKIECLIKER_AddItemCommand_H
 #define C_OOKIECLIKER_AddItemCommand_H
 

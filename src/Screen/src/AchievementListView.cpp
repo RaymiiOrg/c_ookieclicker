@@ -1,7 +1,3 @@
-//
-// Created by remy on 12-09-20.
-//
-
 #include "AchievementListView.h"
 #include "terminalCodes.h"
 void AchievementListView::render()

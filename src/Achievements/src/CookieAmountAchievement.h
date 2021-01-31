@@ -1,7 +1,3 @@
-//
-// Created by remy on 16-07-20.
-//
-
 #ifndef C_OOKIECLIKER_COOKIEAMOUNTACHIEVEMENT_H
 #define C_OOKIECLIKER_COOKIEAMOUNTACHIEVEMENT_H
 #include "Achievement.h"

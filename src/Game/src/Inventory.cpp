@@ -1,7 +1,3 @@
-//
-// Created by remy on 20-04-20.
-//
-
 #include "Inventory.h"
 
 void Inventory::addItem(const std::string &item, const CookieNumber &amountToAdd)

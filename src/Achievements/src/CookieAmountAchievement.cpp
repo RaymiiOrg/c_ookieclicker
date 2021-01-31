@@ -1,7 +1,3 @@
-//
-// Created by remy on 16-07-20.
-//
-
 #include "CookieAmountAchievement.h"
 
 bool CookieAmountAchievement::hasAchieved()

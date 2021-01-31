@@ -1,7 +1,3 @@
-//
-// Created by remy on 21-04-20.
-//
-
 #ifndef C_OOKIECLIKER_WALLET_H
 #define C_OOKIECLIKER_WALLET_H
 #include "CookieNumbers.h"

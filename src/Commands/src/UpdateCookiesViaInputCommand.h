@@ -1,7 +1,3 @@
-//
-// Created by remy on 20-04-20.
-//
-
 #ifndef C_OOKIECLIKER_UpdateCookiesCommand_H
 #define C_OOKIECLIKER_UpdateCookiesCommand_H
 #include "Command.h"

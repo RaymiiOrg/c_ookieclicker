@@ -1,7 +1,3 @@
-//
-// Created by remy on 12-09-20.
-//
-
 #ifndef C_OOKIECLIKER_ACHIEVEMENTLISTVIEW_H
 #define C_OOKIECLIKER_ACHIEVEMENTLISTVIEW_H
 #include "Achievement.h"

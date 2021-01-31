@@ -1,7 +1,3 @@
-//
-// Created by remy on 17-05-20.
-//
-
 #ifndef C_OOKIECLIKER_Store_H
 #define C_OOKIECLIKER_Store_H
 #include "Item.h"

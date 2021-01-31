@@ -1,7 +1,3 @@
-//
-// Created by remy on 08-09-20.
-//
-
 #ifndef C_OOKIECLIKER_VIEW_H
 #define C_OOKIECLIKER_VIEW_H
 #include <iostream>

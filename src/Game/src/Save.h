@@ -1,7 +1,3 @@
-//
-// Created by remy on 31-05-20.
-//
-
 #ifndef C_OOKIECLIKER_SAVE_H
 #define C_OOKIECLIKER_SAVE_H
 

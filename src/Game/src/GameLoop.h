@@ -1,7 +1,3 @@
-//
-// Created by remy on 24-04-20.
-//
-
 #ifndef C_OOKIECLIKER_GAMELOOP_H
 #define C_OOKIECLIKER_GAMELOOP_H
 

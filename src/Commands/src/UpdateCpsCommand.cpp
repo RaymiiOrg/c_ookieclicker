@@ -1,7 +1,3 @@
-//
-// Created by remy on 20-04-20.
-//
-
 #include "UpdateCpsCommand.h"
 
 UpdateCpsCommand::UpdateCpsCommand(const CookieNumber &amount, Wallet &wallet) :

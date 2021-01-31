@@ -1,7 +1,3 @@
-//
-// Created by remy on 20-04-20.
-//
-
 #include "BuyItemCommand.h"
 
 BuyItemCommand::BuyItemCommand(Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, Store &store) :

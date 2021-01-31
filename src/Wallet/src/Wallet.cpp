@@ -1,7 +1,3 @@
-//
-// Created by remy on 21-04-20.
-//
-
 #include "Wallet.h"
 
 void Wallet::incrementCps(const CookieNumber &amount)
