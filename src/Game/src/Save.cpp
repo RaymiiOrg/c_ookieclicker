@@ -42,6 +42,7 @@ bool Save::saveFormatOne()
         return false;
 
     save_step_1_Header(out);
+    format = 1;
     save_step_2_Format(out);
     save_step_3_CookieAmount(out);
     save_step_4_CPS(out);
@@ -89,6 +90,7 @@ bool Save::saveFormatTwo() {
         return false;
 
     save_step_1_Header(out);
+    format = 2;
     save_step_2_Format(out);
     save_step_3_CookieAmount(out);
     save_step_4_CPS(out);
@@ -124,7 +126,7 @@ std::vector<std::string> Save::getSaveData() {
     return inV;
 }
 
-void Save::save_step_1_Header(std::ofstream &out) const {
+void Save::save_step_1_Header(std::ofstream &out) {
     out << "# c_ookieClicker savegame, by https://raymii.org"
         << ";";
 }
@@ -183,8 +185,15 @@ void Save::load_step_6_Items(std::vector<std::string> &inV) {
     }
 }
 
-int Save::loadAmountOfItems(std::vector<std::string> &inV) const {
-    return std::stoi(inV.at(5));
+int Save::loadAmountOfItems(std::vector<std::string> &inV) {
+    if (inV.size() >= 5)
+    {
+        return std::stoi(inV.at(5));
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 void Save::load_step_7_CookiesViaInput(std::vector<std::string> &inV) {

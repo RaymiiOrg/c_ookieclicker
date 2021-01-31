@@ -32,7 +32,7 @@ private:
     void load_step_7_CookiesViaInput(std::vector<std::string> &inV);
     void load_step_6_Items(std::vector<std::string> &inV);
 
-    void save_step_1_Header(std::ofstream &out) const;
+    static void save_step_1_Header(std::ofstream &out) ;
     void save_step_2_Format(std::ofstream &out) const;
     void save_step_3_CookieAmount(std::ofstream &out) const;
     void save_step_4_CPS(std::ofstream &out) const;
@@ -40,7 +40,7 @@ private:
     void save_step_6_Items(std::ofstream &out) const;
     void save_step_7_CookiesViaInput(std::ofstream &out);
 
-    int loadAmountOfItems(std::vector<std::string> &inV) const;
+    static int loadAmountOfItems(std::vector<std::string> &inV) ;
 };
 
 #endif //C_OOKIECLIKER_SAVE_H
