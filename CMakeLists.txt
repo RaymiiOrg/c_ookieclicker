@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Threads REQUIRED)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread" )
 
 # Fix segfault when statically compiling.
 # https://stackoverflow.com/questions/35116327/when-g-static-link-pthread-cause-segmentation-fault-why
@@ -45,14 +44,8 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -DNDEBUG")
 endif()
 
-
-
 include_directories(src)
 add_subdirectory(src)
-
-add_custom_target(checkstyle
-        COMMAND ${CMAKE_SOURCE_DIR}/lib/checkstyle.sh "${CMAKE_BINARY_DIR}/formatdiff.txt"
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 
 set(PACKAGE ${PROJECT_NAME})
