@@ -5,14 +5,20 @@ Release date: 2020-
 New features:
 
 - Building upgrades
+- Debian package available
 
 Improvements
 
 - Added Cookies via Input Achievement
+- CMake has project and version info
+- CMake main game is renamed from "Game" to "c_ookieclicker"
+- CMake links to threads in a platform agnostic way
 
 Bug fixes
 
 - 
+
+The savegame format has been updated to version 2 for this release.
 
 # Version 105
 

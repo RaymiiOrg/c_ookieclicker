@@ -20,7 +20,9 @@ project organization, software architecture and to try out design patterns.
 Release binaries can be found in the `releases` folder. The latest release will
 always be the current development version, which is unstable at best.  
 
-Either download a release binary or clone the git repo and build yourself.
+Debian packages can be found [here including the build scripts](https://github.com/RaymiiOrg/c_ookieclicker_debian_package)
+
+Either download a package, release binary or clone the git repo and build yourself.
 
 Start up the game. In the top you'll see your amount of cookies and
 your Cookies per Second. Press `c`, then `Enter` to bake your first 
