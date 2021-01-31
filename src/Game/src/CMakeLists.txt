@@ -1,4 +1,4 @@
-set(LIBRARY Game)
+set(LIBRARY c_ookieclicker)
 
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
 
