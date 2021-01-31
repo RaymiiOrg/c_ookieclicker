@@ -8,4 +8,4 @@ add_executable(${BINARY} ${TEST_SOURCES})
 
 add_test(NAME ${BINARY} COMMAND ${BINARY})
 
-target_link_libraries(${BINARY} PUBLIC c_ookieclicker Commands gtest)
+target_link_libraries(${BINARY} PUBLIC cookieclicker Commands gtest)

@@ -1,4 +1,4 @@
-set(LIBRARY c_ookieclicker)
+set(LIBRARY cookieclicker)
 
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
 
@@ -14,7 +14,8 @@ target_link_libraries(${LIBRARY} PUBLIC
         Achievements
         Screen
         )
-target_link_libraries(${LIBRARY} PUBLIC stdc++fs Threads::Threads)
+target_link_libraries(${LIBRARY} PUBLIC Threads::Threads)
+target_link_libraries(${LIBRARY} PUBLIC ${CXX_FILESYSTEM_LIBRARIES})
 
 target_include_directories(${LIBRARY} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -26,7 +27,9 @@ target_link_libraries(${LIBRARY}_linux PUBLIC
         Achievements
         Screen
         Store)
-target_link_libraries(${LIBRARY}_linux PUBLIC stdc++fs Threads::Threads)
+target_link_libraries(${LIBRARY}_linux PUBLIC Threads::Threads)
+target_link_libraries(${LIBRARY} PUBLIC ${CXX_FILESYSTEM_LIBRARIES})
+
 target_include_directories(${LIBRARY}_linux PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 

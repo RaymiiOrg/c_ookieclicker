@@ -18,6 +18,9 @@ tests="$(cmake --build . --target help | grep -o -E "[a-zA-Z]*_tst")"
 for testexecutable in ${tests}; do
   testfolder=${testexecutable%"_tst"}
   testpath=./src/${testfolder}/tst/${testexecutable}
+  if [[ ${testexecutable} == "cookieclicker_tst" ]]; then
+    continue
+  fi
   echo "Running test: ${testpath}"
   ./${testpath}
   if [[ $? != 0 ]]; then

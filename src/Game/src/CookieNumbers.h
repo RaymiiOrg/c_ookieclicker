@@ -17,6 +17,7 @@
 #ifndef C_OOKIECLIKER_COOKIENUMBERS_H
 #define C_OOKIECLIKER_COOKIENUMBERS_H
 
+#include <boost/serialization/nvp.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
 

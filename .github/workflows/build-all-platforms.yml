@@ -1,0 +1,247 @@
+name: Build, run test and upload binaries
+
+on: [push, pull_request]
+
+jobs:
+
+  linux-x86-clang:
+    runs-on: "ubuntu-20.04"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H%M')"
+
+      - name: Install build dependencies
+        run: sudo apt -y update && sudo apt -y install libboost1.71-dev
+
+      - name: Create build environment
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DBUILD_TESTS="yes" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall"
+
+      - name: Build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build . --config Release --target all
+        env:
+          MAKEFLAGS: "-j2"
+
+      - name: Binary info
+        run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
+      - name: Game Test
+        run: ${{runner.workspace}}/build/src/Game/tst/cookieclicker_tst
+
+      - name: Commands Test
+        run: ${{runner.workspace}}/build/src/Commands/tst/Commands_tst
+
+      - name: Store Test
+        run: ${{runner.workspace}}/build/src/Store/tst/Store_tst
+
+      - name: Wallet Test
+        run: ${{runner.workspace}}/build/src/Wallet/tst/Wallet_tst
+
+      - name: Achievement Test
+        run: ${{runner.workspace}}/build/src/Achievements/tst/Achievements_tst
+
+      - name: Upload c_ookieclicker binary
+        uses: actions/upload-artifact@v1
+        with:
+          name: c_ookieclicker-linux-x86-clang-${{ env.BUILD_DATE }}
+          path: ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+        env:
+          BUILD_DATE: ${{ steps.date.outputs.date }}
+
+  linux-x86-gcc:
+    runs-on: "ubuntu-20.04"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H%M')"
+
+      - name: Install build dependencies
+        run: sudo apt -y update && sudo apt -y install libboost1.71-dev
+
+      - name: Create build environment
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS="yes" -DCMAKE_CXX_FLAGS="-Wall"
+
+      - name: Build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build . --config Release --target all
+        env:
+          MAKEFLAGS: "-j2"
+
+      - name: Binary info
+        run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
+      - name: Game Test
+        run: ${{runner.workspace}}/build/src/Game/tst/cookieclicker_tst
+
+      - name: Commands Test
+        run: ${{runner.workspace}}/build/src/Commands/tst/Commands_tst
+
+      - name: Store Test
+        run: ${{runner.workspace}}/build/src/Store/tst/Store_tst
+
+      - name: Wallet Test
+        run: ${{runner.workspace}}/build/src/Wallet/tst/Wallet_tst
+
+      - name: Achievement Test
+        run: ${{runner.workspace}}/build/src/Achievements/tst/Achievements_tst
+
+      - name: Upload c_ookieclicker binary
+        uses: actions/upload-artifact@v1
+        with:
+          name: c_ookieclicker-linux-x86-gcc-${{ env.BUILD_DATE }}
+          path: ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+        env:
+          BUILD_DATE: ${{ steps.date.outputs.date }}
+
+  linux-arm-gcc-crosscompile:
+    runs-on: "ubuntu-20.04"
+#    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H%M')"
+
+      - name: Install build dependencies
+        run: sudo apt -y update && sudo apt -y install libboost1.71-dev qemu-user-binfmt qemu-user g++-multilib-arm-linux-gnueabihf gcc-arm-linux-gnueabihf
+
+      - name: Create build environment
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DSTATIC_COMPILE="yes" -DCMAKE_CXX_FLAGS="-Wall" -DCMAKE_C_COMPILER="arm-linux-gnueabihf-gcc-9" -DCMAKE_CXX_COMPILER="arm-linux-gnueabihf-g++-9" -DCMAKE_CXX_FLAGS="-O3 -march=armv7ve"
+
+      - name: Build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build . --config Release --target all
+        env:
+          MAKEFLAGS: "-j2"
+
+      - name: Binary info
+        run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
+      - name: test run
+        run: echo q |  ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
+      - name: Upload c_ookieclicker binary
+        uses: actions/upload-artifact@v1
+        with:
+          name: c_ookieclicker-linux-ARM-gcc-${{ env.BUILD_DATE }}
+          path: ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+        env:
+          BUILD_DATE: ${{ steps.date.outputs.date }}
+
+  windows-x86-msvc:
+    runs-on: windows-2019
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H%M')"
+
+      - name: Create build environment
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build . --config Release
+        env:
+          MAKEFLAGS: "-j2"
+
+      - name: Test run
+        working-directory: ${{runner.workspace}}/build
+        run: echo q | ${{runner.workspace}}\build\src\Game\src\Release\cookieclicker_linux.exe
+
+      - name: Upload c_ookieclicker Binary
+        uses: actions/upload-artifact@v1
+        with:
+          name: c_ookieclicker-windows-x86-msvc-${{ env.BUILD_DATE }}.exe
+          path: ${{runner.workspace}}\build\src\Game\src\Release\cookieclicker_linux.exe
+        env:
+          BUILD_DATE: ${{ steps.date.outputs.date }}
+#
+  osx-x86-appleclang:
+    runs-on: "macos-10.15"
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H%M')"
+
+      - name: Create build environment
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Install dependencies
+        run: brew install boost
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS="yes" -DCMAKE_CXX_FLAGS="-Wall -std=c++17 -stdlib=libc++" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++"
+
+      - name: Build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build . --config Release --target all
+        env:
+          MAKEFLAGS: "-j2"
+
+      - name: Binary info
+        run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
+      - name: Game Test
+        run: ${{runner.workspace}}/build/src/Game/tst/cookieclicker_tst
+
+      - name: Commands Test
+        run: ${{runner.workspace}}/build/src/Commands/tst/Commands_tst
+
+      - name: Store Test
+        run: ${{runner.workspace}}/build/src/Store/tst/Store_tst
+
+      - name: Wallet Test
+        run: ${{runner.workspace}}/build/src/Wallet/tst/Wallet_tst
+        
+      - name: Achievement Test
+        run: ${{runner.workspace}}/build/src/Achievements/tst/Achievements_tst
+
+      - name: Upload c_ookieclicker Binary
+        uses: actions/upload-artifact@v1
+        with:
+          name: c_ookieclicker-osx-x86-10.15-appleclang-${{ env.BUILD_DATE }}
+          path: ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+        env:
+          BUILD_DATE: ${{ steps.date.outputs.date }}
+#

@@ -1,4 +1,4 @@
 add_subdirectory(src)
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+if (BUILD_TESTS STREQUAL "yes")
     add_subdirectory(tst)
 endif()

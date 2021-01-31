@@ -10,7 +10,12 @@ void OptionsView::render()
     std::cout << "[s]: save; \n";
     std::cout << "[l]: load; \n";
     std::cout << std::endl;
-    std::cout << "version: " << game::gameVersion << std::endl;
+    std::cout << "version: " << game::gameVersion << " ";
+#ifdef PACKAGE_GITSHA
+    std::cout << " (commit " << std::string(PACKAGE_GITSHA) << ")";
+#endif
+    std::cout << std::endl;
+
 }
 
 void OptionsView::handleInput(const std::string &input)
