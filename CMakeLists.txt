@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
-project(c_ookiecliker)
+project(c_ookiecliker VERSION 1.0.6)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Threads REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread" )
@@ -54,5 +55,15 @@ add_custom_target(checkstyle
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 
+set(PACKAGE ${PROJECT_NAME})
+set(PACKAGE_NAME string(TOLOWER ${PROJECT_NAME}))
+set(PACKAGE_VERSION ${PROJECT_VERSION})
+set(PACKAGE_STRING ${PACKAGE_NAME}-${PACKAGE_VERSION})
+set(PACKAGE_TARNAME ${PACKAGE_STRING}.tar.gz)
+set(PACKAGE_URL "https://raymii.org")
 
+install(TARGETS c_ookieclicker_linux DESTINATION bin)
 
+message(STATUS "C++ compiler flags  : ${CMAKE_CXX_FLAGS}")
+message(STATUS "C compiler flags    : ${CMAKE_C_FLAGS}")
+message(STATUS "Linker flags        : ${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS} ${CMAKE_STATIC_LINKER_FLAGS}")

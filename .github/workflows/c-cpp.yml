@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+# boost is included in the github runner. Therefore this is commented.
 #    - name: Cache boost
 #      uses: actions/cache@v1.0.3
 #      id: cache-boost
