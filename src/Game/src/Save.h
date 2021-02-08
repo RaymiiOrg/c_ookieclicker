@@ -29,8 +29,9 @@ private:
     void load_step_3_CookieAmount(std::vector<std::string> &inV);
     void load_step_4_CPS(std::vector<std::string> &inV);
     void load_step_5_TotalCookies(std::vector<std::string> &inV);
-    void load_step_7_CookiesViaInput(std::vector<std::string> &inV);
     void load_step_6_Items(std::vector<std::string> &inV);
+    void load_step_7_CookiesViaInput(std::vector<std::string> &inV);
+    void load_step_8_CookiesPerTap(std::vector<std::string> &inV);
 
     static void save_step_1_Header(std::ofstream &out) ;
     void save_step_2_Format(std::ofstream &out) const;
@@ -39,6 +40,7 @@ private:
     void save_step_5_TotalCookies(std::ofstream &out);
     void save_step_6_Items(std::ofstream &out) const;
     void save_step_7_CookiesViaInput(std::ofstream &out);
+    void save_step_8_CookiesPerTap(std::ofstream &out);
 
     static int loadAmountOfItems(std::vector<std::string> &inV) ;
 };

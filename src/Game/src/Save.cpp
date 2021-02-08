@@ -80,7 +80,7 @@ bool Save::loadFormatTwo() {
     load_step_5_TotalCookies(inV);
     load_step_6_Items(inV);
     load_step_7_CookiesViaInput(inV);
-
+    load_step_8_CookiesPerTap(inV);
     return true;
 }
 
@@ -97,7 +97,7 @@ bool Save::saveFormatTwo() {
     save_step_5_TotalCookies(out);
     save_step_6_Items(out);
     save_step_7_CookiesViaInput(out);
-
+    save_step_8_CookiesPerTap(out);
     return true;
 }
 
@@ -159,6 +159,11 @@ void Save::save_step_7_CookiesViaInput(std::ofstream &out) {
     out << wallet->getCookiesViaInput().str(0, std::ios_base::fixed) << ";";
 }
 
+void Save::save_step_8_CookiesPerTap(std::ofstream &out) {
+    out << inventory->getCookiesPerTap().str(0, std::ios_base::fixed) << ";";
+}
+
+
 void Save::load_step_3_CookieAmount(std::vector<std::string> &inV) { wallet->setCookieAmount(CookieNumber(inV.at(2))); }
 
 void Save::load_step_4_CPS(std::vector<std::string> &inV) { wallet->setCps(CookieNumber(inV.at(3))); }
@@ -200,3 +205,9 @@ void Save::load_step_7_CookiesViaInput(std::vector<std::string> &inV) {
     int positionInSave = loadAmountOfItems(inV) + 1;
     wallet->incrementCookieViaInput(CookieNumber(positionInSave));
 }
+
+void Save::load_step_8_CookiesPerTap(std::vector<std::string> &inV) {
+    int positionInSave = loadAmountOfItems(inV) + 2;
+    inventory->incrementCookiesPerTap(CookieNumber(positionInSave));
+}
+

@@ -71,7 +71,7 @@ void Inventory::incrementCookiesPerTap(const CookieNumber &amount)
 
 void Inventory::reset()
 {
-    _cookiesPerTap = 0;
+    _cookiesPerTap = 1;
     last_item_added_amount = 0;
     last_item_added.clear();
     m_Inventory.clear();
