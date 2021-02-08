@@ -30,6 +30,8 @@ void StoreShelfView::renderNotEnoughMoneyButDoHaveItemsInInventoryOutput(Item &i
                                                                          const CookieNumber &itemAmountInInventory) const {
     std::cout << escapeCode.terminalDim;
     std::cout << "[" << item.buyKey << "]: not enough cookies for " << item.name;
+    std::cout << "[" << item.buyKey << "]: not enough cookies for " <<
+              std::to_string(itemQuantity) << " " << item.name;
     if (itemQuantity > 1) std::cout << "s";
     std::cout << " (cost: ";
     std::cout << cp.print(Store::getPrice(item, itemAmountInInventory));
