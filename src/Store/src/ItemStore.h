@@ -2,7 +2,7 @@
 #define C_OOKIECLIKER_Store_H
 #include "Item.h"
 
-class Store
+class ItemStore
 {
 public:
     std::vector<Item> &getStoreInventory() { return storeInventory; };

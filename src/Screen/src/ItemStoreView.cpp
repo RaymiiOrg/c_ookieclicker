@@ -1,6 +1,6 @@
-#include "StoreView.h"
+#include "ItemStoreView.h"
 
-void StoreView::render()
+void ItemStoreView::render()
 {
     listViews();
     if(activeView)
@@ -8,7 +8,7 @@ void StoreView::render()
 
 }
 
-void StoreView::handleInput(const std::string &input)
+void ItemStoreView::handleInput(const std::string &input)
 {
     if (input == "a")
         activeView = &oneItem;
@@ -21,7 +21,7 @@ void StoreView::handleInput(const std::string &input)
 }
 
 
-void StoreView::listViews() const
+void ItemStoreView::listViews() const
 {
     char inputKey = 'a';
     int count = 1;

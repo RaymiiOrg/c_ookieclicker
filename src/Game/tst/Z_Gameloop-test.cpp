@@ -8,7 +8,7 @@ struct GameloopTestSuite : public ::testing::Test
     std::unique_ptr<Gameloop> game;
     std::unique_ptr<Inventory> inventory = std::make_unique<Inventory>();
     std::unique_ptr<Wallet> wallet = std::make_unique<Wallet>();
-    std::unique_ptr<Store> store = std::make_unique<Store>();
+    std::unique_ptr<ItemStore> store = std::make_unique<ItemStore>();
     std::unique_ptr<notifyMessage> msg = std::make_unique<notifyMessage>();
     std::unique_ptr<MainView> gamescreen = std::make_unique<MainView>(msg.get(), wallet.get(),
                                                                       inventory.get(), store.get());

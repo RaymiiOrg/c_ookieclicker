@@ -7,7 +7,7 @@
 class Save
 {
 public:
-    Save(std::string filename, Inventory *Inventory, Wallet *wallet, Store *store, int format);
+    Save(std::string filename, Inventory *Inventory, Wallet *wallet, ItemStore *store, int format);
     bool save();
     bool load();
 
@@ -15,7 +15,7 @@ private:
     std::string saveFileName;
     Inventory *inventory;
     Wallet *wallet;
-    Store *store;
+    ItemStore *itemstore;
     int format;
 
     int getFormat();

@@ -11,10 +11,10 @@ struct SaveTestSuite : public ::testing::Test
     std::unique_ptr<Gameloop> game;
     std::unique_ptr<Inventory> inventory = std::make_unique<Inventory>();
     std::unique_ptr<Wallet> wallet = std::make_unique<Wallet>();
-    std::unique_ptr<Store> store = std::make_unique<Store>();
+    std::unique_ptr<ItemStore> itemstore = std::make_unique<ItemStore>();
     std::unique_ptr<notifyMessage> msg = std::make_unique<notifyMessage>();
     std::unique_ptr<MainView> gamescreen = std::make_unique<MainView>(msg.get(), wallet.get(),
-                                                                      inventory.get(), store.get());
+                                                                      inventory.get(), itemstore.get());
 
     int format1 = 1;
     int format2 = 2;
@@ -26,8 +26,7 @@ struct SaveTestSuite : public ::testing::Test
     
     SaveTestSuite()
     {
-        std::make_unique<Gameloop>(msg.get(), wallet.get(), inventory.get(),
-                                   store.get(), gamescreen.get());
+        std::make_unique<Gameloop>(msg.get(), wallet.get(), inventory.get(), itemstore.get(), gamescreen.get());
     }
 };
 
@@ -35,7 +34,7 @@ TEST_F(SaveTestSuite, saveBlankFile_v1)
 {
     //arrange
     auto saveFile = testSaveFileFolder + "saveBlankFile.save1";
-    auto savegame = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    auto savegame = Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
     //act
     auto result = savegame.saveFormatOne();
     //assert
@@ -47,7 +46,7 @@ TEST_F(SaveTestSuite, loadNonExistentFile)
 {
     //arrange
     auto saveFile = testSaveFileFolder + "nonExistentFile.save";
-    auto savegame = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    auto savegame = Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
     // act
     auto result = savegame.load();
     //assert
@@ -61,7 +60,7 @@ TEST_F(SaveTestSuite, saveThenLoad_v1)
     auto saveFile = testSaveFileFolder + "saveThenLoad.save1";
     std::unique_ptr<Inventory> loadinventory = std::make_unique<Inventory>();
     std::unique_ptr<Wallet> loadwallet = std::make_unique<Wallet>();
-    std::unique_ptr<Store> loadstore = std::make_unique<Store>();
+    std::unique_ptr<ItemStore> loadstore = std::make_unique<ItemStore>();
     std::unique_ptr<notifyMessage> loadmsg = std::make_unique<notifyMessage>();
     std::unique_ptr<MainView> loadgamescreen = std::make_unique<MainView>(loadmsg.get(), loadwallet.get(),
                                                                       loadinventory.get(), loadstore.get());
@@ -73,7 +72,7 @@ TEST_F(SaveTestSuite, saveThenLoad_v1)
 
     inventory->addItem("Grandma", largeNumber);
 
-    auto savegame =  Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    auto savegame =  Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
     auto saveResult = savegame.saveFormatOne();
 
     std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(loadmsg.get(), loadwallet.get(), 
@@ -99,7 +98,7 @@ TEST_F(SaveTestSuite, justLoad_v1)
     auto saveFile = testSaveFileFolder + "justLoad.save1";
 
     //act
-    auto saveload = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    auto saveload = Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
     auto loadResult = saveload.loadFormatOne();
 
     //assert
@@ -107,7 +106,7 @@ TEST_F(SaveTestSuite, justLoad_v1)
     ASSERT_EQ(wallet->getTotalcookies(), 3);
     ASSERT_EQ(wallet->getCps(), 20);
     ASSERT_EQ(inventory->getItemCount("Cursor"), 3);
-    ASSERT_EQ(store->getPrice(store->getItemByName("Cursor"), inventory->getItemCount("Cursor")), 23);
+    ASSERT_EQ(itemstore->getPrice(itemstore->getItemByName("Cursor"), inventory->getItemCount("Cursor")), 23);
     ASSERT_EQ(inventory->getItemCount("Grandma"), largeNumber);
 }
 
@@ -119,10 +118,10 @@ TEST_F(SaveTestSuite, getFormat)
     auto saveFile_v2 = testSaveFileFolder + "justLoad.save2";
 
     //act
-    auto saveload = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    auto saveload = Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
     auto loadResult = saveload.getFormat();
 
-    auto saveload_v2 = Save(saveFile_v2, inventory.get(), wallet.get(), store.get(), format1);
+    auto saveload_v2 = Save(saveFile_v2, inventory.get(), wallet.get(), itemstore.get(), format1);
     auto loadResult_v2 = saveload_v2.getFormat();
 
     //assert
@@ -138,7 +137,7 @@ TEST_F(SaveTestSuite, convertV1toV2)
     auto saveFile_v2 = testSaveFileFolder + "saveConvert_v1_to_v2";
 
     //act
-    auto saveload = Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    auto saveload = Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
     saveload.loadFormatOne();
     auto firstFormat = saveload.getFormat();
 
@@ -158,7 +157,7 @@ TEST_F(SaveTestSuite, saveThenLoad_v2)
     auto saveFile = testSaveFileFolder + "saveThenLoad.save2";
     std::unique_ptr<Inventory> loadinventory = std::make_unique<Inventory>();
     std::unique_ptr<Wallet> loadwallet = std::make_unique<Wallet>();
-    std::unique_ptr<Store> loadstore = std::make_unique<Store>();
+    std::unique_ptr<ItemStore> loadstore = std::make_unique<ItemStore>();
     std::unique_ptr<notifyMessage> loadmsg = std::make_unique<notifyMessage>();
     std::unique_ptr<MainView> loadgamescreen = std::make_unique<MainView>(loadmsg.get(), loadwallet.get(),
                                                                           loadinventory.get(), loadstore.get());
@@ -170,7 +169,7 @@ TEST_F(SaveTestSuite, saveThenLoad_v2)
     inventory->addItem("Alchemy Lab", 3);
     inventory->addItem("Grandma", largeNumber);
 
-    auto savegame =  Save(saveFile, inventory.get(), wallet.get(), store.get(), format1);
+    auto savegame =  Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
     auto saveResult = savegame.saveFormatTwo();
 
     std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(loadmsg.get(), loadwallet.get(),

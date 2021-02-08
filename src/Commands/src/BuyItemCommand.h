@@ -3,14 +3,14 @@
 
 #include "Command.h"
 #include "Inventory.h"
-#include "Store.h"
+#include "ItemStore.h"
 #include "Wallet.h"
 #include <utility>
 
 class BuyItemCommand : public Command
 {
 public:
-    BuyItemCommand(Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, Store &store);
+    BuyItemCommand(Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, ItemStore &store);
     void execute() override;
     void undo() override;
 
@@ -19,7 +19,7 @@ private:
     CookieNumber m_Amount;
     Inventory &m_Inventory;
     Wallet &m_Wallet;
-    Store &m_Store;
+    ItemStore &m_ItemStore;
     CookieNumber getPriceOf();
 
 };

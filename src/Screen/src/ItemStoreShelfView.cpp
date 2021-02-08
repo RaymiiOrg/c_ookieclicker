@@ -1,11 +1,11 @@
-#include "StoreShelfView.h"
+#include "ItemStoreShelfView.h"
 #include "BuyItemCommand.h"
 
-void StoreShelfView::render()
+void ItemStoreShelfView::render()
 {
-    if (wallet && store && inventory && msg) {
+    if (wallet && itemstore && inventory && msg) {
         bool enoughMoneyOrHaveItemsAlready = false;
-        for (auto &item : store->getStoreInventory()) {
+        for (auto &item : itemstore->getStoreInventory()) {
             auto itemAmountInInventory = inventory->getItemCount(item.name);
             CookieNumber priceOfItem = getPriceOfItem(itemAmountInInventory, item);
             if (itemAmountInInventory > 0 && wallet->getCookieAmount() < priceOfItem) {
@@ -22,29 +22,29 @@ void StoreShelfView::render()
     }
 }
 
-CookieNumber StoreShelfView::getPriceOfItem(const CookieNumber &itemAmountInInventory, Item &item) const {
-    return Store::getPriceOf(item, itemAmountInInventory, itemQuantity);
+CookieNumber ItemStoreShelfView::getPriceOfItem(const CookieNumber &itemAmountInInventory, Item &item) const {
+    return ItemStore::getPriceOf(item, itemAmountInInventory, itemQuantity);
 }
 
-void StoreShelfView::renderNotEnoughMoneyButDoHaveItemsInInventoryOutput(Item &item,
+void ItemStoreShelfView::renderNotEnoughMoneyButDoHaveItemsInInventoryOutput(Item &item,
                                                                          const CookieNumber &itemAmountInInventory) const {
     std::cout << escapeCode.terminalDim;
     std::cout << "[" << item.buyKey << "]: not enough cookies for " <<
               std::to_string(itemQuantity) << " " << item.name;
     if (itemQuantity > 1) std::cout << "s";
     std::cout << " (cost: ";
-    std::cout << cp.print(Store::getPriceOf(item, itemAmountInInventory, itemQuantity));
+    std::cout << cp.print(ItemStore::getPriceOf(item, itemAmountInInventory, itemQuantity));
     std::cout << " cookies);";
     std::cout << escapeCode.terminalReset;
     std::cout << std::endl;
 }
 
 
-void StoreShelfView::handleInput(const std::string &input)
+void ItemStoreShelfView::handleInput(const std::string &input)
 {
-    if (wallet && store && inventory && msg) {
+    if (wallet && itemstore && inventory && msg) {
         if (isInputRelevant(input)) {
-            for (Item &item : store->getStoreInventory()) {
+            for (Item &item : itemstore->getStoreInventory()) {
                 if (input == item.buyKey) {
                     if(canPayForItem(item)) {
                         buyItem(CookieNumber(itemQuantity), item);
@@ -60,9 +60,9 @@ void StoreShelfView::handleInput(const std::string &input)
     }
 }
 
-bool StoreShelfView::isInputRelevant(const std::string &input) const {
+bool ItemStoreShelfView::isInputRelevant(const std::string &input) const {
     bool isABuyItemKey = false;
-    for (const auto& item : store->getStoreInventory()) {
+    for (const auto& item : itemstore->getStoreInventory()) {
         if (input == item.buyKey) {
             isABuyItemKey = true;
         }
@@ -70,11 +70,11 @@ bool StoreShelfView::isInputRelevant(const std::string &input) const {
     return isABuyItemKey;
 }
 
-void StoreShelfView::buyItem(const CookieNumber &amountToBuy, Item &item)
+void ItemStoreShelfView::buyItem(const CookieNumber &amountToBuy, Item &item)
 {
     if (canPayForItem(item) && amountToBuy > CookieNumber(0))
     {
-        auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, *inventory, *wallet, *store);
+        auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, *inventory, *wallet, *itemstore);
         buyCommand->execute();
         msg->setLastItemBoughtName(item.name);
         msg->setLastItemBoughtAmount(amountToBuy);
@@ -87,13 +87,13 @@ void StoreShelfView::buyItem(const CookieNumber &amountToBuy, Item &item)
     }
 }
 
-bool StoreShelfView::canPayForItem(Item &item)
+bool ItemStoreShelfView::canPayForItem(Item &item)
 {
     auto itemCount = inventory->getItemCount(item.name);
-    return wallet->getCookieAmount() >= Store::getPriceOf(item, itemCount, itemQuantity);
+    return wallet->getCookieAmount() >= ItemStore::getPriceOf(item, itemCount, itemQuantity);
 }
 
-void StoreShelfView::renderCanBuy(Item &item, const CookieNumber &itemAmountInInventory, const CookieNumber & price) const {
+void ItemStoreShelfView::renderCanBuy(Item &item, const CookieNumber &itemAmountInInventory, const CookieNumber & price) const {
     CookieNumber cpsOfX = item.cps * CookieNumber(itemQuantity);
     std::cout << "[" << item.buyKey << "]"
               << ": buy " << itemQuantity << " " << item.name;

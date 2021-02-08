@@ -11,7 +11,7 @@ void MainView::switchActiveView(const std::string &input)
 {
     if (input == "1")
     {
-        activeView = dynamic_cast<View *>(&storeview);
+        activeView = dynamic_cast<View *>(&itemstoreview);
     }
     if (input == "2")
     {
@@ -19,9 +19,13 @@ void MainView::switchActiveView(const std::string &input)
     }
     if (input == "3")
     {
-        activeView = dynamic_cast<View *>(&achievementlistview);
+        activeView = dynamic_cast<View *>(&upgradeview);
     }
     if (input == "4")
+    {
+        activeView = dynamic_cast<View *>(&achievementlistview);
+    }
+    if (input == "5")
     {
         activeView = dynamic_cast<View *>(&optionsview);
     }

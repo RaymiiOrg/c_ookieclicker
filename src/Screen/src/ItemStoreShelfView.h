@@ -1,12 +1,12 @@
 #ifndef C_OOKIECLIKER_StoreShelfView_H
 #define C_OOKIECLIKER_StoreShelfView_H
-#include "Store.h"
-#include "notifyMessage.h"
-#include "Wallet.h"
-#include "Item.h"
 #include "Inventory.h"
-#include "terminalCodes.h"
+#include "Item.h"
+#include "ItemStore.h"
 #include "View.h"
+#include "Wallet.h"
+#include "notifyMessage.h"
+#include "terminalCodes.h"
 
 #include <utility>
 #include <functional>
@@ -15,12 +15,12 @@
  * In our case, it shows options to buy One, Ten or 
  * Hundred of each item.
  */
-class StoreShelfView : public View
+class ItemStoreShelfView : public View
 {
     notifyMessage *msg;
     Wallet *wallet;
     Inventory *inventory;
-    Store *store;
+    ItemStore *itemstore;
     int itemQuantity;
     const std::string _name {"StoreShelf"};
     bool canPayForItem(Item &item);
@@ -35,9 +35,8 @@ public:
     const std::string &name() override { return _name; };
     void render() override;
     void handleInput(const std::string &input) override;
-    explicit StoreShelfView(notifyMessage* msg, Wallet* wallet, Inventory* inventory,
-    Store* store, int itemQuantity, std::string  name) : msg(msg), wallet(wallet),
-    inventory(inventory), store(store), itemQuantity(itemQuantity), _name(std::move(name)) {};
+    explicit ItemStoreShelfView(notifyMessage* msg, Wallet* wallet, Inventory* inventory, ItemStore * store, int itemQuantity, std::string  name) : msg(msg), wallet(wallet),
+    inventory(inventory), itemstore(store), itemQuantity(itemQuantity), _name(std::move(name)) {};
     [[nodiscard]] bool isInputRelevant(const std::string &input) const;
     CookieNumber getPriceOfItem(const CookieNumber &itemAmountInInventory, Item &item) const;
 };

@@ -1,9 +1,9 @@
 #include "Save.h"
 
-Save::Save(std::string filename, Inventory *Inventory, Wallet *wallet, Store *store, int format) :
+Save::Save(std::string filename, Inventory *Inventory, Wallet *wallet, ItemStore *store, int format) :
         saveFileName(std::move(
         filename)),
-        inventory(Inventory), wallet(wallet), store(store), format(format) {}
+        inventory(Inventory), wallet(wallet), itemstore(store), format(format) {}
 
 bool Save::save()
 {
@@ -28,7 +28,7 @@ bool Save::load()
 void Save::resetGameData() {
     wallet->reset();
     inventory->reset();
-    store->reset();
+    itemstore->reset();
 }
 
 bool Save::saveFormatOne()

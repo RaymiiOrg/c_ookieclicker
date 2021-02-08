@@ -19,6 +19,7 @@ public:
         LOADED,
         ERROR,
         ACHIEVEMENT_UNLOCKED,
+        COOKIES_PER_TAP,
         LAST_MSG,
     };
     void setLastItemFailedToBuy(const std::string &lastItemFailedToBuy);

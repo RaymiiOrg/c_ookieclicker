@@ -77,8 +77,8 @@ Release date:
 Release date: 2020-05-30.
 
 - Added input tab bar to make display less cluttered
-  - 1 = store to buy one item;
-  - 2 = store to buy the max amount items that your current cookie count allows
+  - 1 = itemstore to buy one item;
+  - 2 = itemstore to buy the max amount items that your current cookie count allows
   - 3 = show inventory
   - 4 = show achievements (not built yet)
 - Changed cookies per tap (`c` cursor) to be dynamic (default one) in preparation of achievements.

@@ -7,7 +7,7 @@ struct ScreenTestSuite : public ::testing::Test
 {
     notifyMessage msg;
     Wallet wallet;
-    Store store;
+    ItemStore store;
     Inventory inventory;
     std::string InventoryInputKey = "2";
     std::string AchievementInputKey = "3";
@@ -20,7 +20,7 @@ TEST_F(ScreenTestSuite, defaultScreen)
     MainView screen(&msg, &wallet, &inventory, &store);
     //act
     //assert
-    ASSERT_EQ(screen.activeView, dynamic_cast<View *>(&screen.storeview));
+    ASSERT_EQ(screen.activeView, dynamic_cast<View *>(&screen.itemstoreview));
 }
 
 TEST_F(ScreenTestSuite, switchScreen)

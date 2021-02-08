@@ -2,8 +2,8 @@
 
 #include <utility>
 
-BuyItemCommand::BuyItemCommand(Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, Store &store) :
-    m_Item(item), m_Amount(std::move(amount)), m_Inventory(inventory), m_Wallet(wallet), m_Store(store)
+BuyItemCommand::BuyItemCommand(Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, ItemStore &store) :
+    m_Item(item), m_Amount(std::move(amount)), m_Inventory(inventory), m_Wallet(wallet), m_ItemStore(store)
 {
 }
 
@@ -12,21 +12,21 @@ CookieNumber BuyItemCommand::getPriceOf()
     CookieNumber price;
     if (m_Amount == 1)
     {
-        price = Store::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name), 1);
+        price = ItemStore::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name), 1);
     }
     else if (m_Amount == 10)
     {
-        price = Store::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name), 10);
+        price = ItemStore::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name), 10);
     }
     else if (m_Amount == 100)
     {
-        price = Store::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name), 100);
+        price = ItemStore::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name), 100);
     }
     else
     {
         for (CookieNumber i = 0; i < m_Amount; ++i)
         {
-            price += Store::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name) + i, 1);
+            price += ItemStore::getPriceOf(m_Item, m_Inventory.getItemCount(m_Item.name) + i, 1);
         }
     }
     return price;

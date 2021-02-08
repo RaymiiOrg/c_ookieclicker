@@ -7,9 +7,9 @@
 #include "CookieAmountAchievement.h"
 #include "CookieNumbers.h"
 #include "Inventory.h"
-#include "Save.h"
+#include "ItemStore.h"
 #include "MainView.h"
-#include "Store.h"
+#include "Save.h"
 #include "UpdateCookiesViaInputCommand.h"
 #include "UpdateCpsCommand.h"
 #include "Wallet.h"
@@ -46,7 +46,7 @@ private:
     Wallet* wallet;
     notifyMessage* msg;
     Inventory* inventory;
-    Store* store;
+    ItemStore *itemstore;
     MainView* gamescreen;
 
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
@@ -58,14 +58,8 @@ private:
     void handleDebugChoice(const std::string &input);
 
 
-
-    //FRIEND_TEST(GameloopTestSuite, incrementCps);
-    //FRIEND_TEST(GameloopTestSuite, incrementCpsLargerAmount);
-    //FRIEND_TEST(GameloopTestSuite, maxItemAmount);
-
 public:
-    Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory,
-             Store* store, MainView* gamescreen);
+    Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory, ItemStore * itemstore, MainView* gamescreen);
 
     ~Gameloop();
     void reset();

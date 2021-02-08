@@ -1,6 +1,6 @@
-#include "Store.h"
+#include "ItemStore.h"
 
-CookieNumber Store::getPrice(Item &item, const CookieNumber &amountAlreadyHave)
+CookieNumber ItemStore::getPrice(Item &item, const CookieNumber &amountAlreadyHave)
 {
 
     if (amountAlreadyHave == 0)
@@ -17,7 +17,7 @@ CookieNumber Store::getPrice(Item &item, const CookieNumber &amountAlreadyHave)
     return CookieNumber(result);
 }
 
-CookieNumber Store::getPriceOf(Item &item, const CookieNumber &amountAlreadyHave, int amountAsked) {
+CookieNumber ItemStore::getPriceOf(Item &item, const CookieNumber &amountAlreadyHave, int amountAsked) {
     switch (amountAsked) {
         case 1:
             return getPrice(item, amountAlreadyHave);
@@ -30,17 +30,17 @@ CookieNumber Store::getPriceOf(Item &item, const CookieNumber &amountAlreadyHave
     }
 }
 
-CookieNumber Store::getPriceOfTen(Item &item, const CookieNumber &amountAlreadyHave)
+CookieNumber ItemStore::getPriceOfTen(Item &item, const CookieNumber &amountAlreadyHave)
 {
     return getPrice(item, amountAlreadyHave) * CookieNumber(20);
 }
 
-CookieNumber Store::getPriceOfHundred(Item &item, const CookieNumber &amountAlreadyHave)
+CookieNumber ItemStore::getPriceOfHundred(Item &item, const CookieNumber &amountAlreadyHave)
 {
     return getPrice(item, amountAlreadyHave) * CookieNumber(7828749);
 }
 
-Item &Store::getItemByName(const std::string &name)
+Item &ItemStore::getItemByName(const std::string &name)
 {
     for (auto &item : getStoreInventory())
     {
@@ -52,7 +52,7 @@ Item &Store::getItemByName(const std::string &name)
     throw std::logic_error("Item not found");
 }
 
-void Store::reset()
+void ItemStore::reset()
 {
     storeInventory.clear();
     storeInventory = m_baseItems.getAllItems();

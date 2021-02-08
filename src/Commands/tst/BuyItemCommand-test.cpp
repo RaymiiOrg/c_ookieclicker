@@ -8,13 +8,13 @@ struct BuyItemCommandTestSuite : public ::testing::Test
     std::unique_ptr<CookieNumberPrinter> cp;
     std::unique_ptr<Inventory> inventory;
     std::unique_ptr<Wallet> wallet;
-    std::unique_ptr<Store> store;
+    std::unique_ptr<ItemStore> store;
     BuyItemCommandTestSuite()
     {
         cp = std::make_unique<CookieNumberPrinter>();
         inventory = std::make_unique<Inventory>();
         wallet = std::make_unique<Wallet>();
-        store = std::make_unique<Store>();
+        store = std::make_unique<ItemStore>();
     }
 };
 

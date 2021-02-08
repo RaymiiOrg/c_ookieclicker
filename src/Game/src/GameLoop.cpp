@@ -1,14 +1,13 @@
 #include "GameLoop.h"
 #include "filesystem.h"
 
-Gameloop::Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory,
-                   Store* store, MainView* mainview) : wallet(wallet), msg(msg), inventory(inventory),
-                   store(store), gamescreen(mainview)
+Gameloop::Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory, ItemStore *itemstore, MainView* mainview) : wallet(wallet), msg(msg), inventory(inventory),
+    itemstore(itemstore), gamescreen(mainview)
 {
 }
 
 void Gameloop::start() {
-    if (wallet && msg && store && inventory && gamescreen) {
+    if (wallet && msg && itemstore && inventory && gamescreen) {
         running = true;
         gameStepThread = std::thread(&Gameloop::gameStep, this);
         inputThread = std::thread(&Gameloop::input, this);
@@ -112,7 +111,7 @@ void Gameloop::reset()
 {
     wallet->reset();
     inventory->reset();
-    store->reset();
+    itemstore->reset();
 }
 
 void Gameloop::handleCookieOrQuitChoice(const std::string &input)
