@@ -29,12 +29,11 @@ CookieNumber StoreShelfView::getPriceOfItem(const CookieNumber &itemAmountInInve
 void StoreShelfView::renderNotEnoughMoneyButDoHaveItemsInInventoryOutput(Item &item,
                                                                          const CookieNumber &itemAmountInInventory) const {
     std::cout << escapeCode.terminalDim;
-    std::cout << "[" << item.buyKey << "]: not enough cookies for " << item.name;
     std::cout << "[" << item.buyKey << "]: not enough cookies for " <<
               std::to_string(itemQuantity) << " " << item.name;
     if (itemQuantity > 1) std::cout << "s";
     std::cout << " (cost: ";
-    std::cout << cp.print(Store::getPrice(item, itemAmountInInventory));
+    std::cout << cp.print(Store::getPriceOf(item, itemAmountInInventory, itemQuantity));
     std::cout << " cookies);";
     std::cout << escapeCode.terminalReset;
     std::cout << std::endl;
