@@ -11,8 +11,8 @@ public:
     void undo() override;
 
 private:
-    Wallet &m_Wallet;
     CookieNumber amount;
+    Wallet &m_Wallet;
 };
 
 #endif //C_OOKIECLIKER_UpdateCookiesCommand_H

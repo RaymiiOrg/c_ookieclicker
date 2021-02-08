@@ -9,11 +9,11 @@
 class OptionsView : public View
 {
     const std::string _name {"Options"};
-    const std::string &savefilename;
     notifyMessage *msg;
     Wallet *wallet;
     Inventory *inventory;
     Store *store;
+    const std::string &savefilename;
     void save();
     void load();
 
@@ -23,8 +23,7 @@ public:
     void handleInput(const std::string &input) override;
     OptionsView(notifyMessage *msg, Wallet *wallet, Inventory *inventory, Store *store,
                 const std::string &savefilename) :
-        msg(msg), savefilename(savefilename),
-        wallet(wallet), inventory(inventory), store(store) {};
+        msg(msg), wallet(wallet), inventory(inventory), store(store), savefilename(savefilename) {};
 };
 
 #endif //C_OOKIECLIKER_OPTIONSVIEW_H

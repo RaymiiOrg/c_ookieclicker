@@ -1,7 +1,9 @@
 #include "BuyItemCommand.h"
 
+#include <utility>
+
 BuyItemCommand::BuyItemCommand(Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, Store &store) :
-    m_Item(item), m_Amount(amount), m_Inventory(inventory), m_Wallet(wallet), m_Store(store)
+    m_Item(item), m_Amount(std::move(amount)), m_Inventory(inventory), m_Wallet(wallet), m_Store(store)
 {
 }
 

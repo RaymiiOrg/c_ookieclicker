@@ -2,7 +2,7 @@
 #include "filesystem.h"
 
 Gameloop::Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory,
-                   Store* store, MainView* mainview) : msg(msg), wallet(wallet), inventory(inventory),
+                   Store* store, MainView* mainview) : wallet(wallet), msg(msg), inventory(inventory),
                    store(store), gamescreen(mainview)
 {
 }

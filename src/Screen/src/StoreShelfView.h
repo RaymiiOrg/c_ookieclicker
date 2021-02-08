@@ -17,12 +17,12 @@
  */
 class StoreShelfView : public View
 {
-    const std::string _name {"StoreShelf"};
     notifyMessage *msg;
     Wallet *wallet;
     Inventory *inventory;
     Store *store;
     int itemQuantity;
+    const std::string _name {"StoreShelf"};
     bool canPayForItem(Item &item);
     void buyItem(const CookieNumber &amountToBuy, Item &item);
     void renderCanBuy(Item &item, const CookieNumber &itemAmountInInventory,

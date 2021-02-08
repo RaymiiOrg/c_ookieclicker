@@ -15,12 +15,13 @@ public:
     void undo() override;
 
 private:
-    CookieNumber getPriceOf();
+    Item &m_Item;
+    CookieNumber m_Amount;
     Inventory &m_Inventory;
     Wallet &m_Wallet;
-    CookieNumber m_Amount;
     Store &m_Store;
-    Item &m_Item;
+    CookieNumber getPriceOf();
+
 };
 
 #endif //C_OOKIECLIKER_AddItemCommand_H

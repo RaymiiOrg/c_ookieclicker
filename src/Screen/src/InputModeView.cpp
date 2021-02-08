@@ -28,7 +28,7 @@ void InputModeView::handleInput(const std::string &input)
 
 void InputModeView::inputBar()
 {
-    int count = 1;
+    size_t count = 1;
     for (View *view : allviews)
     {
         if (view != nullptr)
