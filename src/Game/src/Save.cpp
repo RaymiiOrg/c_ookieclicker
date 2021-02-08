@@ -10,11 +10,7 @@ bool Save::save()
     if (!inventory || !wallet || !format)
         return false;
 
-    switch (format) {
-        case 1:     return saveFormatOne();
-        case 2:     return saveFormatTwo();
-        default:    return false;
-    }
+    return saveFormatTwo();
 }
 
 bool Save::load()
