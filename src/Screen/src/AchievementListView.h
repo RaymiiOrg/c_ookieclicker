@@ -6,6 +6,7 @@
 #include "View.h"
 #include "Wallet.h"
 #include "filesystem.h"
+#include "Globals.h"
 #include "notifyMessage.h"
 
 
@@ -19,7 +20,6 @@ class AchievementListView : public View
     const std::string _name {"Achievements"};
     Wallet *wallet;
     notifyMessage *msg;
-    char getCookieInputKey = 'c';
     void listAchievementViews() const;
 
     template <typename T>

@@ -1,4 +1,5 @@
 #include "Item.h"
+#include "Globals.h"
 #include "gtest/gtest.h"
 #include <memory>
 
@@ -14,13 +15,12 @@ struct ItemTestSuite : public ::testing::Test
 TEST_F(ItemTestSuite, cookieKeyNotAllowedAsItemKey)
 {
     //arrange
-    std::string CookieKey = "c";
     bool stringFound = false;
 
     //act
     for (const auto& item : items->getAllItems())
     {
-        if (item.buyKey == CookieKey)
+        if (item.buyKey == game::cookieKey)
         {
             stringFound = true;
         }

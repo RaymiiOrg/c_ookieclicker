@@ -116,14 +116,14 @@ void Gameloop::reset()
 
 void Gameloop::handleCookieOrQuitChoice(const std::string &input)
 {
-    if (input == "c")
+    if (input == game::cookieKey)
     {
         if (inventory && wallet) {
             auto cmd = std::make_unique<UpdateCookiesViaInputCommand>(inventory->getCookiesPerTap(), *wallet);
             cmd->execute();
         }
     }
-    else if (input == "q")
+    else if (input == game::quitKey)
     {
         quit();
     }

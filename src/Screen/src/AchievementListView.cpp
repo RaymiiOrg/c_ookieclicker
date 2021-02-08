@@ -29,7 +29,7 @@ void AchievementListView::listAchievementViews() const
                 std::cout << " | ";
 
             ++inputKey;
-            if (inputKey == getCookieInputKey)
+            if (inputKey == game::cookieKey.at(0))
                 ++inputKey;
             ++count;
         }
@@ -43,7 +43,8 @@ void AchievementListView::handleInput(const std::string &input)
         activeView = &cookieAmountAchievementView;
     if (input == "b")
         activeView = &cookiesPerSecondView;
-    if (input == "d") // skip c, it's get cookie input key. this code is a reminder.
+    // skip c, it's get cookie input key. this code is a reminder.
+    if (input == "d")
         activeView = &cookiesViaInputView;
 }
 

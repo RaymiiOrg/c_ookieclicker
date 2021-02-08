@@ -88,6 +88,6 @@ TEST_F(InventoryTestSuite, reset)
     ASSERT_EQ(inventory->getItemCount(testItem2), CookieNumber(0));
     ASSERT_EQ(inventory->getLastItemAdded().empty(), true);
     ASSERT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
-    ASSERT_EQ(inventory->getCookiesPerTap(), CookieNumber(0));
+    ASSERT_EQ(inventory->getCookiesPerTap(), CookieNumber(1));
     ASSERT_EQ(inventory->getInventory().size(), 0);
 }

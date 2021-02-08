@@ -10,6 +10,7 @@
 #include "ItemStore.h"
 #include "MainView.h"
 #include "Save.h"
+#include "Globals.h"
 #include "UpdateCookiesViaInputCommand.h"
 #include "UpdateCpsCommand.h"
 #include "Wallet.h"

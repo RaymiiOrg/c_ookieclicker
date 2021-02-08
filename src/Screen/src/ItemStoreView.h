@@ -3,6 +3,7 @@
 #include "Inventory.h"
 #include "Item.h"
 #include "ItemStore.h"
+#include "Globals.h"
 #include "ItemStoreShelfView.h"
 #include "View.h"
 #include "Wallet.h"
@@ -20,7 +21,6 @@ class ItemStoreView : public View
     ItemStoreShelfView tenItems = ItemStoreShelfView(msg, wallet, inventory, store, 10, "Buy 10");
     ItemStoreShelfView hundredItems = ItemStoreShelfView(msg, wallet, inventory, store, 100, "Buy 100");
     View* activeView = &oneItem;
-    char getCookieInputKey = 'c';
     std::vector<View *> allviews = {
             dynamic_cast<View *>(&oneItem),
             dynamic_cast<View *>(&tenItems),

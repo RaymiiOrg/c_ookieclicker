@@ -43,7 +43,7 @@ void ItemStoreView::listViews() const
                 std::cout << " | ";
 
             ++inputKey;
-            if (inputKey == getCookieInputKey)
+            if (inputKey == game::cookieKey.at(0))
                 ++inputKey;
             ++count;
         }
