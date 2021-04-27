@@ -2,6 +2,7 @@
 
 void InventoryView::render()
 {
+    std::cout << std::endl;
     if (inventory == nullptr)
         return;
 

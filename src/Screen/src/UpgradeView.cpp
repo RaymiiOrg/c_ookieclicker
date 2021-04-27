@@ -2,6 +2,7 @@
 
 void UpgradeView::render()
 {
+    std::cout << std::endl; // renderInputBar();
     if (inventory == nullptr || store == nullptr)
         return;
 
@@ -14,8 +15,9 @@ void UpgradeView::render()
     {
         if (item.amount > 0)
         {
-            std::cout << item.itemName << ", level:  " << item.itemLevel << ". Upgrade price: " <<
-                store->getUpgradePrice(store->getItemByName(item.itemName), item.itemLevel) <<
+            auto itemUpgradePrice = ItemStore::getUpgradePrice(store->getItemByName(item.itemName), item.itemLevel);
+            std::cout << "[" << item.itemName << "]: current level:  " << item.itemLevel << ". Upgrade price: " <<
+                cp.print(itemUpgradePrice) <<
                 std::endl;
         }
     }

@@ -182,7 +182,7 @@ void Save::load_step_6_Items(std::vector<std::string> &inV) {
             auto itemAmount = CookieNumber(in_items.at(1));
             auto itemLevel = std::stoull(in_items.at(2));
             inventory->addItem(itemName, itemAmount);
-            for (size_t ii = 0; ii < itemLevel; ++ii)
+            for (size_t ii = 0; ii < itemLevel - 1; ++ii)
                 inventory->upgradeItem(itemName);
         }
     }

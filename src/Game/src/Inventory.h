@@ -2,7 +2,6 @@
 #define C_OOKIECLIKER_INVENTORY_H
 
 #include "CookieNumbers.h"
-#include "Item.h"
 #include <iomanip>
 #include <iostream>
 #include <map>
