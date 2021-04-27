@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.15)
 project(c_ookiecliker VERSION 1.0.6)
 
 set(CMAKE_CXX_STANDARD 17)
