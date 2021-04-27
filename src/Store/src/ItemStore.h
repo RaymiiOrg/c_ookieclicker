@@ -8,7 +8,7 @@ public:
     const std::vector<Item> &getStoreInventory() const { return storeInventory; };
     static CookieNumber getPrice(const Item &item, const CookieNumber &amountAlreadyHave);
     static CookieNumber getPrice(const Item &item, const CookieNumber &amountAlreadyHave, const CookieFloater &priceIncreasePercent);
-    CookieNumber getUpgradePrice(const Item& item, unsigned int currentLevel) const;
+    static CookieNumber getUpgradePrice(const Item& item, unsigned int currentLevel) ;
     static CookieNumber getPriceOf(const Item &item, const CookieNumber &amountAlreadyHave, int amountAsked);
     const Item &getItemByName(const std::string &name) const;
     void reset();

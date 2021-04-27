@@ -21,8 +21,8 @@ private:
     CookieNumber _cookiesPerTap = 1;
 
 public:
-    void addItem(const std::string &, const CookieNumber &amountToAdd);
-    void removeItem(const std::string &, const CookieNumber &amountToRemove);
+    void addItem(const std::string &itemName, const CookieNumber &amountToAdd);
+    void removeItem(const std::string &itemName, const CookieNumber &amountToRemove);
     void reset();
     CookieNumber getItemCount(const std::string &);
     CookieNumber getLastItemAddedAmount();

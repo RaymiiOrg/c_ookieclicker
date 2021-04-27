@@ -21,7 +21,7 @@ CookieNumber ItemStore::getPrice(const Item &item, const CookieNumber &amountAlr
     return getPrice(item, amountAlreadyHave, priceIncrease);
 }
 
-CookieNumber ItemStore::getUpgradePrice(const Item &item, unsigned int currentLevel) const
+CookieNumber ItemStore::getUpgradePrice(const Item &item, unsigned int currentLevel)
 {
     double upgradeFactor = 2.8;
     return getPrice(item, currentLevel, upgradeFactor);
