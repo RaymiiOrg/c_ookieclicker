@@ -2,7 +2,7 @@
 
 #include <utility>
 
-BuyItemCommand::BuyItemCommand(Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, ItemStore &store) :
+BuyItemCommand::BuyItemCommand(const Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, ItemStore &store) :
     m_Item(item), m_Amount(std::move(amount)), m_Inventory(inventory), m_Wallet(wallet), m_ItemStore(store)
 {
 }

@@ -2,23 +2,21 @@
 
 void UpgradeView::render()
 {
-    if (inventory != nullptr)
+    if (inventory == nullptr || store == nullptr)
+        return;
+
+    if (inventory->getInventory().empty())
     {
-        if (!inventory->getInventory().empty())
+        std::cout << "No upgrades available. Get some items first." << std::endl;
+        return;
+    }
+    for (auto &item : inventory->getInventory())
+    {
+        if (item.amount > 0)
         {
-            for (auto &item : inventory->getInventory())
-            {
-                auto name = item.first;
-                auto amount = item.second;
-                if (amount > 0)
-                {
-                    std::cout << name << ": " << cp.print(amount) << std::endl;
-                }
-            }
-        }
-        else
-        {
-            std::cout << "No upgrades available. Get some items first." << std::endl;
+            std::cout << item.itemName << ", level:  " << item.itemLevel << ". Upgrade price: " <<
+                store->getUpgradePrice(store->getItemByName(item.itemName), item.itemLevel) <<
+                std::endl;
         }
     }
 }

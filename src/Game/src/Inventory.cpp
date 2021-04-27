@@ -5,15 +5,15 @@ void Inventory::addItem(const std::string &item, const CookieNumber &amountToAdd
     bool found = false;
     for (auto &i : m_Inventory)
     {
-        if (i.first == item)
+        if (i.itemName == item)
         {
-            i.second += amountToAdd;
+            i.amount += amountToAdd;
             found = true;
         }
     }
     if (!found)
     {
-        m_Inventory.insert(std::pair<std::string, CookieNumber>(item, amountToAdd));
+        m_Inventory.push_back({item, amountToAdd, 1});
     }
     last_item_added_amount = amountToAdd;
     last_item_added = item;
@@ -23,15 +23,15 @@ void Inventory::removeItem(const std::string &item, const CookieNumber &amountTo
 {
     for (auto &i : m_Inventory)
     {
-        if (i.first == item)
+        if (i.itemName == item)
         {
-            if (i.second >= amountToRemove)
+            if (i.amount >= amountToRemove)
             {
-                i.second -= amountToRemove;
+                i.amount -= amountToRemove;
             }
             else
             {
-                i.second = CookieNumber(0);
+                i.amount = CookieNumber(0);
             }
         }
     }
@@ -41,9 +41,9 @@ CookieNumber Inventory::getItemCount(const std::string &item)
 {
     for (const auto &i : m_Inventory)
     {
-        if (i.first == item)
+        if (i.itemName == item)
         {
-            return i.second;
+            return i.amount;
         }
     }
     return CookieNumber(0);
@@ -75,4 +75,25 @@ void Inventory::reset()
     last_item_added_amount = 0;
     last_item_added.clear();
     m_Inventory.clear();
+}
+unsigned int Inventory::getLevel(const std::string itemName)
+{
+    if (getItemCount(itemName) == 0)
+        return 0;
+
+    for (const auto& i : m_Inventory)
+    {
+        if (i.itemName == itemName)
+            return i.itemLevel;
+    }
+    return 0;
+
+}
+void Inventory::upgradeItem(const std::string &itemName)
+{
+    for (auto& i : m_Inventory)
+    {
+        if (i.itemName == itemName)
+            ++i.itemLevel;
+    }
 }

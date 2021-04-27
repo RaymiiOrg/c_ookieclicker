@@ -1,13 +1,11 @@
 #include "ItemStore.h"
 
-CookieNumber ItemStore::getPrice(Item &item, const CookieNumber &amountAlreadyHave)
+CookieNumber ItemStore::getPrice(const Item &item, const CookieNumber &amountAlreadyHave, const CookieFloater &priceIncrease)
 {
-
     if (amountAlreadyHave == 0)
         return item.baseCost;
 
     CookieFloater baseCost(item.baseCost);
-    CookieFloater priceIncrease("1.15");
     CookieFloater itemAmountInInventory(amountAlreadyHave);
 
     auto pow = boost::multiprecision::pow(priceIncrease, itemAmountInInventory);
@@ -17,7 +15,19 @@ CookieNumber ItemStore::getPrice(Item &item, const CookieNumber &amountAlreadyHa
     return CookieNumber(result);
 }
 
-CookieNumber ItemStore::getPriceOf(Item &item, const CookieNumber &amountAlreadyHave, int amountAsked) {
+CookieNumber ItemStore::getPrice(const Item &item, const CookieNumber &amountAlreadyHave)
+{
+    const CookieFloater priceIncrease("1.15");
+    return getPrice(item, amountAlreadyHave, priceIncrease);
+}
+
+CookieNumber ItemStore::getUpgradePrice(const Item &item, unsigned int currentLevel) const
+{
+    double upgradeFactor = 2.8;
+    return getPrice(item, currentLevel, upgradeFactor);
+}
+
+CookieNumber ItemStore::getPriceOf(const Item &item, const CookieNumber &amountAlreadyHave, int amountAsked) {
     switch (amountAsked) {
         case 1:
             return getPrice(item, amountAlreadyHave);
@@ -30,17 +40,17 @@ CookieNumber ItemStore::getPriceOf(Item &item, const CookieNumber &amountAlready
     }
 }
 
-CookieNumber ItemStore::getPriceOfTen(Item &item, const CookieNumber &amountAlreadyHave)
+CookieNumber ItemStore::getPriceOfTen(const Item &item, const CookieNumber &amountAlreadyHave)
 {
     return getPrice(item, amountAlreadyHave) * CookieNumber(20);
 }
 
-CookieNumber ItemStore::getPriceOfHundred(Item &item, const CookieNumber &amountAlreadyHave)
+CookieNumber ItemStore::getPriceOfHundred(const Item &item, const CookieNumber &amountAlreadyHave)
 {
     return getPrice(item, amountAlreadyHave) * CookieNumber(7828749);
 }
 
-Item &ItemStore::getItemByName(const std::string &name)
+const Item &ItemStore::getItemByName(const std::string &name) const
 {
     for (auto &item : getStoreInventory())
     {
@@ -57,3 +67,4 @@ void ItemStore::reset()
     storeInventory.clear();
     storeInventory = m_baseItems.getAllItems();
 }
+

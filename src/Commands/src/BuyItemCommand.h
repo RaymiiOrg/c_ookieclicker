@@ -10,12 +10,12 @@
 class BuyItemCommand : public Command
 {
 public:
-    BuyItemCommand(Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, ItemStore &store);
+    BuyItemCommand(const Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, ItemStore &store);
     void execute() override;
     void undo() override;
 
 private:
-    Item &m_Item;
+    const Item &m_Item;
     CookieNumber m_Amount;
     Inventory &m_Inventory;
     Wallet &m_Wallet;

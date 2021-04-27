@@ -4,7 +4,7 @@ Release date: 2020-
 
 New features:
 
-- Building upgrades
+- Building upgrades (levels)
 - Debian package available
 
 Improvements

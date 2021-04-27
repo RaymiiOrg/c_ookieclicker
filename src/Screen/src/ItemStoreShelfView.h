@@ -23,11 +23,11 @@ class ItemStoreShelfView : public View
     ItemStore *itemstore;
     int itemQuantity;
     const std::string _name {"StoreShelf"};
-    bool canPayForItem(Item &item);
-    void buyItem(const CookieNumber &amountToBuy, Item &item);
-    void renderCanBuy(Item &item, const CookieNumber &itemAmountInInventory,
+    bool canPayForItem(const Item &item);
+    void buyItem(const CookieNumber &amountToBuy, const Item &item);
+    void renderCanBuy(const Item &item, const CookieNumber &itemAmountInInventory,
                       const CookieNumber & price) const;
-    void renderNotEnoughMoneyButDoHaveItemsInInventoryOutput(Item &item,
+    void renderNotEnoughMoneyButDoHaveItemsInInventoryOutput(const Item &item,
                                                              const CookieNumber &itemAmountInInventory)
                                                              const;
 
@@ -38,7 +38,7 @@ public:
     explicit ItemStoreShelfView(notifyMessage* msg, Wallet* wallet, Inventory* inventory, ItemStore * store, int itemQuantity, std::string  name) : msg(msg), wallet(wallet),
     inventory(inventory), itemstore(store), itemQuantity(itemQuantity), _name(std::move(name)) {};
     [[nodiscard]] bool isInputRelevant(const std::string &input) const;
-    CookieNumber getPriceOfItem(const CookieNumber &itemAmountInInventory, Item &item) const;
+    CookieNumber getPriceOfItem(const CookieNumber &itemAmountInInventory, const Item &item) const;
 };
 
 #endif //C_OOKIECLIKER_StoreShelfView_H

@@ -1,5 +1,5 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
+//#pragma clang diagnostic push
+//#pragma ide diagnostic ignored "cert-err58-cpp"
 
 #include "Observer.h"
 #include "Subject.h"
@@ -109,4 +109,4 @@ TEST(ObserverTestSuite, differentSubjects)
     ASSERT_EQ(testobs2._result, 90);
 }
 
-#pragma clang diagnostic pop
+//#pragma clang diagnostic pop

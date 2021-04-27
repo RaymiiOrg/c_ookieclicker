@@ -15,18 +15,18 @@ struct ItemTestSuite : public ::testing::Test
 TEST_F(ItemTestSuite, cookieKeyNotAllowedAsItemKey)
 {
     //arrange
-    bool stringFound = false;
+    bool cookieKeyFoundAsItemKey = false;
 
     //act
     for (const auto& item : items->getAllItems())
     {
         if (item.buyKey == game::cookieKey)
         {
-            stringFound = true;
+            cookieKeyFoundAsItemKey = true;
         }
     }
     //assert
-    ASSERT_FALSE(stringFound);
+    ASSERT_FALSE(cookieKeyFoundAsItemKey);
 }
 
 
@@ -47,3 +47,4 @@ TEST_F(ItemTestSuite, noDoubleItemKeys)
     //assert
     ASSERT_TRUE(noDuplicateItemKeys);
 }
+

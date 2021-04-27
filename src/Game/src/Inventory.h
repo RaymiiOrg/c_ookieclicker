@@ -10,7 +10,12 @@
 class Inventory
 {
 private:
-    std::map<std::string, CookieNumber> m_Inventory;
+    struct itemSlot {
+        std::string itemName;
+        CookieNumber amount;
+        unsigned int itemLevel;
+    };
+    std::vector<itemSlot> m_Inventory;
     std::string last_item_added;
     CookieNumber last_item_added_amount;
     CookieNumber _cookiesPerTap = 1;
@@ -23,8 +28,10 @@ public:
     CookieNumber getLastItemAddedAmount();
     CookieNumber getCookiesPerTap();
     void incrementCookiesPerTap(const CookieNumber &amount);
+    void upgradeItem(const std::string& itemName);
     const std::string &getLastItemAdded();
-    const std::map<std::string, CookieNumber> &getInventory() const { return m_Inventory; };
+    const std::vector<itemSlot> &getInventory() const { return m_Inventory; };
+    unsigned int getLevel(const std::string itemName);
 };
 
 #endif //C_OOKIECLIKER_INVENTORY_H

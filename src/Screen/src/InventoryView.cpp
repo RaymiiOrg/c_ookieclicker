@@ -2,23 +2,21 @@
 
 void InventoryView::render()
 {
-    if (inventory != nullptr)
+    if (inventory == nullptr)
+        return;
+
+    if (inventory->getInventory().empty())
     {
-        if (!inventory->getInventory().empty())
+        std::cout << "Inventory empty. Get some cookies to buy items." << std::endl;
+        return;
+    }
+
+    for (auto &item : inventory->getInventory())
+    {
+        if (item.amount > 0)
         {
-            for (auto &item : inventory->getInventory())
-            {
-                auto name = item.first;
-                auto amount = item.second;
-                if (amount > 0)
-                {
-                    std::cout << name << ": " << cp.print(amount) << std::endl;
-                }
-            }
-        }
-        else
-        {
-            std::cout << "Inventory empty. Get some cookies to buy items." << std::endl;
+            std::cout << item.itemName << ": " << cp.print(item.amount) << "; Lvl: "
+                      << item.itemLevel << std::endl;
         }
     }
 }

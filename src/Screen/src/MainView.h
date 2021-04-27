@@ -30,7 +30,7 @@ private:
     /* lower part of screen, can switch between these views */
     ItemStoreView itemstoreview = ItemStoreView(msg, wallet, inventory, itemstore);
     InventoryView inventoryview = InventoryView(inventory);
-    UpgradeView upgradeview = UpgradeView(inventory);
+    UpgradeView upgradeview = UpgradeView(inventory, itemstore);
     OptionsView optionsview = OptionsView(msg, wallet, inventory, itemstore, saveFile);
     AchievementListView achievementlistview = AchievementListView(wallet, msg);
     View *activeView = dynamic_cast<View *>(&itemstoreview);

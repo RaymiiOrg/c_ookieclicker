@@ -10,6 +10,7 @@ struct Item {
     std::string buyKey;
     CookieNumber baseCost{1};
     CookieNumber cps{1};
+    unsigned int upgradeLevel{1};
 
     bool operator<(const Item &rhs) const {
         if (baseCost < rhs.baseCost)

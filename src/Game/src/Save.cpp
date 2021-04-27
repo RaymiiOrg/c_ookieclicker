@@ -147,7 +147,7 @@ void Save::save_step_6_Items(std::ofstream &out) const {
     out << inventory->getInventory().size() << ";";
     for (const auto &item : inventory->getInventory())
     {
-        out << item.first << "," << item.second.str(0, std::ios_base::fixed) << ";";
+        out << item.itemName << "," << item.amount.str(0, std::ios_base::fixed) << "," << item.itemLevel << ";";
     }
 }
 
@@ -176,12 +176,14 @@ void Save::load_step_6_Items(std::vector<std::string> &inV) {
             std::vector<std::string> in_items;
             std::istringstream itemstream(inV.at(6 + i));
             while (std::getline(itemstream, current_item_line, ','))
-            {
                 in_items.push_back(current_item_line);
-            }
-            auto itemName = in_items.front();
-            auto itemAmount = CookieNumber(in_items.back());
+
+            auto itemName = in_items.at(0);
+            auto itemAmount = CookieNumber(in_items.at(1));
+            auto itemLevel = std::stoull(in_items.at(2));
             inventory->addItem(itemName, itemAmount);
+            for (size_t ii = 0; ii < itemLevel; ++ii)
+                inventory->upgradeItem(itemName);
         }
     }
 }
