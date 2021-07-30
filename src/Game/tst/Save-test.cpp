@@ -3,8 +3,8 @@
 #include <memory>
 
 #define private public
-#include "Save.h"
 #include "GameLoop.h"
+#include "Save.h"
 
 struct SaveTestSuite : public ::testing::Test
 {
@@ -13,17 +13,14 @@ struct SaveTestSuite : public ::testing::Test
     std::unique_ptr<Wallet> wallet = std::make_unique<Wallet>();
     std::unique_ptr<ItemStore> itemstore = std::make_unique<ItemStore>();
     std::unique_ptr<notifyMessage> msg = std::make_unique<notifyMessage>();
-    std::unique_ptr<MainView> gamescreen = std::make_unique<MainView>(msg.get(), wallet.get(),
-                                                                      inventory.get(), itemstore.get());
+    std::unique_ptr<MainView> gamescreen = std::make_unique<MainView>(msg.get(), wallet.get(), inventory.get(), itemstore.get());
 
     int format1 = 1;
     int format2 = 2;
     CookieNumber largeNumber = CookieNumber("354863150980540376871924332068218985606788610769886127757294461121501888");
     std::experimental::filesystem::path current_source_file = std::experimental::filesystem::path(__FILE__);
     std::string testSaveFileFolder = current_source_file.parent_path().string() + "/data/";
-    
-    
-    
+
     SaveTestSuite()
     {
         std::make_unique<Gameloop>(msg.get(), wallet.get(), inventory.get(), itemstore.get(), gamescreen.get());
@@ -62,8 +59,7 @@ TEST_F(SaveTestSuite, saveThenLoad_v1)
     std::unique_ptr<Wallet> loadwallet = std::make_unique<Wallet>();
     std::unique_ptr<ItemStore> loadstore = std::make_unique<ItemStore>();
     std::unique_ptr<notifyMessage> loadmsg = std::make_unique<notifyMessage>();
-    std::unique_ptr<MainView> loadgamescreen = std::make_unique<MainView>(loadmsg.get(), loadwallet.get(),
-                                                                      loadinventory.get(), loadstore.get());
+    std::unique_ptr<MainView> loadgamescreen = std::make_unique<MainView>(loadmsg.get(), loadwallet.get(), loadinventory.get(), loadstore.get());
 
     //act
     wallet->incrementCookieAmount(CookieNumber(3));
@@ -72,12 +68,10 @@ TEST_F(SaveTestSuite, saveThenLoad_v1)
 
     inventory->addItem("Grandma", largeNumber);
 
-    auto savegame =  Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
+    auto savegame = Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
     auto saveResult = savegame.saveFormatOne();
 
-    std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(loadmsg.get(), loadwallet.get(), 
-                                                                    loadinventory.get(), loadstore.get(), 
-                                                                    loadgamescreen.get());
+    std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(loadmsg.get(), loadwallet.get(), loadinventory.get(), loadstore.get(), loadgamescreen.get());
     auto saveload = Save(saveFile, loadinventory.get(), loadwallet.get(), loadstore.get(), format1);
     auto loadResult = saveload.loadFormatOne();
 
@@ -110,7 +104,6 @@ TEST_F(SaveTestSuite, justLoad_v1)
     ASSERT_EQ(inventory->getItemCount("Grandma"), largeNumber);
 }
 
-
 TEST_F(SaveTestSuite, getFormat)
 {
     //arrange
@@ -128,7 +121,6 @@ TEST_F(SaveTestSuite, getFormat)
     ASSERT_EQ(loadResult, 1);
     ASSERT_EQ(loadResult_v2, 2);
 }
-
 
 TEST_F(SaveTestSuite, convertV1toV2)
 {
@@ -159,8 +151,7 @@ TEST_F(SaveTestSuite, saveThenLoad_v2)
     std::unique_ptr<Wallet> loadwallet = std::make_unique<Wallet>();
     std::unique_ptr<ItemStore> loadstore = std::make_unique<ItemStore>();
     std::unique_ptr<notifyMessage> loadmsg = std::make_unique<notifyMessage>();
-    std::unique_ptr<MainView> loadgamescreen = std::make_unique<MainView>(loadmsg.get(), loadwallet.get(),
-                                                                          loadinventory.get(), loadstore.get());
+    std::unique_ptr<MainView> loadgamescreen = std::make_unique<MainView>(loadmsg.get(), loadwallet.get(), loadinventory.get(), loadstore.get());
 
     //act
     wallet->incrementCookieAmount(CookieNumber(3));
@@ -169,12 +160,10 @@ TEST_F(SaveTestSuite, saveThenLoad_v2)
     inventory->addItem("Alchemy Lab", 3);
     inventory->addItem("Grandma", largeNumber);
 
-    auto savegame =  Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
+    auto savegame = Save(saveFile, inventory.get(), wallet.get(), itemstore.get(), format1);
     auto saveResult = savegame.saveFormatTwo();
 
-    std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(loadmsg.get(), loadwallet.get(),
-                                                                    loadinventory.get(), loadstore.get(),
-                                                                    loadgamescreen.get());
+    std::unique_ptr<Gameloop> gameLoad = std::make_unique<Gameloop>(loadmsg.get(), loadwallet.get(), loadinventory.get(), loadstore.get(), loadgamescreen.get());
     auto saveload = Save(saveFile, loadinventory.get(), loadwallet.get(), loadstore.get(), format2);
     auto loadResult = saveload.loadFormatTwo();
 

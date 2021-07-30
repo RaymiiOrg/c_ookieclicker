@@ -3,7 +3,7 @@
 #include <utility>
 
 UpdateCookiesViaInputCommand::UpdateCookiesViaInputCommand(CookieNumber amount, Wallet &wallet) :
-        amount(std::move(amount)), m_Wallet(wallet)
+    amount(std::move(amount)), m_Wallet(wallet)
 {
 }
 

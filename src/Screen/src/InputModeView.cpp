@@ -8,7 +8,8 @@ void InputModeView::render()
     inputBar();
 }
 
-void InputModeView::renderGetCookie() {
+void InputModeView::renderGetCookie()
+{
     std::cout << escapeCode.cursorTo6x0;
     std::cout << escapeCode.eraseCurrentLine;
     std::cout << escapeCode.terminalBold;
@@ -16,7 +17,8 @@ void InputModeView::renderGetCookie() {
     std::cout << escapeCode.terminalReset;
 }
 
-void InputModeView::clearLines() {
+void InputModeView::clearLines()
+{
     std::cout << escapeCode.cursorTo6x0;
     for (int line = 0; line < 150; ++line)
         std::cout << escapeCode.cursorDownOneLine << escapeCode.eraseCurrentLine;

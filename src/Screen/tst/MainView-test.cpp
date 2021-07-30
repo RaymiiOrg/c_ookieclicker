@@ -43,8 +43,8 @@ TEST_F(ScreenTestSuite, switchScreen)
     ASSERT_EQ(screen4.activeView, dynamic_cast<View *>(&screen4.optionsview));
 }
 
-
-TEST_F(ScreenTestSuite, getItem) {
+TEST_F(ScreenTestSuite, getItem)
+{
     //arrange
     MainView screen1(&msg, &wallet, &inventory, &store);
     wallet.setCookieAmount(15);

@@ -1,5 +1,5 @@
-#include "Item.h"
 #include "Globals.h"
+#include "Item.h"
 #include "gtest/gtest.h"
 #include <memory>
 
@@ -18,7 +18,7 @@ TEST_F(ItemTestSuite, cookieKeyNotAllowedAsItemKey)
     bool stringFound = false;
 
     //act
-    for (const auto& item : items->getAllItems())
+    for (const auto &item : items->getAllItems())
     {
         if (item.buyKey == game::cookieKey)
         {
@@ -29,20 +29,20 @@ TEST_F(ItemTestSuite, cookieKeyNotAllowedAsItemKey)
     ASSERT_FALSE(stringFound);
 }
 
-
 TEST_F(ItemTestSuite, noDoubleItemKeys)
 {
     //arrange
     auto allItems = items->getAllItems();
     std::vector<std::string> allItemKeys;
-    for (const auto& item : allItems) {
+    for (const auto &item : allItems)
+    {
         allItemKeys.push_back(item.buyKey);
     }
 
     //act
     sort(allItemKeys.begin(), allItemKeys.end());
-    auto it = std::unique(allItemKeys.begin(), allItemKeys.end() );
-    bool noDuplicateItemKeys = (it == allItemKeys.end() );
+    auto it = std::unique(allItemKeys.begin(), allItemKeys.end());
+    bool noDuplicateItemKeys = (it == allItemKeys.end());
 
     //assert
     ASSERT_TRUE(noDuplicateItemKeys);
