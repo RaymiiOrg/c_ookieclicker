@@ -97,7 +97,6 @@ public:
         return *this;
     }
 
-
     RegularCookieNumber operator--(int)
     {
         RegularCookieNumber old = *this;
@@ -123,7 +122,7 @@ public:
     }
 
     bool operator!=(const RegularCookieNumber &rhs) const {
-        return rhs != *this;
+        return !(rhs == *this);
     }
 
     bool operator<=(const RegularCookieNumber &rhs) const {
@@ -131,7 +130,7 @@ public:
     }
 
     bool operator>=(const RegularCookieNumber &rhs) const {
-        return *this >= rhs;
+        return !(*this < rhs);
     }
 
 };
