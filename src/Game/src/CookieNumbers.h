@@ -1,5 +1,5 @@
 /**
-    Copyright 2020 - Remy van Elst - https://raymii.org
+    Copyright 2021  - Remy van Elst - https://raymii.org
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -17,13 +17,162 @@
 #ifndef C_OOKIECLIKER_COOKIENUMBERS_H
 #define C_OOKIECLIKER_COOKIENUMBERS_H
 
-#include <boost/serialization/nvp.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-#include <boost/multiprecision/cpp_int.hpp>
+#include <sstream>
+#include <vector>
+#include <type_traits>
+#include <cmath>
+#include "cmakeConfig.h"
 
-typedef boost::multiprecision::cpp_int CookieInt;
-typedef boost::multiprecision::cpp_dec_float_50 CookieFloater;
-typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieNumber;
+template <typename T>
+class RegularCookieNumber {
+    static_assert(std::is_arithmetic <T>::value, "needs arithmetic T");
+    T _value;
+public:
+    RegularCookieNumber(T value) : _value(value) {};
+    RegularCookieNumber() : _value(0) {};
+    RegularCookieNumber(std::string value) : _value(std::stoll(value)) {};
+    [[nodiscard]] std::string str(std::intmax_t digits, std::ios_base::fmtflags f) const {
+        std::ostringstream result;
+        result.width(digits);
+        result.setf(f);
+        result.fill('0');
+        result << std::to_string(f);
+        return result.str();
+    }
+
+    RegularCookieNumber pow(const RegularCookieNumber& rhs) {
+        return std::pow(_value, rhs._value);
+    }
+
+    RegularCookieNumber& operator*= (const RegularCookieNumber &rhs) {
+        T newValue = _value * rhs._value;
+        _value = newValue;
+        return *this;
+    }
+
+    RegularCookieNumber& operator*= (int rhs) {
+        T newValue = _value * rhs;
+        _value = newValue;
+        return *this;
+    }
+
+    RegularCookieNumber& operator+= (const RegularCookieNumber &rhs) {
+        T newValue = _value + rhs._value;
+        _value = newValue;
+        return *this;
+    }
+
+    RegularCookieNumber& operator-= (const RegularCookieNumber &rhs) {
+        T newValue = _value - rhs._value;
+        _value = newValue;
+        return *this;
+    }
+
+    RegularCookieNumber& operator/= (const RegularCookieNumber &rhs) {
+        T newValue = _value / rhs._value;
+        _value = newValue;
+        return *this;
+    }
+
+    RegularCookieNumber& operator++()
+    {
+        return *this;
+    }
+
+    RegularCookieNumber operator++(int)
+    {
+        RegularCookieNumber old = *this;
+        operator++();
+        return old;
+    }
+
+    RegularCookieNumber& operator--()
+    {
+        return *this;
+    }
+
+
+    RegularCookieNumber operator--(int)
+    {
+        RegularCookieNumber old = *this;
+        operator--();
+        return old;
+    }
+
+    bool operator==(const RegularCookieNumber &rhs) const {
+        return _value == rhs._value;
+    }
+
+    bool operator<(const RegularCookieNumber &rhs) const {
+        return _value < rhs._value;
+    }
+
+    friend std::ostream &operator<<(std::ostream &os, const RegularCookieNumber &number) {
+        os << "value: " << number._value;
+        return os;
+    }
+
+    bool operator>(const RegularCookieNumber &rhs) const {
+        return rhs < *this;
+    }
+
+    bool operator!=(const RegularCookieNumber &rhs) const {
+        return rhs != *this;
+    }
+
+    bool operator<=(const RegularCookieNumber &rhs) const {
+        return rhs >= *this;
+    }
+
+    bool operator>=(const RegularCookieNumber &rhs) const {
+        return *this >= rhs;
+    }
+
+};
+
+template <typename T>
+RegularCookieNumber<T> operator*(RegularCookieNumber<T> lhs, const RegularCookieNumber<T>& rhs)
+{
+    return lhs *= rhs;
+}
+
+template <typename T>
+RegularCookieNumber<T> operator*(RegularCookieNumber<T> lhs, int rhs)
+{
+    return lhs *= rhs;
+}
+
+template <typename T>
+RegularCookieNumber<T> operator+(RegularCookieNumber<T> lhs, const RegularCookieNumber<T>& rhs)
+{
+    return lhs += rhs;
+}
+
+template <typename T>
+RegularCookieNumber<T> operator-(RegularCookieNumber<T> lhs, const RegularCookieNumber<T>& rhs)
+{
+    return lhs -= rhs;
+}
+
+template <typename T>
+RegularCookieNumber<T> operator/(RegularCookieNumber<T> lhs, const RegularCookieNumber<T>& rhs)
+{
+    return lhs /= rhs;
+}
+
+#ifdef USEBOOST_MPP
+    #include <boost/serialization/nvp.hpp>
+    #include <boost/multiprecision/cpp_dec_float.hpp>
+    #include <boost/multiprecision/cpp_int.hpp>
+    typedef boost::multiprecision::cpp_int CookieInt;
+    typedef boost::multiprecision::cpp_dec_float_50 CookieFloater;
+    typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieNumber;
+#else
+        typedef RegularCookieNumber<unsigned long long> CookieInt;
+        typedef RegularCookieNumber<long double> CookieFloater;
+        typedef RegularCookieNumber<long double> CookieNumber;
+#endif
+
 
 class CookieNumberPrinter
 {
@@ -351,7 +500,7 @@ public:
         // 29732982334867582149325438874912272258640000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.0000000000000000000000000000000000000000
         std::string entireCookieNumber = c.str(0, std::ios_base::fixed);
 
-        // split the number into the integer and fractional string parts (before and after the .)
+        // split the number into the integer and RegularCookieNumberal string parts (before and after the .)
         std::istringstream iss(entireCookieNumber);
         std::vector<std::string> tokens;
         std::string token;
@@ -362,7 +511,7 @@ public:
         }
 
         std::string integerpart;
-        std::string fractionalpart;
+        std::string RegularCookieNumberalpart;
         switch (tokens.size())
         {
         case 1:
@@ -370,7 +519,7 @@ public:
             break;
         case 2:
             integerpart = tokens.at(0);
-            fractionalpart = tokens.at(1);
+            RegularCookieNumberalpart = tokens.at(1);
             break;
         default:
             integerpart = entireCookieNumber;
@@ -380,9 +529,9 @@ public:
         // the length of the integer part of a boost cpp_dec_float
         // is of importance for us, (what suffix to print) but with
         // our level of precision, the number contains mostly zeroes,
-        // so we only remove trailing zero's from the fractional part.
+        // so we only remove trailing zero's from the RegularCookieNumberal part.
         // we're not interested in those for printing.
-        removeTrailingZeroes(fractionalpart);
+        removeTrailingZeroes(RegularCookieNumberalpart);
 
         // printing logic starts here. We cant have negative amounts of cookies.
         if (c <= 0)
@@ -391,10 +540,10 @@ public:
         }
         else if (integerpart.length() <= 5)
         {
-            // up until the thousands we're interested in the fractional part
-            if (fractionalpart.length() > 0 && std::stoi(fractionalpart.substr(0, 1)) > 0)
+            // up until the thousands we're interested in the RegularCookieNumberal part
+            if (RegularCookieNumberalpart.length() > 0 && std::stoi(RegularCookieNumberalpart.substr(0, 1)) > 0)
             {
-                return integerpart + "." + fractionalpart.at(0);
+                return integerpart + "." + RegularCookieNumberalpart.at(0);
             }
             else
             {
@@ -405,7 +554,7 @@ public:
         else if (cookieNumberNames.size() - 1 > (integerpart.length() - 2))
         {
             // if we get bigger we want named numbers (75 billion, 229n, etc).
-            // nobody cares about after the fractional part here...
+            // nobody cares about after the RegularCookieNumberal part here...
             std::string returnString;
             returnString += integerpart.at(0);
             if (cookieNumberNames.at(integerpart.length() - 1) == cookieNumberNames.at(integerpart.length()))

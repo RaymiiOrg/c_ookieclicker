@@ -1,4 +1,5 @@
 #include "ItemStore.h"
+#include "cmakeConfig.h"
 
 CookieNumber ItemStore::getPrice(Item &item, const CookieNumber &amountAlreadyHave)
 {
@@ -10,9 +11,12 @@ CookieNumber ItemStore::getPrice(Item &item, const CookieNumber &amountAlreadyHa
     CookieFloater priceIncrease("1.15");
     CookieFloater itemAmountInInventory(amountAlreadyHave);
 
+#ifdef USEBOOST_MPP
     auto pow = boost::multiprecision::pow(priceIncrease, itemAmountInInventory);
-
     auto result = boost::multiprecision::ceil(baseCost * pow);
+#else
+    auto result = priceIncrease.pow(itemAmountInInventory);
+#endif
 
     return CookieNumber(result);
 }

@@ -1,4 +1,4 @@
-name: Build, run test and upload binaries
+name: Build WITHOUT BOOST, run test and upload binaries
 
 on: [push, pull_request]
 
@@ -13,17 +13,13 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H%M')"
-
-      - name: Install build dependencies
-        run: sudo apt -y update && sudo apt -y install libboost1.71-dev
-
       - name: Create build environment
         run: cmake -E make_directory ${{runner.workspace}}/build
 
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DBUILD_TESTS=Y -DUSEBOOST_MPP=Y -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=Release
+        run: cmake $GITHUB_WORKSPACE -DBUILD_TESTS=Y -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -68,16 +64,13 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H%M')"
 
-      - name: Install build dependencies
-        run: sudo apt -y update && sudo apt -y install libboost1.71-dev
-
       - name: Create build environment
         run: cmake -E make_directory ${{runner.workspace}}/build
 
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DUSEBOOST_MPP=Y -DBUILD_TESTS=Y
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=Y"
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -124,7 +117,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H%M')"
 
       - name: Install build dependencies
-        run: sudo apt -y update && sudo apt -y install libboost1.71-dev qemu-user-binfmt qemu-user g++-multilib-arm-linux-gnueabihf gcc-arm-linux-gnueabihf
+        run: sudo apt -y update && sudo apt -y install qemu-user-binfmt qemu-user g++-multilib-arm-linux-gnueabihf gcc-arm-linux-gnueabihf
 
       - name: Create build environment
         run: cmake -E make_directory ${{runner.workspace}}/build
@@ -171,7 +164,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DUSEBOOST_MPP=Y
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -204,13 +197,10 @@ jobs:
       - name: Create build environment
         run: cmake -E make_directory ${{runner.workspace}}/build
 
-      - name: Install dependencies
-        run: brew install boost
-
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=Y -DUSEBOOST_MPP=Y -DCMAKE_CXX_FLAGS="-stdlib=libc++" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++"
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=Y -DCMAKE_CXX_FLAGS="-stdlib=libc++" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++"
 
       - name: Build
         working-directory: ${{runner.workspace}}/build

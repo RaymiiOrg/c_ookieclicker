@@ -1,6 +1,7 @@
 #include "OptionsView.h"
-#include <CookieNumbers.h>
-#include <Game/src/Save.h>
+#include "CookieNumbers.h"
+#include "Game/src/Save.h"
+#include "cmakeConfig.h"
 
 void OptionsView::render()
 {
@@ -13,6 +14,11 @@ void OptionsView::render()
     std::cout << "version: " << game::gameVersion << " ";
 #ifdef PACKAGE_GITSHA
     std::cout << " (commit " << std::string(PACKAGE_GITSHA) << ")";
+#endif
+#ifdef USEBOOST_MPP
+    std::cout << " (With Boost Multiprecision) ";
+#else
+    std::cout << " (Without Boost Multiprecision, overflow will occur on high scores) ";
 #endif
     std::cout << std::endl;
 }

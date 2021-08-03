@@ -33,7 +33,7 @@ is to automate as much as possible.
 
 # License
 
-Copyright 2020 - Remy van Elst.
+Copyright 2021 - Remy van Elst.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -50,7 +50,9 @@ Copyright 2020 - Remy van Elst.
 
 # Build
 
-How to build the game for yourself.
+How to build the game for yourself. Boost is a required dependency, but it is possible
+to build without it. When you reach the limit of what fits in an `unsigned long long`, or a 
+`long double`, the score (and other numbers, such as item amount or cost, will overflow).
 
 Install `boost` and build dependencies. On Ubuntu 18.04:
 
@@ -72,7 +74,7 @@ Build locally:
     
 The game executable is:
 
-    src/Game/src/Game_linux
+    src/Game/src/c_ookieclicker_linux
     
 Make sure to run it in the cloned folder, otherwise some game data might not load, like
 then achievements. Game data files are in:
@@ -87,7 +89,9 @@ and are symlinked in the main folder you cloned from github.
 ## CookieNumber
 
 Class which allows storing of a large number (score, prices, inventory amount). 
-Currently a typedef alias to Boosts multiprecision `cpp_dec_float`.  
+Currently a typedef alias to Boosts multiprecision `cpp_dec_float`. Or, if compiled
+without the CMAKE flag `-DUSEBOOST_MPP`, a simple and primitive template type that supports
+printing methods and some basic operators.
  
 Supports printing in format used by other incremental games. 
   - Example: `1000000000000000000000` becomes `1 sextillion`. 

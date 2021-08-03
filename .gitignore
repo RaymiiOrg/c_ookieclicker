@@ -1,8 +1,5 @@
-cmake-build-debug/*
-cmake-build-release/*
-.idea
+cmake-build-*
 lib/googletest/*
 src/Game/tst/data/save*
 formatdiff.txt
 .cookieclicker.save
-/.run/

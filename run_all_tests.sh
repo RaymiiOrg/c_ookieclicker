@@ -4,7 +4,17 @@ mkdir -p cmake-build-debug
 cd cmake-build-debug
 
 if [[ $1 == "runcmake" ]]; then
-  cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -DBUILD_TESTS="yes"
+  cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -DBUILD_TESTS=Y
+  make -j8 all
+  if [[ $? != 0 ]]; then
+    echo "Make failed"
+    cd ..
+    exit 1;
+  fi
+fi
+
+if [[ $1 == "runcmakeboost" ]]; then
+  cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -DBUILD_TESTS=Y -DUSEBOOST_MPP=Y
   make -j8 all
   if [[ $? != 0 ]]; then
     echo "Make failed"
