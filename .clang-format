@@ -1,12 +1,24 @@
 BasedOnStyle: WebKit
-AccessModifierOffset: '-4'
+AccessModifierOffset: -4
 AllowShortFunctionsOnASingleLine: Inline
-AlwaysBreakTemplateDeclarations: 'true'
-BreakBeforeBraces: Allman
-ColumnLimit: '0'
-Cpp11BracedListStyle: 'true'
+AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterClass: true
+  AfterEnum: true
+  AfterUnion: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  SplitEmptyFunction: false
+  AfterControlStatement: Always
+  BeforeCatch: true
+  BeforeElse: true
+ColumnLimit: 0
+Cpp11BracedListStyle: true
 PointerAlignment: Right
 BreakConstructorInitializers: 'AfterColon'
 UseTab: 'Never'
 AlignAfterOpenBracket: 'AlwaysBreak'
-AllowShortBlocksOnASingleLine: 'true'
+AllowShortBlocksOnASingleLine: Empty

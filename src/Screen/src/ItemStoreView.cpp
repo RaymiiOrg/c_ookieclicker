@@ -3,9 +3,8 @@
 void ItemStoreView::render()
 {
     listViews();
-    if(activeView)
+    if (activeView)
         activeView->render();
-
 }
 
 void ItemStoreView::handleInput(const std::string &input)
@@ -19,7 +18,6 @@ void ItemStoreView::handleInput(const std::string &input)
     if (activeView)
         activeView->handleInput(input);
 }
-
 
 void ItemStoreView::listViews() const
 {

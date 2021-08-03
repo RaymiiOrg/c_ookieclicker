@@ -13,18 +13,7 @@ struct CookieNumbersTestSuite : public ::testing::Test
 TEST_F(CookieNumbersTestSuite, printWithoutSuffix)
 {
     testing::internal::CaptureStdout();
-    std::vector<CookieNumber> numbers {CookieNumber(1),
-                                       CookieNumber(10),
-                                       CookieNumber(11),
-                                       CookieNumber(45),
-                                       CookieNumber(99),
-                                       CookieNumber(100),
-                                       CookieNumber(135),
-                                       CookieNumber(999),
-                                       CookieNumber(1000),
-                                       CookieNumber(4231),
-                                       CookieNumber(20000),
-                                       CookieNumber(43212)};
+    std::vector<CookieNumber> numbers {CookieNumber(1), CookieNumber(10), CookieNumber(11), CookieNumber(45), CookieNumber(99), CookieNumber(100), CookieNumber(135), CookieNumber(999), CookieNumber(1000), CookieNumber(4231), CookieNumber(20000), CookieNumber(43212)};
     for (const auto &n : numbers)
     {
         std::cout << cp->print(n) + " ";
@@ -80,18 +69,7 @@ TEST_F(CookieNumbersTestSuite, printWithSuffix)
 TEST_F(CookieNumbersTestSuite, floatWithoutSuffix)
 {
     testing::internal::CaptureStdout();
-    std::vector<CookieNumber> numbers {CookieNumber(0.1),
-                                       CookieNumber(0.2),
-                                       CookieNumber(1.2),
-                                       CookieNumber(3.0001),
-                                       CookieNumber(4.0),
-                                       CookieNumber(10.5),
-                                       CookieNumber(45.389),
-                                       CookieNumber(200.12),
-                                       CookieNumber(1000.88),
-                                       CookieNumber(4231.2),
-                                       CookieNumber(20000.899),
-                                       CookieNumber(43212.91)};
+    std::vector<CookieNumber> numbers {CookieNumber(0.1), CookieNumber(0.2), CookieNumber(1.2), CookieNumber(3.0001), CookieNumber(4.0), CookieNumber(10.5), CookieNumber(45.389), CookieNumber(200.12), CookieNumber(1000.88), CookieNumber(4231.2), CookieNumber(20000.899), CookieNumber(43212.91)};
     for (const auto &n : numbers)
     {
         std::cout << cp->print(n) + " ";
@@ -147,18 +125,7 @@ TEST_F(CookieNumbersTestSuite, floatWithSuffix)
 TEST_F(CookieNumbersTestSuite, printCookieIntWithoutSuffix)
 {
     testing::internal::CaptureStdout();
-    std::vector<CookieInt> numbers {CookieInt(1),
-                                    CookieInt(10),
-                                    CookieInt(11),
-                                    CookieInt(45),
-                                    CookieInt(99),
-                                    CookieInt(100),
-                                    CookieInt(135),
-                                    CookieInt(999),
-                                    CookieInt(1000),
-                                    CookieInt(4231),
-                                    CookieInt(20000),
-                                    CookieInt(43212)};
+    std::vector<CookieInt> numbers {CookieInt(1), CookieInt(10), CookieInt(11), CookieInt(45), CookieInt(99), CookieInt(100), CookieInt(135), CookieInt(999), CookieInt(1000), CookieInt(4231), CookieInt(20000), CookieInt(43212)};
     for (const auto &n : numbers)
     {
         std::cout << cp->print(n) + " ";

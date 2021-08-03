@@ -10,12 +10,10 @@ struct GameloopTestSuite : public ::testing::Test
     std::unique_ptr<Wallet> wallet = std::make_unique<Wallet>();
     std::unique_ptr<ItemStore> store = std::make_unique<ItemStore>();
     std::unique_ptr<notifyMessage> msg = std::make_unique<notifyMessage>();
-    std::unique_ptr<MainView> gamescreen = std::make_unique<MainView>(msg.get(), wallet.get(),
-                                                                      inventory.get(), store.get());
+    std::unique_ptr<MainView> gamescreen = std::make_unique<MainView>(msg.get(), wallet.get(), inventory.get(), store.get());
     GameloopTestSuite()
     {
-        game = std::make_unique<Gameloop>(msg.get(), wallet.get(), inventory.get(),
-                                          store.get(), gamescreen.get());
+        game = std::make_unique<Gameloop>(msg.get(), wallet.get(), inventory.get(), store.get(), gamescreen.get());
     }
 };
 

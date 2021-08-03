@@ -15,7 +15,6 @@ void OptionsView::render()
     std::cout << " (commit " << std::string(PACKAGE_GITSHA) << ")";
 #endif
     std::cout << std::endl;
-
 }
 
 void OptionsView::handleInput(const std::string &input)

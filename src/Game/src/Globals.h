@@ -1,5 +1,6 @@
 #ifndef C_OOKIECLIKER_GLOBALS_H
 #define C_OOKIECLIKER_GLOBALS_H
+#include <string>
 
 namespace game
 {

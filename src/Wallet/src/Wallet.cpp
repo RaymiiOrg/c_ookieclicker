@@ -64,12 +64,14 @@ void Wallet::setTotalcookies(const CookieNumber &totalcookies)
     _totalcookies = totalcookies;
 }
 
-void Wallet::incrementCookieViaInput(const CookieNumber &amount) {
+void Wallet::incrementCookieViaInput(const CookieNumber &amount)
+{
     _cookiesViaInput += amount;
     incrementCookieAmount(amount);
     notify();
 }
 
-CookieNumber Wallet::getCookiesViaInput() const {
+CookieNumber Wallet::getCookiesViaInput() const
+{
     return _cookiesViaInput;
 }

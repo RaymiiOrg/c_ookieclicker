@@ -1,13 +1,16 @@
 #include "GameLoop.h"
 #include "filesystem.h"
 
-Gameloop::Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory, ItemStore *itemstore, MainView* mainview) : wallet(wallet), msg(msg), inventory(inventory),
+Gameloop::Gameloop(notifyMessage *msg, Wallet *wallet, Inventory *inventory, ItemStore *itemstore, MainView *mainview) :
+    wallet(wallet), msg(msg), inventory(inventory),
     itemstore(itemstore), gamescreen(mainview)
 {
 }
 
-void Gameloop::start() {
-    if (wallet && msg && itemstore && inventory && gamescreen) {
+void Gameloop::start()
+{
+    if (wallet && msg && itemstore && inventory && gamescreen)
+    {
         running = true;
         gameStepThread = std::thread(&Gameloop::gameStep, this);
         inputThread = std::thread(&Gameloop::input, this);
@@ -85,18 +88,19 @@ void Gameloop::showFinalScore()
 {
     std::cout << escapeCode.clearEntireScreen << escapeCode.cursorTo0x0;
     std::cout << "Well done.\n";
-    if (wallet) {
+    if (wallet)
+    {
         std::cout << "Ended with " << cp.print(wallet->getCookieAmount()) << " cookies." << std::endl;
         std::cout << "Total cookies earned: " << cp.print(wallet->getTotalcookies()) << std::endl;
-    } else {
+    }
+    else
+    {
         std::cout << "Cant show final score, wallet is a nullptr." << std::endl;
     }
     std::cout << "Thank you for playing!\n";
     std::cout << "c_ookieclicker version: " << std::to_string(game::gameVersion);
     std::cout << " by Remy, https://raymii.org\n";
 }
-
-
 
 void Gameloop::incrementCookiesOnTime()
 {
@@ -118,7 +122,8 @@ void Gameloop::handleCookieOrQuitChoice(const std::string &input)
 {
     if (input == game::cookieKey)
     {
-        if (inventory && wallet) {
+        if (inventory && wallet)
+        {
             auto cmd = std::make_unique<UpdateCookiesViaInputCommand>(inventory->getCookiesPerTap(), *wallet);
             cmd->execute();
         }
@@ -131,20 +136,26 @@ void Gameloop::handleCookieOrQuitChoice(const std::string &input)
 
 void Gameloop::handleDebugChoice(const std::string &input)
 {
-    if (wallet && msg) {
-        if (input == "7") {
+    if (wallet && msg)
+    {
+        if (input == "7")
+        {
             wallet->incrementCookieAmount(CookieNumber(100));
             msg->setCurrentMessage(notifyMessage::msgType::DEBUG);
-        } else if (input == "8") {
+        }
+        else if (input == "8")
+        {
             wallet->incrementCookieAmount(wallet->getCookieAmount() * 2);
             wallet->incrementCps(wallet->getCps() * 2);
             msg->setCurrentMessage(notifyMessage::msgType::DEBUG);
-        } else if (input == "9") {
+        }
+        else if (input == "9")
+        {
             msg->setCurrentMessage(notifyMessage::msgType::DEBUG);
             CookieNumber a(
-                    "115119036727821003870521051999708461"
-                    "257642313059096215428937680038718894154"
-                    "816459487665078480150348801009011289080");
+                "115119036727821003870521051999708461"
+                "257642313059096215428937680038718894154"
+                "816459487665078480150348801009011289080");
             wallet->incrementCookieAmount(a);
             wallet->incrementCps(a * 2);
         }

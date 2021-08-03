@@ -17,16 +17,18 @@ CookieNumber ItemStore::getPrice(Item &item, const CookieNumber &amountAlreadyHa
     return CookieNumber(result);
 }
 
-CookieNumber ItemStore::getPriceOf(Item &item, const CookieNumber &amountAlreadyHave, int amountAsked) {
-    switch (amountAsked) {
-        case 1:
-            return getPrice(item, amountAlreadyHave);
-        case 10:
-            return getPriceOfTen(item, amountAlreadyHave);
-        case 100:
-            return getPriceOfHundred(item, amountAlreadyHave);
-        default:
-            return getPrice(item, amountAlreadyHave) * amountAsked;
+CookieNumber ItemStore::getPriceOf(Item &item, const CookieNumber &amountAlreadyHave, int amountAsked)
+{
+    switch (amountAsked)
+    {
+    case 1:
+        return getPrice(item, amountAlreadyHave);
+    case 10:
+        return getPriceOfTen(item, amountAlreadyHave);
+    case 100:
+        return getPriceOfHundred(item, amountAlreadyHave);
+    default:
+        return getPrice(item, amountAlreadyHave) * amountAsked;
     }
 }
 
