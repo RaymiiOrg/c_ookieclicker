@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
 
-  linux-x86-clang:
+  linux-x86-clang-no-boost:
     runs-on: "ubuntu-20.04"
 
     steps:
@@ -54,7 +54,7 @@ jobs:
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
 
-  linux-x86-gcc:
+  linux-x86-gcc-no-boost:
     runs-on: "ubuntu-20.04"
 
     steps:
@@ -105,7 +105,7 @@ jobs:
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
 
-  linux-arm-gcc-crosscompile:
+  linux-arm-gcc-crosscompile-no-boost:
     runs-on: "ubuntu-20.04"
 #    continue-on-error: true
 
@@ -148,7 +148,7 @@ jobs:
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
 
-  windows-x86-msvc:
+  windows-x86-msvc-no-boost:
     runs-on: windows-2019
 
     steps:
@@ -185,7 +185,7 @@ jobs:
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
 #
-  osx-x86-appleclang:
+  osx-x86-appleclang-no-boost:
     runs-on: "macos-10.15"
     steps:
       - uses: actions/checkout@v2
