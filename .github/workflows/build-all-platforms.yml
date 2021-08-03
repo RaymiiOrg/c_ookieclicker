@@ -53,7 +53,7 @@ jobs:
       - name: Upload c_ookieclicker binary
         uses: actions/upload-artifact@v1
         with:
-          name: c_ookieclicker-linux-x86-clang-${{ env.BUILD_DATE }}
+          name: c_ookieclicker-no-boost-linux-x86-clang-${{ env.BUILD_DATE }}
           path: ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
@@ -107,7 +107,7 @@ jobs:
       - name: Upload c_ookieclicker binary
         uses: actions/upload-artifact@v1
         with:
-          name: c_ookieclicker-linux-x86-gcc-${{ env.BUILD_DATE }}
+          name: c_ookieclicker-no-boost-linux-x86-gcc-${{ env.BUILD_DATE }}
           path: ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
@@ -150,7 +150,7 @@ jobs:
       - name: Upload c_ookieclicker binary
         uses: actions/upload-artifact@v1
         with:
-          name: c_ookieclicker-linux-ARM-gcc-${{ env.BUILD_DATE }}
+          name: c_ookieclicker-no-boost-linux-ARM-gcc-${{ env.BUILD_DATE }}
           path: ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
@@ -203,7 +203,7 @@ jobs:
       - name: Upload c_ookieclicker Binary
         uses: actions/upload-artifact@v1
         with:
-          name: c_ookieclicker-osx-x86-10.15-appleclang-${{ env.BUILD_DATE }}
+          name: c_ookieclicker-no-boost-osx-x86-10.15-appleclang-${{ env.BUILD_DATE }}
           path: ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
