@@ -30,7 +30,13 @@ class RegularCookieNumber {
 public:
     RegularCookieNumber(T value) : _value(value) {};
     RegularCookieNumber() : _value(0) {};
-    RegularCookieNumber(std::string value) : _value(std::stoll(value)) {};
+    RegularCookieNumber(const std::string& value) {
+        try {
+            _value = std::stoll(value);
+        } catch (const std::invalid_argument& e) {
+            _value = std::stold(value);
+        }
+    };
     [[nodiscard]] std::string str(std::intmax_t digits, std::ios_base::fmtflags f) const {
         std::ostringstream result;
         result.width(digits);
