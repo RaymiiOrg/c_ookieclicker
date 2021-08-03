@@ -20,6 +20,7 @@
 #include <sstream>
 #include <vector>
 #include <type_traits>
+#include <iostream>
 #include <cmath>
 #include "cmakeConfig.h"
 
@@ -34,7 +35,11 @@ public:
         try {
             _value = std::stoll(value);
         } catch (const std::invalid_argument& e) {
+            std::cerr << "value: " << value << " throws: " << e.what();
             _value = std::stold(value);
+        } catch (const std::out_of_range& e) {
+            std::cerr << "value: " << value << " throws: " << e.what() << ". value is now 0.";
+            _value = 0;
         }
     };
     [[nodiscard]] std::string str(std::intmax_t digits, std::ios_base::fmtflags f) const {
