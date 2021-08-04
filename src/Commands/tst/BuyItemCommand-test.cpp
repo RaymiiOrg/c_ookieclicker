@@ -29,7 +29,7 @@ TEST_F(BuyItemCommandTestSuite, before)
     EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(0));
     EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(0));
     EXPECT_EQ(wallet->getCps(), CookieNumber(0));
-    EXPECT_EQ(store->getStoreInventory().at(0).baseCost, 14);
+    EXPECT_EQ(store->getStoreInventory().at(0).baseCost, 15);
 }
 
 TEST_F(BuyItemCommandTestSuite, withoutMoney)
@@ -50,7 +50,7 @@ TEST_F(BuyItemCommandTestSuite, withoutMoney)
     EXPECT_EQ(wallet->getCookieAmount(), CookieNumber());
     EXPECT_EQ(wallet->getTotalcookies(), CookieNumber());
     EXPECT_EQ(wallet->getCps(), CookieNumber());
-    EXPECT_EQ(store->getStoreInventory().at(0).baseCost, 14); //15
+    EXPECT_EQ(store->getStoreInventory().at(0).baseCost, 15);
 }
 
 TEST_F(BuyItemCommandTestSuite, withMoney)

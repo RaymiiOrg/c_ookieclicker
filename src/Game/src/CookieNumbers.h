@@ -42,10 +42,10 @@ public:
     };
     [[nodiscard]] std::string str(std::intmax_t digits, std::ios_base::fmtflags f) const {
         std::ostringstream result;
-        result.width(digits);
+        result.precision(digits);
         result.setf(f);
         result.fill('0');
-        result << std::to_string(f);
+        result << std::to_string(_value);
         return result.str();
     }
 
