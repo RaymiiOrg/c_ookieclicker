@@ -42,9 +42,9 @@ void Gameloop::input()
         {
             std::string choice(1, c);
             /** handles get cookie or quit **/
-            handleCookieOrQuitChoice(input);
+            handleCookieOrQuitChoice(choice);
 #ifndef NDEBUG
-            handleDebugChoice(input);
+            handleDebugChoice(choice);
 #endif
             if (gamescreen != nullptr)
                 gamescreen->handleInput(choice);
