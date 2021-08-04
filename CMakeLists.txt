@@ -67,6 +67,7 @@ endif()
 if (BUILD_TESTS)
     set(GOOGLETEST_VERSION 3.14)
     add_subdirectory(lib/googletest)
+    enable_testing()
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
