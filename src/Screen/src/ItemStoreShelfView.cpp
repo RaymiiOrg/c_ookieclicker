@@ -10,6 +10,9 @@ void ItemStoreShelfView::render()
         {
             auto itemAmountInInventory = inventory->getItemCount(item.name);
             CookieNumber priceOfItem = getPriceOfItem(itemAmountInInventory, item);
+            if (priceOfItem == 0)
+                continue;
+
             if (itemAmountInInventory > 0 && wallet->getCookieAmount() < priceOfItem)
             {
                 enoughMoneyOrHaveItemsAlready = true;

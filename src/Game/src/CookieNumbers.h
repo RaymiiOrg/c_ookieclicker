@@ -33,8 +33,6 @@ public:
     RegularCookieNumber() : _value(0) {};
     RegularCookieNumber(const std::string& value) {
         try {
-            _value = std::stoll(value);
-        } catch (const std::invalid_argument& e) {
             _value = std::stold(value);
         } catch (const std::out_of_range& e) {
             _value = 0;
@@ -51,6 +49,10 @@ public:
 
     RegularCookieNumber pow(const RegularCookieNumber& rhs) {
         return std::pow(_value, rhs._value);
+    }
+
+    RegularCookieNumber ceil() {
+        return std::ceil(_value);
     }
 
     RegularCookieNumber& operator*= (const RegularCookieNumber &rhs) {
@@ -178,7 +180,7 @@ RegularCookieNumber<T> operator/(RegularCookieNumber<T> lhs, const RegularCookie
     typedef boost::multiprecision::cpp_dec_float_50 CookieFloater;
     typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieNumber;
 #else
-        typedef RegularCookieNumber<unsigned long long> CookieInt;
+        typedef RegularCookieNumber<long double> CookieInt;
         typedef RegularCookieNumber<long double> CookieFloater;
         typedef RegularCookieNumber<long double> CookieNumber;
 #endif

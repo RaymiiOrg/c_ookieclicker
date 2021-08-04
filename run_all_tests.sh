@@ -35,11 +35,13 @@ for testexecutable in ${tests}; do
   echo "Running test: ${testpath}"
   ./${testpath}
   if [[ $? != 0 ]]; then
-    cd ..
+    popd
     exit 1;
   fi
   echo
 done
+
+popd
 
 #make checkstyle;
 
