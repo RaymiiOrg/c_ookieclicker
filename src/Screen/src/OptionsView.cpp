@@ -2,6 +2,7 @@
 #include "CookieNumbers.h"
 #include "Game/src/Save.h"
 #include "cmakeConfig.h"
+#include <limits>
 
 void OptionsView::render()
 {
@@ -18,7 +19,10 @@ void OptionsView::render()
 #ifdef USEBOOST_MPP
     std::cout << " (With Boost Multiprecision) ";
 #else
-    std::cout << " (Without Boost Multiprecision, overflow will occur on high scores) ";
+    std::cout << escapeCode.terminalBold << " \nWithout Boost Multiprecision, "
+                 "strange things will happen when numbers get bigger than \n";
+    printf("%.10Le", std::numeric_limits<long double>::max());
+    std::cout << ")\n" << escapeCode.terminalReset;
 #endif
     std::cout << std::endl;
 }
