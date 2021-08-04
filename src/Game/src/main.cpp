@@ -22,8 +22,17 @@ void printNoBoostWarning() {
                  "The limit of a <long double> of this compiler is: ";
     printf("%.10Le", std::numeric_limits<long double>::max());
 
-    std::cout << ".\n\nPress any key to start the game, or CTRL+C to exit.\n";
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+    std::cout << ".\n\nPress [Enter] to start the game, or CTRL+C to exit. q+[Enter] also quits.\n";
+    std::string input;
+    std::getline(std::cin, input);
+    for (char &c : input)
+    {
+        std::string choice(1, c);
+        if (choice == "q") {
+            std::cout << " So Long, and Thanks for All the Fish!\n";
+            std::exit(0);
+        }
+    }
 #endif
 }
 
