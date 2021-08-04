@@ -85,6 +85,7 @@ public:
 
     RegularCookieNumber& operator++()
     {
+        _value++;
         return *this;
     }
 
@@ -97,6 +98,7 @@ public:
 
     RegularCookieNumber& operator--()
     {
+        _value--;
         return *this;
     }
 
