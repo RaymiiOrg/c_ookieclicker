@@ -29,7 +29,7 @@ void printNoBoostWarning() {
     {
         std::string choice(1, c);
         if (choice == "q") {
-            std::cout << " So Long, and Thanks for All the Fish!\n";
+            std::cout << "So Long, and Thanks for All the Fish!\n";
             std::exit(0);
         }
     }

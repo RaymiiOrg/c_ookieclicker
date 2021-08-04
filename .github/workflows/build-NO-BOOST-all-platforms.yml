@@ -31,6 +31,9 @@ jobs:
       - name: Binary info
         run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
 
+      - name: test run
+        run: echo q |  ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
       - name: Game Test
         run: ${{runner.workspace}}/build/src/Game/tst/cookieclicker_tst
 
@@ -82,6 +85,9 @@ jobs:
       - name: Binary info
         run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
 
+      - name: test run
+        run: echo q |  ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
       - name: Game Test
         run: ${{runner.workspace}}/build/src/Game/tst/cookieclicker_tst
 
@@ -107,7 +113,6 @@ jobs:
 
   linux-arm-gcc-crosscompile-no-boost:
     runs-on: "ubuntu-20.04"
-#    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v2
@@ -211,6 +216,9 @@ jobs:
 
       - name: Binary info
         run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
+      - name: Test Run
+        run: echo q | ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
 
       - name: Game Test
         run: ${{runner.workspace}}/build/src/Game/tst/cookieclicker_tst

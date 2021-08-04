@@ -102,8 +102,11 @@ to the C++ code.
 
 Class which allows storing of a large number (score, prices, inventory amount). 
 Currently a typedef alias to Boosts multiprecision `cpp_dec_float`. Or, if compiled
-without the CMAKE flag `-DUSEBOOST_MPP`, a simple and primitive template type that supports
-printing methods and some basic operators.
+without the CMAKE flag `-DUSEBOOST_MPP=Y`, a simple and primitive template type that supports
+printing methods and some basic operators. Allowing compilation without boost should 
+speed up the build and allow for usage on platforms / compilers without boost.
+In practical terms it means that when you overflow a `long double`, the game is unable
+to count numbers (scores, prices, etc) and will show `inf` (for infinity). 
  
 Supports printing in format used by other incremental games. 
   - Example: `1000000000000000000000` becomes `1 sextillion`. 

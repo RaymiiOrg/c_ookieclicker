@@ -35,6 +35,9 @@ jobs:
       - name: Binary info
         run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
 
+      - name: test run
+        run: echo q |  ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
       - name: Game Test
         run: ${{runner.workspace}}/build/src/Game/tst/cookieclicker_tst
 
@@ -89,6 +92,9 @@ jobs:
       - name: Binary info
         run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
 
+      - name: test run
+        run: echo q |  ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+
       - name: Game Test
         run: ${{runner.workspace}}/build/src/Game/tst/cookieclicker_tst
 
@@ -114,7 +120,6 @@ jobs:
 
   linux-arm-gcc-crosscompile:
     runs-on: "ubuntu-20.04"
-#    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v2
@@ -155,8 +160,14 @@ jobs:
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
 
-  osx-x86-appleclang:
-    runs-on: "macos-10.15"
+
+  windows-x86-msvc:
+    env:
+      BOOST_ROOT: C:\thirdparties\boost-1.72.0
+      BOOST_URL: https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe/download
+
+    runs-on: windows-2019
+
     steps:
       - uses: actions/checkout@v2
 
@@ -164,47 +175,37 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H%M')"
 
+      - name: Install Boost
+        shell: cmd
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          choco install wget --no-progress
+          wget -nv -O boost-installer.exe %BOOST_URL%
+          boost-installer.exe /dir=%BOOST_ROOT% /sp- /verysilent /suppressmsgboxes /norestart
+
       - name: Create build environment
         run: cmake -E make_directory ${{runner.workspace}}/build
-
-      - name: Install dependencies
-        run: brew install boost
 
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=Y -DUSEBOOST_MPP=Y -DCMAKE_CXX_FLAGS="-stdlib=libc++" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++"
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config Release --target all
+        run: cmake --build . --config Release
         env:
           MAKEFLAGS: "-j2"
 
-      - name: Binary info
-        run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
-
-      - name: Game Test
-        run: ${{runner.workspace}}/build/src/Game/tst/cookieclicker_tst
-
-      - name: Commands Test
-        run: ${{runner.workspace}}/build/src/Commands/tst/Commands_tst
-
-      - name: Store Test
-        run: ${{runner.workspace}}/build/src/Store/tst/Store_tst
-
-      - name: Wallet Test
-        run: ${{runner.workspace}}/build/src/Wallet/tst/Wallet_tst
-        
-      - name: Achievement Test
-        run: ${{runner.workspace}}/build/src/Achievements/tst/Achievements_tst
+      - name: Test run
+        working-directory: ${{runner.workspace}}/build
+        run: echo q | ${{runner.workspace}}\build\src\Game\src\Release\cookieclicker_linux.exe
 
       - name: Upload c_ookieclicker Binary
         uses: actions/upload-artifact@v1
         with:
-          name: c_ookieclicker-no-boost-osx-x86-10.15-appleclang-${{ env.BUILD_DATE }}
-          path: ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+          name: c_ookieclicker-windows-x86-msvc-${{ env.BUILD_DATE }}.exe
+          path: ${{runner.workspace}}\build\src\Game\src\Release\cookieclicker_linux.exe
         env:
           BUILD_DATE: ${{ steps.date.outputs.date }}
-#
