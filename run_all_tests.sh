@@ -1,10 +1,21 @@
 #!/bin/bash
 
-mkdir -p cmake-build-debug
-cd cmake-build-debug
-
 if [[ $1 == "runcmake" ]]; then
-  cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -DBUILD_TESTS="yes"
+  mkdir -p cmake-build-debug-no-boost
+  pushd cmake-build-debug-no-boost
+  cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -DBUILD_TESTS=Y
+  make -j8 all
+  if [[ $? != 0 ]]; then
+    echo "Make failed"
+    cd ..
+    exit 1;
+  fi
+fi
+
+if [[ $1 == "runcmakeboost" ]]; then
+  mkdir -p cmake-build-debug-with-boost
+  pushd cmake-build-debug-with-boost
+  cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -DBUILD_TESTS=Y -DUSEBOOST_MPP=Y
   make -j8 all
   if [[ $? != 0 ]]; then
     echo "Make failed"
@@ -24,11 +35,13 @@ for testexecutable in ${tests}; do
   echo "Running test: ${testpath}"
   ./${testpath}
   if [[ $? != 0 ]]; then
-    cd ..
+    popd
     exit 1;
   fi
   echo
 done
+
+popd
 
 #make checkstyle;
 

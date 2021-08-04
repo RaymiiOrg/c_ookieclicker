@@ -1,6 +1,8 @@
 #include "OptionsView.h"
-#include <CookieNumbers.h>
-#include <Game/src/Save.h>
+#include "CookieNumbers.h"
+#include "Game/src/Save.h"
+#include "cmakeConfig.h"
+#include <limits>
 
 void OptionsView::render()
 {
@@ -13,6 +15,14 @@ void OptionsView::render()
     std::cout << "version: " << game::gameVersion << " ";
 #ifdef PACKAGE_GITSHA
     std::cout << " (commit " << std::string(PACKAGE_GITSHA) << ")";
+#endif
+#ifdef USEBOOST_MPP
+    std::cout << " (With Boost Multiprecision) ";
+#else
+    std::cout << escapeCode.terminalBold << " \nWithout Boost Multiprecision, "
+                 "strange things will happen when numbers get bigger than \n";
+    printf("%.10Le", std::numeric_limits<long double>::max());
+    std::cout << ")\n" << escapeCode.terminalReset;
 #endif
     std::cout << std::endl;
 }

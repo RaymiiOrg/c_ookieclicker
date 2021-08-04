@@ -6,6 +6,7 @@ New features:
 
 - Building upgrades
 - Debian package available
+- Boost libraries are now a compile option (otherwise an unsigned long long / long double is used, including overflow)
 
 Improvements
 

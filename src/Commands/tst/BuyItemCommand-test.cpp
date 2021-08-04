@@ -44,12 +44,12 @@ TEST_F(BuyItemCommandTestSuite, withoutMoney)
     buyCmd2->execute();
 
     //assert
-    EXPECT_EQ(inventory->getItemCount(cursor.name), CookieNumber(0));
+    EXPECT_EQ(inventory->getItemCount(cursor.name), CookieNumber());
     ASSERT_TRUE(inventory->getLastItemAdded().empty());
-    EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(0));
-    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(0));
-    EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(0));
-    EXPECT_EQ(wallet->getCps(), CookieNumber(0));
+    EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber());
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber());
+    EXPECT_EQ(wallet->getTotalcookies(), CookieNumber());
+    EXPECT_EQ(wallet->getCps(), CookieNumber());
     EXPECT_EQ(store->getStoreInventory().at(0).baseCost, 15);
 }
 

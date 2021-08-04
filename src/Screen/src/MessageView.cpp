@@ -1,5 +1,6 @@
 #include "MessageView.h"
 #include "terminalCodes.h"
+#include "cmakeConfig.h"
 
 void MessageView::render()
 {
@@ -22,7 +23,12 @@ void MessageView::showGameTitle() const
 {
     std::cout << escapeCode.cursorTo0x0;
     std::cout << escapeCode.eraseCurrentLine;
-    std::cout << "===== c_ookieclicker by Remy ====" << std::endl;
+#ifdef USEBOOST_MPP
+    std::cout << "===== c_ookieclicker by Remy =====" << std::endl;
+#else // see if boost multiprecision support is enabled, without making it obvious
+    std::cout << "=== c_ookieclicker by " << escapeCode.terminalBold << "Remy" <<
+    escapeCode.terminalReset << " ===" << std::endl;
+#endif
 }
 
 void MessageView::clearMessageView() const

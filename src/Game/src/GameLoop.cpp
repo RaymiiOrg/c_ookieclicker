@@ -42,9 +42,9 @@ void Gameloop::input()
         {
             std::string choice(1, c);
             /** handles get cookie or quit **/
-            handleCookieOrQuitChoice(input);
+            handleCookieOrQuitChoice(choice);
 #ifndef NDEBUG
-            handleDebugChoice(input);
+            handleDebugChoice(choice);
 #endif
             if (gamescreen != nullptr)
                 gamescreen->handleInput(choice);
@@ -107,7 +107,7 @@ void Gameloop::incrementCookiesOnTime()
     step_stop = std::chrono::high_resolution_clock::now();
     auto step_duration = std::chrono::duration_cast<std::chrono::seconds>(step_stop - step_start).count();
     if (wallet != nullptr)
-        wallet->incrementCookieAmount(wallet->getCps() * step_duration);
+        wallet->incrementCookieAmount(wallet->getCps() * CookieNumber(step_duration));
     step_start = std::chrono::high_resolution_clock::now();
 }
 

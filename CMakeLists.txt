@@ -18,8 +18,7 @@ if (${CMAKE_GENERATOR} MATCHES "Visual Studio")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 endif()
 
-
-if (STATIC_COMPILE STREQUAL "yes")
+if (STATIC_COMPILE)
     # Fix segfault when statically compiling.
     # https://stackoverflow.com/questions/35116327/when-g-static-link-pthread-cause-segmentation-fault-why
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -lrt -pthread -Wl,--whole-archive -lpthread -Wl,--no-whole-archive")
@@ -30,38 +29,45 @@ endif()
 
 message(STATUS "Cmake Generator: ${CMAKE_GENERATOR}")
 
-# For github actions, use boost from their non standard directory
-if(DEFINED ENV{BOOST_ROOT_1_72_0})
-    SET (BOOST_ROOT "$ENV{BOOST_ROOT_1_72_0}")
-    message(STATUS "Boost root from github found, using that.")
-endif()
+if (USEBOOST_MPP)
+    # For github actions, use boost from their non standard directory
+    if(DEFINED ENV{BOOST_ROOT_1_72_0})
+        SET (BOOST_ROOT "$ENV{BOOST_ROOT_1_72_0}")
+        message(STATUS "Boost root from github found, using that.")
+    endif()
 
-find_package(Boost REQUIRED COMPONENTS)
-if(BOOST_FOUND)
-    include_directories(${BOOST_INCLUDE_DIR})
-    message("-- Boost found: ${BOOST_VERSION_STRING}")
-    set(BOOST_USE_STATIC_LIBS ON)
-    set(BOOST_USE_MULTITHREADED ON)
-    set(BOOST_USE_STATIC_RUNTIME ON)
-else()
-    message(FATAL_ERROR "Boost not found!")
+    find_package(Boost REQUIRED COMPONENTS)
+    if(BOOST_FOUND)
+        include_directories(${BOOST_INCLUDE_DIR})
+        message("-- Boost found: ${BOOST_VERSION_STRING}")
+        set(BOOST_USE_STATIC_LIBS ON)
+        set(BOOST_USE_MULTITHREADED ON)
+        set(BOOST_USE_STATIC_RUNTIME ON)
+        set(USEBOOST_MPP "YES")
+    else()
+        message(FATAL_ERROR "Boost not found!")
+    endif()
+
 endif()
 
 if (NOT ${CMAKE_GENERATOR} MATCHES "Visual Studio")
     message(STATUS "CMake generator is NOT Visual Studio. Using regular build flags")
 
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Og -U_FORTIFY_SOURCE -ggdb")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og -Wall -U_FORTIFY_SOURCE -ggdb")
+        message(STATUS "Debug build")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -U_FORTIFY_SOURCE -ggdb")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wno-unknown-pragmas -U_FORTIFY_SOURCE -ggdb -Wall")
     elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
+        message(STATUS "Release build")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 ")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -DNDEBUG")
     endif()
 endif()
 
-if (BUILD_TESTS STREQUAL "yes")
+if (BUILD_TESTS)
     set(GOOGLETEST_VERSION 3.14)
-    add_subdirectory(lib/googletest)
+    enable_testing()
+    add_subdirectory(lib/googletest-1.11.0)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -71,7 +77,6 @@ elseif (NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 else()
     set(CXX_FILESYSTEM_LIBRARIES)
 endif()
-
 
 include_directories(src)
 add_subdirectory(src)
@@ -94,11 +99,15 @@ set(PACKAGE_STRING ${PACKAGE_NAME}-${PACKAGE_VERSION})
 set(PACKAGE_TARNAME ${PACKAGE_STRING}.tar.gz)
 set(PACKAGE_URL "https://raymii.org")
 
-configure_file(src/config.hpp.in src/config.hpp)
-
 install(TARGETS cookieclicker_linux DESTINATION bin)
 
-
+if(Boost_FOUND)
+    message(STATUS "Use Boost MPP lib   : YES")
+elseif(USEBOOST_MPP)
+    message(FATAL  "Use Boost MPP lib   : Boost not found!")
+else()
+    message(STATUS "Use Boost MPP lib   : NO")
+endif()
 message(STATUS "C++ compiler flags  : ${CMAKE_CXX_FLAGS}")
 message(STATUS "C compiler flags    : ${CMAKE_C_FLAGS}")
 message(STATUS "Linker flags        : ${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS} ${CMAKE_STATIC_LINKER_FLAGS}")

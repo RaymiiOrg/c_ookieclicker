@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSharedSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug-With-Boost" ENABLED="true" GENERATION_DIR="cmake-build-debug-with-boost" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DBUILD_TESTS=Y -DUSEBOOST_MPP=Y -DCMAKE_BUILD_TYPE=&quot;Debug&quot;" BUILD_OPTIONS="-- -j9" />
+      <configuration PROFILE_NAME="Release-With-Boost" ENABLED="true" GENERATION_DIR="cmake-build-release-with-boost" CONFIG_NAME="Release" GENERATION_OPTIONS="-DUSEBOOST_MPP=Y" BUILD_OPTIONS="-- -j9" />
+      <configuration PROFILE_NAME="Release" ENABLED="true" GENERATION_DIR="cmake-build-release-no-boost" CONFIG_NAME="Release" BUILD_OPTIONS="-- -j9" />
+      <configuration PROFILE_NAME="Debug" ENABLED="true" GENERATION_DIR="cmake-build-debug-no-boost" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DBUILD_TESTS=&quot;Y&quot; -DCMAKE_BUILD_TYPE=&quot;Debug&quot;" BUILD_OPTIONS="-- -j9" />
+    </configurations>
+  </component>
+</project>

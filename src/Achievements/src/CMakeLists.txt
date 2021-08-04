@@ -12,8 +12,8 @@ target_link_libraries(${LIBRARY} PUBLIC cookieclicker Commands Wallet)
 
 if(Boost_FOUND)
     target_link_libraries (${LIBRARY} ${Boost_LIBRARIES})
-else()
-    message(FATAL_ERROR "Boost not found!")
+elseif(USEBOOST_MPP)
+    message(FATAL_ERROR "Boost not found, but specified as USEBOOST_MPP=$USEBOOST_MPP!")
 endif()
 
 MESSAGE("-- Loaded ${LIBRARY}")

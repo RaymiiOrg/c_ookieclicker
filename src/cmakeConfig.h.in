@@ -23,3 +23,6 @@
 /* Define to the git revision of this package. */
 #cmakedefine PACKAGE_GITSHA @PACKAGE_GITSHA@
 
+/* Set to true to use BOOSTs large number support. */
+#cmakedefine USEBOOST_MPP @USEBOOST_MPP@
+

@@ -32,12 +32,11 @@ target_link_libraries(${LIBRARY} PUBLIC ${CXX_FILESYSTEM_LIBRARIES})
 
 target_include_directories(${LIBRARY}_linux PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-
 if(Boost_FOUND)
     target_link_libraries (${LIBRARY} ${Boost_LIBRARIES})
     target_link_libraries (${LIBRARY}_linux ${Boost_LIBRARIES})
-else()
-    message(FATAL_ERROR "Boost not found!")
+elseif(USEBOOST_MPP)
+    message(FATAL_ERROR "Boost not found, but specified as USEBOOST_MPP=$USEBOOST_MPP!")
 endif()
 
 MESSAGE("-- Loaded ${LIBRARY}")

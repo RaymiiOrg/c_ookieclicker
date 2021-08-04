@@ -35,6 +35,8 @@ CookieNumber BuyItemCommand::getPriceOf()
 void BuyItemCommand::execute()
 {
     CookieNumber price = getPriceOf();
+    if (price == 0)
+        return;
 
     auto cps = m_Item.cps * m_Amount;
     if (m_Wallet.getCookieAmount() >= price)
@@ -48,6 +50,8 @@ void BuyItemCommand::execute()
 void BuyItemCommand::undo()
 {
     auto price = getPriceOf();
+    if (price == 0)
+        return;
     auto cps = m_Item.cps * m_Amount;
     m_Inventory.removeItem(m_Item.name, m_Amount);
     m_Wallet.incrementCookieAmount(price);

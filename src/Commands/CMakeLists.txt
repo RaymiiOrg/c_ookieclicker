@@ -1,4 +1,4 @@
 add_subdirectory(src)
-if (BUILD_TESTS STREQUAL "yes")
+if (BUILD_TESTS)
     add_subdirectory(tst)
 endif()

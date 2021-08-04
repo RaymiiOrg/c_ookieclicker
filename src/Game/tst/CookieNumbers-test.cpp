@@ -63,19 +63,40 @@ TEST_F(CookieNumbersTestSuite, printWithSuffix)
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
+//#ifdef USEBOOST_MPP
     ASSERT_EQ(output, "123 thousand 424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion 1 quadrillion 10 quadrillion 100 quadrillion 1 quintillion 10 quintillion 100 quintillion 1 sextillion 1ss 29rr ");
+//#else
+//    ASSERT_EQ(output, "123 thousand 424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion 1 quadrillion 10 quadrillion 100 quadrillion 1 quintillion 0 0 0 0 0 ");
+//#endif
 }
 
 TEST_F(CookieNumbersTestSuite, floatWithoutSuffix)
 {
     testing::internal::CaptureStdout();
-    std::vector<CookieNumber> numbers {CookieNumber(0.1), CookieNumber(0.2), CookieNumber(1.2), CookieNumber(3.0001), CookieNumber(4.0), CookieNumber(10.5), CookieNumber(45.389), CookieNumber(200.12), CookieNumber(1000.88), CookieNumber(4231.2), CookieNumber(20000.899), CookieNumber(43212.91)};
+    std::vector<CookieNumber> numbers {
+        CookieNumber(0.1),
+        CookieNumber(0.2),
+        CookieNumber(1.2),
+        CookieNumber(3.0001),
+        CookieNumber(4.0),
+        CookieNumber(10.5),
+        CookieNumber(45.389),
+        CookieNumber(200.12),
+        CookieNumber(1000.88),
+        CookieNumber(4231.2),
+        CookieNumber(20000.899),
+        CookieNumber(43212.91)
+    };
     for (const auto &n : numbers)
     {
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
+#ifdef USEBOOST_MPP
     ASSERT_EQ(output, "0.1 0.2 1.1 3 4 10.5 45.3 200.1 1000.8 4231.1 20000.8 43212.9 ");
+#else
+    ASSERT_EQ(output, "0.1 0.2 1.2 3 4 10.5 45.3 200.1 1000.8 4231.2 20000.8 43212.9 ");
+#endif
 }
 
 TEST_F(CookieNumbersTestSuite, athousandcommaone)
@@ -119,7 +140,11 @@ TEST_F(CookieNumbersTestSuite, floatWithSuffix)
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
+//#ifdef USEBOOST_MPP
     ASSERT_EQ(output, "123 thousand 424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion 1 quadrillion 10 quadrillion 100 quadrillion 1 quintillion 10 quintillion 100 quintillion 1 sextillion 1ss 29rr ");
+//#else
+//    ASSERT_EQ(output, "123 thousand 424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion 1 quadrillion 10 quadrillion 100 quadrillion 1 quintillion 0 0 0 0 0 ");
+//#endif
 }
 
 TEST_F(CookieNumbersTestSuite, printCookieIntWithoutSuffix)
@@ -161,5 +186,9 @@ TEST_F(CookieNumbersTestSuite, printCookieIntWithSuffix)
         std::cout << cp->print(n) + " ";
     }
     std::string output = testing::internal::GetCapturedStdout();
+//#ifdef USEBOOST_MPP
     ASSERT_EQ(output, "123 thousand 424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion 1 quadrillion 10 quadrillion 100 quadrillion 1 quintillion 10 quintillion 100 quintillion 1 sextillion 1ss 29rr ");
+//#else
+//    ASSERT_EQ(output, "123 thousand 424 thousand 9 million 42 million 100 million 9 billion 10 billion 100 billion 1 quadrillion 10 quadrillion 100 quadrillion 1 quintillion 0 0 0 0 0 ");
+//#endif
 }
