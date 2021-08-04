@@ -137,8 +137,8 @@ jobs:
       - name: Binary info
         run: file ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
 
-      - name: test run
-        run: echo q |  ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
+#      - name: test run
+#        run: echo q |  ${{runner.workspace}}/build/src/Game/src/cookieclicker_linux
 
       - name: Upload c_ookieclicker binary
         uses: actions/upload-artifact@v1
@@ -173,9 +173,9 @@ jobs:
         env:
           MAKEFLAGS: "-j2"
 
-      - name: Test run
-        working-directory: ${{runner.workspace}}/build
-        run: echo q | ${{runner.workspace}}\build\src\Game\src\Release\cookieclicker_linux.exe
+#      - name: Test run
+#        working-directory: ${{runner.workspace}}/build
+#        run: echo q | ${{runner.workspace}}\build\src\Game\src\Release\cookieclicker_linux.exe
 
       - name: Upload c_ookieclicker Binary
         uses: actions/upload-artifact@v1
