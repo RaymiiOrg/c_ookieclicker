@@ -252,7 +252,7 @@ public:
         if (tmp >= T(1000000)) {
             tmp /= T(1000);
 #ifdef USEBOOST_MPP
-            while (boost::multiprecision::round(tmp) >= T(1000)) {
+            while (boost::multiprecision::round(tmp) >= T("1000.0")) {
 #else
                 while (tmp.round() >= T(1000)) {
 #endif
