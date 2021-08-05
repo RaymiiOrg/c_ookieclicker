@@ -213,6 +213,15 @@ and edit your savefile to have more than the below number of cookies:
 This is on my system the output of `std::numeric_limits<long double>::max()`. 
 Nothing exciting happens, the score just changes to `inf`.
 
+With boost multprecision, when the list of suffixes runs out, you get a 
+scientific notation representation of your amount of cookies. Boring, 
+but it works:
+    
+    Cookies :       124.046e+6532
+    cps     :       722.016e+6534 
+
+
+
 [1]: https://orteil.dashnet.org/cookieclicker/
 [2]: screenshots/demo4.gif
 [3]: screenshots/105_main.png
