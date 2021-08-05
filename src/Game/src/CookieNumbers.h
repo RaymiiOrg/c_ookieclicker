@@ -31,10 +31,9 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
-
-typedef boost::multiprecision::cpp_int CookieInt;
-typedef boost::multiprecision::cpp_dec_float_50 CookieFloater;
 typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieNumber;
+typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieFloater;
+typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieInt;
 #else
 #include "RegularCookieNumber.h"
 typedef RegularCookieNumber<long double> CookieInt;
@@ -252,7 +251,7 @@ public:
         if (tmp >= T(1000000)) {
             tmp /= T(1000);
 #ifdef USEBOOST_MPP
-            while (boost::multiprecision::round(tmp) >= T(1000)) {
+            while (boost::multiprecision::round(tmp) >= T("1000.0")) {
 #else
                 while (tmp.round() >= T(1000)) {
 #endif
