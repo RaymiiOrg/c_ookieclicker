@@ -25,493 +25,104 @@
 #include <iomanip>
 #include "cmakeConfig.h"
 
-template<typename T>
-class RegularCookieNumber {
-    static_assert(std::is_arithmetic<T>::value, "needs arithmetic T");
-    T _value;
-public:
-    RegularCookieNumber(T value) : _value(value) {};
-
-    RegularCookieNumber() : _value(0) {};
-
-    RegularCookieNumber(const std::string &value) {
-        try {
-            _value = std::stold(value);
-        } catch (const std::out_of_range &e) {
-            _value = 0;
-        }
-    };
-
-    [[nodiscard]] std::string str(std::intmax_t digits, std::ios_base::fmtflags f) const {
-        std::ostringstream result;
-        result.precision(digits);
-        result.setf(f);
-        result.fill('0');
-        result << std::to_string(_value);
-        return result.str();
-    }
-
-    RegularCookieNumber pow(const RegularCookieNumber &rhs) {
-        return std::pow(_value, rhs._value);
-    }
-
-    RegularCookieNumber ceil() {
-        return std::ceil(_value);
-    }
-
-    RegularCookieNumber &operator*=(const RegularCookieNumber &rhs) {
-        T newValue = _value * rhs._value;
-        _value = newValue;
-        return *this;
-    }
-
-    RegularCookieNumber &operator*=(int rhs) {
-        T newValue = _value * rhs;
-        _value = newValue;
-        return *this;
-    }
-
-    RegularCookieNumber &operator+=(const RegularCookieNumber &rhs) {
-        T newValue = _value + rhs._value;
-        _value = newValue;
-        return *this;
-    }
-
-    RegularCookieNumber &operator-=(const RegularCookieNumber &rhs) {
-        T newValue = _value - rhs._value;
-        _value = newValue;
-        return *this;
-    }
-
-    RegularCookieNumber &operator/=(const RegularCookieNumber &rhs) {
-        T newValue = _value / rhs._value;
-        _value = newValue;
-        return *this;
-    }
-
-    RegularCookieNumber &operator++() {
-        _value++;
-        return *this;
-    }
-
-    RegularCookieNumber operator++(int) {
-        RegularCookieNumber old = *this;
-        operator++();
-        return old;
-    }
-
-    RegularCookieNumber &operator--() {
-        _value--;
-        return *this;
-    }
-
-    RegularCookieNumber operator--(int) {
-        RegularCookieNumber old = *this;
-        operator--();
-        return old;
-    }
-
-    bool operator==(const RegularCookieNumber &rhs) const {
-        return _value == rhs._value;
-    }
-
-    bool operator<(const RegularCookieNumber &rhs) const {
-        return _value < rhs._value;
-    }
-
-    friend std::ostream &operator<<(std::ostream &os, const RegularCookieNumber &number) {
-        os << "value: " << number._value;
-        return os;
-    }
-
-    bool operator>(const RegularCookieNumber &rhs) const {
-        return rhs < *this;
-    }
-
-    bool operator!=(const RegularCookieNumber &rhs) const {
-        return !(rhs == *this);
-    }
-
-    bool operator<=(const RegularCookieNumber &rhs) const {
-        return rhs >= *this;
-    }
-
-    bool operator>=(const RegularCookieNumber &rhs) const {
-        return !(*this < rhs);
-    }
-
-};
-
-template<typename T>
-RegularCookieNumber<T> operator*(RegularCookieNumber<T> lhs, const RegularCookieNumber<T> &rhs) {
-    return lhs *= rhs;
-}
-
-template<typename T>
-RegularCookieNumber<T> operator*(RegularCookieNumber<T> lhs, int rhs) {
-    return lhs *= rhs;
-}
-
-template<typename T>
-RegularCookieNumber<T> operator+(RegularCookieNumber<T> lhs, const RegularCookieNumber<T> &rhs) {
-    return lhs += rhs;
-}
-
-template<typename T>
-RegularCookieNumber<T> operator-(RegularCookieNumber<T> lhs, const RegularCookieNumber<T> &rhs) {
-    return lhs -= rhs;
-}
-
-template<typename T>
-RegularCookieNumber<T> operator/(RegularCookieNumber<T> lhs, const RegularCookieNumber<T> &rhs) {
-    return lhs /= rhs;
-}
 
 #ifdef USEBOOST_MPP
 #include <boost/serialization/nvp.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
-typedef boost::multiprecision::cpp_int CookieInt;
-typedef boost::multiprecision::cpp_dec_float_50 CookieFloater;
-typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieNumber;
+using CookieNumber = boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>>;
 #else
-typedef RegularCookieNumber<long double> CookieInt;
-typedef RegularCookieNumber<long double> CookieFloater;
-typedef RegularCookieNumber<long double> CookieNumber;
+#include "RegularCookieNumber.h"
+using CookieNumber = RegularCookieNumber<long double>;
 #endif
 
 
 class CookieNumberPrinter {
 private:
-    std::vector<std::string> cookieNumberNames{
-            "",
-            "unit",
-            "ten",
-            "hundred",
-            " thousand",
-            " thousand",
-            " thousand", //1, 10, 100 thousand
-            " million",
-            " million",
-            " million", // 1, 10, 100 million
-            " billion",
-            " billion",
-            " billion",
-            " trillion",
-            " trillion",
-            " trillion",
-            " quadrillion",
-            " quadrillion",
-            " quadrillion",
-            " quintillion",
-            " quintillion",
-            " quintillion",
-            " sextillion",
-            " sextillion",
-            " sextillion",
-            " septillion",
-            " septillion",
-            " septillion",
-            " octillion",
-            " octillion",
-            " octillion",
-            " nonillion",
-            " nonillion",
-            " nonillion",
-            " decillion",
-            " decillion",
-            " decillion",
-            " undecillion",
-            " undecillion",
-            " undecillion",
-            " duodecillion",
-            " duodecillion",
-            " duodecillion",
-            " tredecillion",
-            " tredecillion",
-            " tredecillion",
-            " quattuordecillion",
-            " quattuordecillion",
-            " quattuordecillion",
-            " quindecillion",
-            " quindecillion",
-            " quindecillion",
-            " sexdecillion",
-            " sexdecillion",
-            " sexdecillion",
-            " septendecillion",
-            " septendecillion",
-            " septendecillion",
-            " octodecillion",
-            " octodecillion",
-            " octodecillion",
-            " novemdecillion",
-            " novemdecillion",
-            " novemdecillion",
-            " vigintillion",
-            " vigintillion",
-            " vigintillion",
-            " centillion",
-            " centillion",
-            " centillion",
-            "a",
-            "a",
-            "a",
-            "b",
-            "b",
-            "b",
-            "c",
-            "c",
-            "c",
-            "d",
-            "d",
-            "d",
-            "e",
-            "e",
-            "e",
-            "f",
-            "f",
-            "f",
-            "g",
-            "g",
-            "g",
-            "h",
-            "h",
-            "h",
-            "i",
-            "i",
-            "i",
-            "j",
-            "j",
-            "j",
-            "k",
-            "k",
-            "k",
-            "l",
-            "l",
-            "l",
-            "m",
-            "m",
-            "m",
-            "n",
-            "n",
-            "n",
-            "o",
-            "o",
-            "o",
-            "p",
-            "p",
-            "p",
-            "q",
-            "q",
-            "q",
-            "r",
-            "r",
-            "r",
-            "s",
-            "s",
-            "s",
-            "t",
-            "t",
-            "t",
-            "u",
-            "u",
-            "u",
-            "v",
-            "v",
-            "v",
-            "w",
-            "w",
-            "w",
-            "x",
-            "x",
-            "x",
-            "y",
-            "y",
-            "y",
-            "z",
-            "z",
-            "z",
-            "aa",
-            "aa",
-            "aa",
-            "bb",
-            "bb",
-            "bb",
-            "cc",
-            "cc",
-            "cc",
-            "dd",
-            "dd",
-            "dd",
-            "ee",
-            "ee",
-            "ee",
-            "ff",
-            "ff",
-            "ff",
-            "gg",
-            "gg",
-            "gg",
-            "hh",
-            "hh",
-            "hh",
-            "ii",
-            "ii",
-            "ii",
-            "jj",
-            "jj",
-            "jj",
-            "kk",
-            "kk",
-            "kk",
-            "ll",
-            "ll",
-            "ll",
-            "mm",
-            "mm",
-            "mm",
-            "nn",
-            "nn",
-            "nn",
-            "oo",
-            "oo",
-            "oo",
-            "pp",
-            "pp",
-            "pp",
-            "qq",
-            "qq",
-            "qq",
-            "rr",
-            "rr",
-            "rr",
-            "ss",
-            "ss",
-            "ss",
-            "tt",
-            "tt",
-            "tt",
-            "uu",
-            "uu",
-            "uu",
-            "vv",
-            "vv",
-            "vv",
-            "ww",
-            "ww",
-            "ww",
-            "xx",
-            "xx",
-            "xx",
-            "yy",
-            "yy",
-            "yy",
-            "zz",
-            "zz",
-            "zz",
-            "aaa",
-            "aaa",
-            "aaa",
-            "bbb",
-            "bbb",
-            "bbb",
-            "ccc",
-            "ccc",
-            "ccc",
-            "ddd",
-            "ddd",
-            "ddd",
-            "eee",
-            "eee",
-            "eee",
-            "fff",
-            "fff",
-            "fff",
-            "ggg",
-            "ggg",
-            "ggg",
-            "hhh",
-            "hhh",
-            "hhh",
-            "iii",
-            "iii",
-            "iii",
-            "jjj",
-            "jjj",
-            "jjj",
-            "kkk",
-            "kkk",
-            "kkk",
-            "lll",
-            "lll",
-            "lll",
-            "mmm",
-            "mmm",
-            "mmm",
-            "nnn",
-            "nnn",
-            "nnn",
-            "ooo",
-            "ooo",
-            "ooo",
-            "ppp",
-            "ppp",
-            "ppp",
-            "qqq",
-            "qqq",
-            "qqq",
-            "rrr",
-            "rrr",
-            "rrr",
-            "sss",
-            "sss",
-            "sss",
-            "ttt",
-            "ttt",
-            "ttt",
-            "uuu",
-            "uuu",
-            "uuu",
-            "vvv",
-            "vvv",
-            "vvv",
-            "www",
-            "www",
-            "www",
-            "xxx",
-            "xxx",
-            "xxx",
-            "yyy",
-            "yyy",
-            "yyy",
-            "zzz",
-            "zzz",
-            "zzz",
+
+    static std::vector<std::string> cookieNumberNames() {
+        std::vector<std::string> allCookieNumberNames{"thousand", "million", "billion", "trillion", "quadrillion",
+                                                      "quintillion", "sextillion", "septillion", "octillion",
+                                                      "nonillion"};
+        std::vector<std::string> prefixes{"", "un", "duo", "tre", "quattuor", "quin", "sex", "septen", "octo", "novem"};
+        std::vector<std::string> suffixes{"decillion", "vigintillion", "trigintillion", "quadragintillion",
+                                          "quinquagintillion", "sexagintillion", "septuagintillion", "octogintillion",
+                                          "nonagintillion", "centillion", "unviginticent", "unsexagintacent", "ducent",
+                                          "trecent", "duotrigintatrecent", "quadringent", "quingent", "sescent",
+                                          "septuagintisescent",
+                                          "septingent", "octingent", "nongent", "millillion", "dumill",
+                                          "dumillinonagintanongent",
+                                          "trimill", "trimilliduotrigintatrecent", "trimillisexoctogintaoctingent",
+                                          "quadrimill",
+                                          "quadrimilliquattuordecicent", "quinmill", "sexmill", "septimill", "octimill",
+                                          "nonimill",
+                                          "myr", "decimilliquinsexagintasescent", "dumyr",
+                                          "unquadragintamilliunquinquagintacent",
+                                          "centimill", "micr", "nan", "pic", "femt", "att", "zept", "yoct",
+                                          " a", " b", " c", " d", " e", " f", " g", " h",
+                                          " i"," j", " k", " l", " m", " n", " o", " p", " q",
+                                          " r", " s", " t", " u", " v", " w", " x", " y", " z",
+                                          " aa", " ab", " ac", " ad", " ae", " af", " ag", " ah",
+                                          " ai", " aj", " ak", " al", " am", " an", " ao", " ap", " aq",
+                                          " ar", " as", " at", " au", " av", " aw", " ax", " ay", " az",
+                                          " ba", " bb", " bc", " bd", " be", " bf", " bg", " bh",
+                                          " bi", " bj", " bk", " bl", " bm", " bn", " bo", " bp", " bq",
+                                          " br", " bs", " bt", " bu", " bv", " bw", " bx", " by", " bz",
+                                          " ca", " cb", " cc", " cd", " ce", " cf", " cg", " ch",
+                                          " ci", " cj", " ck", " cl", " cm", " cn", " co", " cp", " cq",
+                                          " cr", " cs", " ct", " cu", " cv", " cw", " cx", " cy", " cz",
+                                          " da", " db", " dc", " dd", " de", " df", " dg", " dh",
+                                          " di", " dj", " dk", " dl", " dm", " dn", " do", " dp", " dq",
+                                          " dr", " ds", " dt", " du", " dv", " dw", " dx", " dy", " dz",
+                                          " ea", " eb", " ec", " ed", " ee", " ef", " eg", " eh",
+                                          " ei", " ej", " ek", " el", " em", " en", " eo", " ep", " eq",
+                                          " er", " es", " et", " eu", " ev", " ew", " ex", " ey", " ez",
+                                          " fa", " fb", " fc", " fd", " fe", " ff", " fg", " fh",
+                                          " fi", " fj", " fk", " fl", " fm", " fn", " fo", " fp", " fq",
+                                          " fr", " fs", " ft", " fu", " fv", " fw", " fx", " fy", " fz",
+                                          " ga", " gb", " gc", " gd", " ge", " gf", " gg", " gh",
+                                          " gi", " gj", " gk", " gl", " gm", " gn", " go", " gp", " gq",
+                                          " gr", " gs", " gt", " gu", " gv", " gw", " gx", " gy", " gz",
+                                          " ( probably will never get to these suffixes, ) ",
+                                          " ( otherwise you're an awesome player! ) ",
+                                          " ( please send me an email with a screenshot! ) ",
+                                          " ( Psalm 121, KJV ) ",
+                                          " ( 1 I will lift up mine eyes unto the hills, from whence cometh my help. ) ",
+                                          " ( 2 My help cometh from the Lord, which made heaven and earth. ) ",
+                                          " ( 3 He will not suffer thy foot to be moved: he that keepeth thee will not slumber. ) ",
+                                          " ( 4 Behold, he that keepeth Israel shall neither slumber nor sleep. ) ",
+                                          " ( 5 The Lord is thy keeper: the Lord is thy shade upon thy right hand. ) ",
+                                          " ( 6 The sun shall not smite thee by day, nor the moon by night. ) ",
+                                          " ( 7 The Lord shall preserve thee from all evil: he shall preserve thy soul. ) ",
+                                          " ( 8 The Lord shall preserve thy going out and thy coming in from this time forth, and even for evermore. ) ",
+        };
+        for (const auto &suffix : suffixes) {
+            for (const auto &prefix : prefixes) {
+                std::string newString = prefix;
+                newString.append(suffix);
+                allCookieNumberNames.push_back(newString);
+            }
+        }
+        return allCookieNumberNames;
     };
 
 public:
-    /**
-     *  Print a boost multiprecision cpp_int or cpp_dec_float in "idle game style"
-     *  like, 1 billion, 250 prefixA, 3rr, etc.
-     */
-    template<typename T>
-    std::string print(const T &c) const {
-        // convert the entire number to a string, without scientific notation.
-        // 1.1 becomes:
-        // 1.100000000000000000000000000000000
-        // 29732982334867582149325438874912272258649497973483149622529685538613555010863828154687010115074346034315149633447312785822266082974277863522538340841432531289626639929448668816617338316564681262640080.0
-        // becomes:
-        // 29732982334867582149325438874912272258640000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.0000000000000000000000000000000000000000
-        std::string entireCookieNumber = c.str(0, std::ios_base::fixed);
+    static void removeTrailingZeroes(std::string &integerpart) {
+        integerpart.erase(integerpart.find_last_not_of('0') + 1, std::string::npos);
+    }
 
-        // split the number into the integer and RegularCookieNumberal string parts (before and after the .)
-        std::istringstream iss(entireCookieNumber);
+    static void removeLeadingZeroes(std::string &integerpart) {
+        integerpart.erase(0, std::min(integerpart.find_first_not_of('0'), integerpart.size() - 1));
+    }
+
+    static std::pair<std::string, std::string> splitStringNumber(const std::string &largeNumber) {
+        std::istringstream iss(largeNumber);
         std::vector<std::string> tokens;
         std::string token;
         while (std::getline(iss, token, '.')) {
-            if (!token.empty())
+            if (!token.empty()) {
                 tokens.push_back(token);
+            }
         }
 
         std::string integerpart;
@@ -525,59 +136,72 @@ public:
                 fractionalpart = tokens.at(1);
                 break;
             default:
-                integerpart = entireCookieNumber;
+                integerpart = largeNumber;
                 break;
         }
-
-        // the length of the integer part of a boost cpp_dec_float
-        // is of importance for us, (what suffix to print) but with
-        // our level of precision, the number contains mostly zeroes,
-        // so we only remove trailing zero's from the RegularCookieNumberal part.
-        // we're not interested in those for printing.
         removeTrailingZeroes(fractionalpart);
 
-        // printing logic starts here. We cant have negative amounts of cookies.
-        if (c <= 0) {
-            return "0";
-        } else if (integerpart.length() <= 5) {
-            // up until the thousands we're interested in the RegularCookieNumberal part
-            if (fractionalpart.length() > 0 && std::stoi(fractionalpart.substr(0, 1)) > 0) {
-                return integerpart + "." + fractionalpart.at(0);
+        return {integerpart, fractionalpart};
+    }
+
+    template<typename T>
+    std::string print(const T &c) const {
+        size_t base(0);
+        std::string returnString;
+        std::string cAsString = c.str(0, std::ios_base::fixed);
+        T tmp = c;
+        T smallerTmp = c;
+        std::string suffix;
+
+        if (tmp >= T(1000000)) {
+            tmp /= T(1000);
+#ifdef USEBOOST_MPP
+            while (boost::multiprecision::round(tmp) >= T(1000)) {
+#else
+                while (tmp.round() >= T(1000)) {
+#endif
+                tmp /= T(1000);
+                base++;
+            }
+            if (base >= cookieNumberNames().size()) {
+                // poor man's string to pseudo-scientific notation
+                size_t len = cAsString.size() - 1;
+                std::string beforeDot = cAsString.substr(0, 3);
+                std::string afterDot = cAsString.substr(4, 3);
+                std::stringstream result;
+                result << beforeDot << "." << afterDot << "e+" << std::to_string(len) << " (too large for a suffix) ";
+                return result.str();
             } else {
-                // don't print 2. if number is 2.0. just print 2.
-                return integerpart;
+                suffix = cookieNumberNames().at(base);
             }
-        } else if (cookieNumberNames.size() - 1 > (integerpart.length() - 2)) {
-            try {
-                // if we get bigger we want named numbers (75 billion, 229n, etc).
-                // nobody cares about after the RegularCookieNumberal part here...
-                std::string returnString;
-                returnString += integerpart.at(0);
-                if (cookieNumberNames.at(integerpart.length() - 1) == cookieNumberNames.at(integerpart.length())) {
-                    returnString += integerpart.at(1);
-                }
-                if (cookieNumberNames.at(integerpart.length() - 2) == cookieNumberNames.at(integerpart.length())) {
-                    returnString += integerpart.at(2);
-                }
-
-                returnString += cookieNumberNames.at(integerpart.length());
-                return returnString;
-            } catch (const std::out_of_range &e) {
-                return integerpart.substr(0,10)  + "+" + std::to_string(integerpart.size()) + " ( out of range suffix...)";
-            }
-        } else {
-            return integerpart.substr(0,30)  + "+" + std::to_string(integerpart.size()) + " ( out of range suffix)";
+            smallerTmp = ((tmp * T(1000)) / T(1000));
         }
+
+        std::string smallerTmpAsString = smallerTmp.str(0, std::ios_base::fixed);
+        auto splitString = splitStringNumber(smallerTmpAsString);
+        std::string integerpart = splitString.first;
+        std::string fractionalpart = splitString.second.substr(0,1);
+
+        returnString.append(integerpart);
+        if (base == 0 && !fractionalpart.empty() && fractionalpart.at(0) != '0') {
+            returnString.append(".");
+            returnString.append(fractionalpart);
+        } else if (base > 0) {
+            std::string next3Numbers = cAsString.substr(integerpart.size(), 3);
+            removeTrailingZeroes(next3Numbers);
+            if (!next3Numbers.empty()) {
+                returnString.append(",");
+                returnString.append(next3Numbers);
+            }
+        }
+
+        if (!suffix.empty()) {
+            returnString.append(" ");
+            returnString.append(suffix);
+        }
+        return returnString;
     }
 
-    static void removeTrailingZeroes(std::string &integerpart) {
-        integerpart.erase(integerpart.find_last_not_of('0') + 1, std::string::npos);
-    }
-
-
-    static void removeLeadingZeroes(std::string &integerpart) {
-        integerpart.erase(0, std::min(integerpart.find_first_not_of('0'), integerpart.size() - 1));
-    }
 };
 
 typedef CookieNumberPrinter cnp;

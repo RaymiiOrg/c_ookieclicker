@@ -14,6 +14,7 @@ Improvements
 - CMake has project and version info
 - CMake main game is renamed from "Game" to "c_ookieclicker"
 - CMake links to threads in a platform agnostic way
+- CookieNumberPrinter suffixes are now closer to the original (javascript) version
 
 Bug fixes
 
