@@ -58,10 +58,8 @@ void Gameloop::gameStep()
     {
         std::lock_guard<std::mutex> locker(gameStepMutex);
         auto startTime = std::chrono::high_resolution_clock::now();
-        if (gamescreen != nullptr)
-            gamescreen->render();
-        else
-            std::cout << "Loading screens..." << std::endl;
+
+        renderScreenIfOutputChanged();
 
         // end of cycle
         if (cookieStepIncrement >= 1000)
@@ -84,6 +82,26 @@ void Gameloop::gameStep()
     }
 }
 
+void Gameloop::renderScreenIfOutputChanged()
+{
+    std::stringstream outputBuffer;
+    std::streambuf *old = std::cout.rdbuf(outputBuffer.rdbuf());
+
+    if (gamescreen != nullptr)
+        gamescreen->render();
+    else
+        std::cout << "Loading screens... " << std::endl;
+
+    std::string gamestepOutput = outputBuffer.str();
+    std::cout.rdbuf(old);
+
+    if (gamestepOutput != output)
+        std::cout << gamestepOutput << std::endl;
+
+    output = gamestepOutput;
+
+}
+
 void Gameloop::showFinalScore()
 {
     std::cout << escapeCode.clearEntireScreen << escapeCode.cursorTo0x0;
@@ -91,6 +109,7 @@ void Gameloop::showFinalScore()
     if (wallet)
     {
         std::cout << "Ended with " << cp.print(wallet->getCookieAmount()) << " cookies." << std::endl;
+        std::cout << "Cookies per second: " << cp.print(wallet->getCps()) << "." << std::endl;
         std::cout << "Total cookies earned: " << cp.print(wallet->getTotalcookies()) << std::endl;
     }
     else
@@ -155,9 +174,21 @@ void Gameloop::handleDebugChoice(const std::string &input)
             CookieNumber a(
                 "115119036727821003870521051999708461"
                 "257642313059096215428937680038718894154"
+                "816459487665078480150348801009011289080"
+                "257642313059096215428937680038718894154"
+                "115119036727821003870521051999708461"
+                "257642313059096215428937680038718894154"
                 "816459487665078480150348801009011289080");
             wallet->incrementCookieAmount(a);
             wallet->incrementCps(a * 2);
+
+        } else if (input == "0")
+        {
+            msg->setCurrentMessage(notifyMessage::msgType::DEBUG);
+            CookieNumber a(std::to_string(std::numeric_limits<long double>::max()));
+            wallet->incrementCookieAmount(a);
+            wallet->incrementCps(a);
+
         }
     }
 }

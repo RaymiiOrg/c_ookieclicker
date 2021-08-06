@@ -7,6 +7,7 @@ New features:
 - Building upgrades
 - Debian package available
 - Boost libraries are now a compile option (otherwise an unsigned long long / long double is used, including overflow)
+- Boost libraries are included in the project folder (to save you from installing dependencies)
 
 Improvements
 
@@ -15,6 +16,9 @@ Improvements
 - CMake main game is renamed from "Game" to "c_ookieclicker"
 - CMake links to threads in a platform agnostic way
 - CookieNumberPrinter suffixes are now closer to the original (javascript) version
+- The Github Actions CI build compiles both with-boost and without-boost versions.
+- The Windows build has been removed. Should still compile but escape codes did not work, so output was unusable (game unplayable)
+- Screen is only "rendered" if output has changed. This improves performance.
 
 Bug fixes
 

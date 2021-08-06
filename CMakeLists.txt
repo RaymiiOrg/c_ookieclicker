@@ -30,24 +30,11 @@ endif()
 message(STATUS "Cmake Generator: ${CMAKE_GENERATOR}")
 
 if (USEBOOST_MPP)
-    # For github actions, use boost from their non standard directory
-    if(DEFINED ENV{BOOST_ROOT_1_72_0})
-        SET (BOOST_ROOT "$ENV{BOOST_ROOT_1_72_0}")
-        message(STATUS "Boost root from github found, using that.")
-    endif()
-
-    find_package(Boost REQUIRED COMPONENTS)
-    if(BOOST_FOUND)
-        include_directories(${BOOST_INCLUDE_DIR})
-        message("-- Boost found: ${BOOST_VERSION_STRING}")
+        include_directories("lib/boost_176_0/")
         set(BOOST_USE_STATIC_LIBS ON)
         set(BOOST_USE_MULTITHREADED ON)
         set(BOOST_USE_STATIC_RUNTIME ON)
         set(USEBOOST_MPP "YES")
-    else()
-        message(FATAL_ERROR "Boost not found!")
-    endif()
-
 endif()
 
 if (NOT ${CMAKE_GENERATOR} MATCHES "Visual Studio")
@@ -101,10 +88,8 @@ set(PACKAGE_URL "https://raymii.org")
 
 install(TARGETS cookieclicker_linux DESTINATION bin)
 
-if(Boost_FOUND)
+if(USEBOOST_MPP)
     message(STATUS "Use Boost MPP lib   : YES")
-elseif(USEBOOST_MPP)
-    message(FATAL  "Use Boost MPP lib   : Boost not found!")
 else()
     message(STATUS "Use Boost MPP lib   : NO")
 endif()

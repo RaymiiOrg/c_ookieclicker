@@ -52,6 +52,7 @@ private:
 
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
+    std::string output;
     void incrementCookiesOnTime();
 
     void showFinalScore();
@@ -69,6 +70,8 @@ public:
     void gameStep();
 
     void start();
+
+    void renderScreenIfOutputChanged();
 };
 
 #endif //C_OOKIECLIKER_GAMELOOP_H

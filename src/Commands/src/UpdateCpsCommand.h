@@ -8,6 +8,7 @@ class UpdateCpsCommand : public Command
 {
 public:
     UpdateCpsCommand(const CookieNumber &amount, Wallet &wallet);
+    virtual ~UpdateCpsCommand() =default;
     void execute() override;
     void undo() override;
 
