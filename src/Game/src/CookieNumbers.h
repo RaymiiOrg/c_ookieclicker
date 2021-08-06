@@ -288,8 +288,10 @@ public:
             }
         }
 
-        returnString.append(" ");
-        returnString.append(suffix);
+        if (!suffix.empty()) {
+            returnString.append(" ");
+            returnString.append(suffix);
+        }
         return returnString;
     }
 
