@@ -32,14 +32,11 @@
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
 
-typedef boost::multiprecision::cpp_int CookieInt;
-typedef boost::multiprecision::cpp_dec_float_50 CookieFloater;
-typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieNumber;
+//typedef boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>> CookieNumber;
+using CookieNumber = boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>>;
 #else
-#include "RegularCookieNumber.h"
-typedef RegularCookieNumber<long double> CookieInt;
-typedef RegularCookieNumber<long double> CookieFloater;
-typedef RegularCookieNumber<long double> CookieNumber;
+//typedef RegularCookieNumber<long double> CookieNumber;
+using CookieNumber = RegularCookieNumber<long double>;
 #endif
 
 
@@ -276,7 +273,7 @@ public:
         std::string smallerTmpAsString = smallerTmp.str(0, std::ios_base::fixed);
         auto splitString = splitStringNumber(smallerTmpAsString);
         std::string integerpart = splitString.first;
-        std::string fractionalpart = splitString.second;
+        std::string fractionalpart = splitString.second.substr(0,1);
 
         returnString.append(integerpart);
         if (base == 0 && !fractionalpart.empty()) {
