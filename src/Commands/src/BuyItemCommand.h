@@ -11,6 +11,8 @@ class BuyItemCommand : public Command
 {
 public:
     BuyItemCommand(Item &item, CookieNumber amount, Inventory &inventory, Wallet &wallet, ItemStore &store);
+    virtual ~BuyItemCommand() =default;
+
     void execute() override;
     void undo() override;
 

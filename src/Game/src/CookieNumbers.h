@@ -27,9 +27,8 @@
 
 
 #ifdef USEBOOST_MPP
-#include <boost/serialization/nvp.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-#include <boost/multiprecision/cpp_int.hpp>
+#include "boost/multiprecision/cpp_dec_float.hpp"
+#include "boost/serialization/nvp.hpp"
 using CookieNumber = boost::multiprecision::number<boost::multiprecision::cpp_dec_float<0>>;
 #else
 #include "RegularCookieNumber.h"

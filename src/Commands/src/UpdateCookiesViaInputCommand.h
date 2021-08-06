@@ -7,6 +7,7 @@ class UpdateCookiesViaInputCommand : public Command
 {
 public:
     UpdateCookiesViaInputCommand(CookieNumber amount, Wallet &wallet);
+    virtual ~UpdateCookiesViaInputCommand() =default;
     void execute() override;
     void undo() override;
 
