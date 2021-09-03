@@ -3,3 +3,5 @@ lib/googletest/*
 src/Game/tst/data/save*
 formatdiff.txt
 .cookieclicker.save
+out/*
+.vs/*
