@@ -3,14 +3,22 @@
 #include "ItemStore.h"
 #include "MainView.h"
 #include "Wallet.h"
-#include "notifyMessage.h"
 #include "cmakeConfig.h"
+#include "notifyMessage.h"
 #include <memory>
+
 #ifndef USEBOOST_MPP
 #include <limits>
 #endif
 
-void printNoBoostWarning() {
+#ifdef HAVE_WINDOWS_H
+#include <cstdio>
+#include <cstdlib>
+#include <windows.h>
+#endif
+
+void printNoBoostWarning()
+{
 #ifndef USEBOOST_MPP
     std::cout << "c_ookieclicker is compiled without boost multiprecision support. \n"
                  "This means that all the numbers (score, item amount, costs)\n"
@@ -25,10 +33,11 @@ void printNoBoostWarning() {
     std::cout << ".\n\nPress [Enter] to start the game, or CTRL+C to exit. q+[Enter] also quits.\n";
     std::string input;
     std::getline(std::cin, input);
-    for (char &c : input)
+    for (const char &c : input)
     {
         std::string choice(1, c);
-        if (choice == "q") {
+        if (choice == "q")
+        {
             std::cout << "So Long, and Thanks for All the Fish!\n";
             std::exit(0);
         }
@@ -36,11 +45,39 @@ void printNoBoostWarning() {
 #endif
 }
 
+void setupWindowsConsoleVTCodes()
+{
+#ifdef HAVE_WINDOWS_H
+    HANDLE hStdOut;
+    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hStdOut != INVALID_HANDLE_VALUE) {
+        DWORD mode;
+        if (GetConsoleMode(hStdOut, &mode)) {
+            if (mode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) 
+                std::cout << "Windows console already has ENABLE_VIRTUAL_TERMINAL_PROCESSING enabled.\n\n";
+            else
+            {
+                mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+                if (SetConsoleMode(hStdOut, mode))
+                    std::cout << "Enabled ENABLE_VIRTUAL_TERMINAL_PROCESSING for Windows console.\n\n";
+            }
+        }
+    }
+    else
+    {
+        std::cerr << "Unable to enable ENABLE_VIRTUAL_TERMINAL_PROCESSING for Windows console.\n" <<
+                     "Please make sure you are running Windows 10 1511 (build 10586) (November update) or later.\n\n";
+    }
+#endif
+}
+
 int main()
 {
-    std::cout << escapeCode.clearEntireScreen << escapeCode.cursorTo1x1;
+    setupWindowsConsoleVTCodes();
 
     printNoBoostWarning();
+   
+    std::cout << escapeCode.clearEntireScreen << escapeCode.cursorTo1x1;
 
     std::unique_ptr<Inventory> inventory = std::make_unique<Inventory>();
     std::unique_ptr<Wallet> wallet = std::make_unique<Wallet>();
@@ -52,5 +89,3 @@ int main()
     game->start();
     return 0;
 }
-
-
