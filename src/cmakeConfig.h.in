@@ -26,3 +26,5 @@
 /* Set to true to use BOOSTs large number support. */
 #cmakedefine USEBOOST_MPP @USEBOOST_MPP@
 
+/* Set to true if you have windows.h */
+#cmakedefine HAVE_WINDOWS_H 

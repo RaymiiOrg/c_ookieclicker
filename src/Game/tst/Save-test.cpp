@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include <experimental/filesystem>
+#include "filesystem.h"
 #include <memory>
 
 #define private public
@@ -18,7 +18,7 @@ struct SaveTestSuite : public ::testing::Test
     int format1 = 1;
     int format2 = 2;
     CookieNumber largeNumber = CookieNumber("354863150980540376871924332068218985606788610769886127757294461121501888");
-    std::experimental::filesystem::path current_source_file = std::experimental::filesystem::path(__FILE__);
+    fs::path current_source_file = fs::path(__FILE__);
     std::string testSaveFileFolder = current_source_file.parent_path().string() + "/data/";
 
     SaveTestSuite()
@@ -35,7 +35,7 @@ TEST_F(SaveTestSuite, saveBlankFile_v1)
     //act
     auto result = savegame.saveFormatOne();
     //assert
-    ASSERT_EQ(std::experimental::filesystem::exists(saveFile), true);
+    ASSERT_EQ(fs::exists(saveFile), true);
     ASSERT_EQ(result, true);
 }
 
@@ -47,7 +47,7 @@ TEST_F(SaveTestSuite, loadNonExistentFile)
     // act
     auto result = savegame.load();
     //assert
-    ASSERT_EQ(std::experimental::filesystem::exists(saveFile), false);
+    ASSERT_EQ(fs::exists(saveFile), false);
     ASSERT_EQ(result, false);
 }
 
@@ -76,7 +76,7 @@ TEST_F(SaveTestSuite, saveThenLoad_v1)
     auto loadResult = saveload.loadFormatOne();
 
     //assert
-    ASSERT_EQ(std::experimental::filesystem::exists(saveFile), true);
+    ASSERT_EQ(fs::exists(saveFile), true);
     ASSERT_EQ(saveResult, true);
     ASSERT_EQ(loadResult, true);
     ASSERT_EQ(loadwallet->getTotalcookies(), 3);
@@ -168,7 +168,7 @@ TEST_F(SaveTestSuite, saveThenLoad_v2)
     auto loadResult = saveload.loadFormatTwo();
 
     //assert
-    ASSERT_EQ(std::experimental::filesystem::exists(saveFile), true);
+    ASSERT_EQ(fs::exists(saveFile), true);
     ASSERT_EQ(saveResult, true);
     ASSERT_EQ(loadResult, true);
     ASSERT_EQ(loadwallet->getTotalcookies(), 9);

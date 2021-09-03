@@ -48,7 +48,7 @@ Copyright 2021 - Remy van Elst.
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Build
+# Build 
 
 How to build the game for yourself. Boost is a required dependency, but it is possible
 to build without it. When you reach the limit of what fits in an `long double`, 
@@ -74,7 +74,7 @@ Build locally:
     
 The game executable is:
 
-    src/Game/src/c_ookieclicker_linux
+    src/Game/src/cookieclicker_linux
     
 Make sure to run it in the cloned folder, otherwise some game data might not load, like
 then achievements. Game data files are in:
@@ -82,6 +82,15 @@ then achievements. Game data files are in:
     releases/$version/gamedata
     
 and are symlinked in the main folder you cloned from github.
+
+## Build on Windows
+
+You should be able to build on Windows using Visual Studio with cmake support. 
+Do not use Ninja as the build file generator, but use visual studio (16). 
+
+The output file is still called "cookieclicker_linux.exe". 
+
+If you use WSL or cygwin, follow the normal (linux) build process.
 
 ## Cmake compile flags
 

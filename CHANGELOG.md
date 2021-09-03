@@ -1,6 +1,6 @@
 # Version 106 - current development
 
-Release date: 2020-
+Release date: 2021-
 
 New features:
 
@@ -8,6 +8,7 @@ New features:
 - Debian package available
 - Boost libraries are now a compile option (otherwise an unsigned long long / long double is used, including overflow)
 - Boost libraries are included in the project folder (to save you from installing dependencies)
+- Windows Console support (vt100 escape codes)
 
 Improvements
 
@@ -17,7 +18,6 @@ Improvements
 - CMake links to threads in a platform agnostic way
 - CookieNumberPrinter suffixes are now closer to the original (javascript) version
 - The Github Actions CI build compiles both with-boost and without-boost versions.
-- The Windows build has been removed. Should still compile but escape codes did not work, so output was unusable (game unplayable)
 - Screen is only "rendered" if output has changed. This improves performance.
 
 Bug fixes
