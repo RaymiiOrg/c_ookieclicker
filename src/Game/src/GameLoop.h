@@ -1,18 +1,12 @@
 #ifndef C_OOKIECLIKER_GAMELOOP_H
 #define C_OOKIECLIKER_GAMELOOP_H
 
-#include "Achievement.h"
-#include "AchievementList.h"
-#include "BuyItemCommand.h"
-#include "CookieAmountAchievement.h"
 #include "CookieNumbers.h"
-#include "Inventory.h"
-#include "ItemStore.h"
-#include "MainView.h"
-#include "Save.h"
 #include "Globals.h"
+#include "Inventory.h"
+#include "IResettable.h"
 #include "UpdateCookiesViaInputCommand.h"
-#include "UpdateCpsCommand.h"
+#include "View.h"
 #include "Wallet.h"
 #include "notifyMessage.h"
 #include "terminalCodes.h"
@@ -47,8 +41,8 @@ private:
     Wallet* wallet;
     notifyMessage* msg;
     Inventory* inventory;
-    ItemStore *itemstore;
-    MainView* gamescreen;
+    IResettable* itemstore;
+    View* gamescreen;
 
     std::chrono::high_resolution_clock::time_point step_start = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point step_stop = std::chrono::high_resolution_clock::now();
@@ -58,14 +52,15 @@ private:
     void showFinalScore();
     void handleCookieOrQuitChoice(const std::string &input);
     void handleDebugChoice(const std::string &input);
+    void processInputLine(const std::string &input);
 
 
 public:
-    Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory, ItemStore * itemstore, MainView* gamescreen);
+    Gameloop(notifyMessage* msg, Wallet* wallet, Inventory* inventory, IResettable* itemstore, View* gamescreen);
 
     ~Gameloop();
     void reset();
-    inline void quit();
+    void quit();
     void input();
     void gameStep();
 

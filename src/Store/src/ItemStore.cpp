@@ -3,6 +3,10 @@
 
 CookieNumber ItemStore::getPrice(Item &item, const CookieNumber &amountAlreadyHave)
 {
+    if (!item.tiers.empty()) {
+        int i = item.tierIndexFor(amountAlreadyHave);
+        return i >= 0 ? item.tiers[i].cost : CookieNumber(0);
+    }
 
     if (amountAlreadyHave == 0)
         return item.baseCost;
@@ -24,6 +28,9 @@ CookieNumber ItemStore::getPrice(Item &item, const CookieNumber &amountAlreadyHa
 
 CookieNumber ItemStore::getPriceOf(Item &item, const CookieNumber &amountAlreadyHave, int amountAsked)
 {
+    if (!item.tiers.empty() && amountAsked != 1)
+        return CookieNumber(0);
+
     switch (amountAsked)
     {
     case 1:

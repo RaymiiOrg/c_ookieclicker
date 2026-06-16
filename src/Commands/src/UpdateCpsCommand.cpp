@@ -1,6 +1,6 @@
 #include "UpdateCpsCommand.h"
 
-UpdateCpsCommand::UpdateCpsCommand(const CookieNumber &amount, Wallet &wallet) :
+UpdateCpsCommand::UpdateCpsCommand(const CookieNumber &amount, IWalletMutator &wallet) :
     m_Amount(amount), m_Wallet(wallet)
 {
 }

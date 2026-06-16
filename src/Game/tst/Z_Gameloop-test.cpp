@@ -2,6 +2,8 @@
 #include <memory>
 #define private public
 #include "GameLoop.h"
+#include "ItemStore.h"
+#include "MainView.h"
 
 struct GameloopTestSuite : public ::testing::Test
 {
@@ -19,18 +21,121 @@ struct GameloopTestSuite : public ::testing::Test
 
 TEST_F(GameloopTestSuite, incrementCps)
 {
+    // MainView wires the achievement lists onto the wallet, so reaching 1 cps
+    // unlocks the "1 cps" milestone (+1% bonus). Cookies accrue at the effective
+    // rate: 1 cps * 1.01 * 1s = 1.01.
     game->wallet->incrementCps(CookieNumber(1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     game->incrementCookiesOnTime();
-    EXPECT_EQ(game->wallet->getCookieAmount(), CookieNumber(1));
+    EXPECT_EQ(game->wallet->getCookieAmount(), CookieNumber("1.01"));
 }
 
 TEST_F(GameloopTestSuite, incrementCpsLargerAmount)
 {
+    // 3500 cps unlocks the 1/10/100/1000 cps milestones (4 * 1% = +4% bonus).
+    // Cookies accrue at the effective rate: 3500 cps * 1.04 * 3s = 10920.
     game->wallet->incrementCps(CookieNumber(3500));
     std::this_thread::sleep_for(std::chrono::seconds(3));
     game->incrementCookiesOnTime();
-    EXPECT_EQ(game->wallet->getCookieAmount(), CookieNumber(10500));
+    EXPECT_EQ(game->wallet->getCookieAmount(), CookieNumber(10920));
+}
+
+TEST_F(GameloopTestSuite, firstCookieShowsCookieAndAchievementTogether)
+{
+    // Tapping the first cookie both grants a cookie and unlocks the
+    // "Wake and bake" (1 cookie) achievement; both notices must be shown.
+    game->handleCookieOrQuitChoice(game::cookieKey);
+
+    testing::internal::CaptureStdout();
+    std::cout << *msg;
+    std::string output = testing::internal::GetCapturedStdout();
+
+    EXPECT_NE(output.find("Got 1 cookie!"), std::string::npos);
+    EXPECT_NE(output.find("Achievement unlocked"), std::string::npos);
+}
+
+TEST_F(GameloopTestSuite, spammingCookieKeyCountsOncePerLine)
+{
+    // Typing "cccc" on one line must only grant a single cookie.
+    game->processInputLine("cccc");
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(1));
+}
+
+TEST_F(GameloopTestSuite, singleCookieKeyGrantsOneCookie)
+{
+    game->processInputLine("c");
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(1));
+}
+
+TEST_F(GameloopTestSuite, separateLinesEachGrantACookie)
+{
+    game->processInputLine("c");
+    game->processInputLine("c");
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(2));
+}
+
+TEST_F(GameloopTestSuite, cookieAmongOtherKeysStillCountsOnce)
+{
+    // The cookie still registers once even mixed with other keystrokes.
+    game->processInputLine("1c2c");
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(1));
+}
+
+TEST_F(GameloopTestSuite, resetClearsProgress)
+{
+    game->processInputLine("c");
+    game->wallet->incrementCps(CookieNumber(5));
+    game->reset();
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(0));
+    EXPECT_EQ(wallet->getCps(), CookieNumber(0));
+}
+
+#ifndef NDEBUG
+TEST_F(GameloopTestSuite, debugKeySevenGrantsCookiesAndTaps)
+{
+    game->processInputLine("7");
+    // +100 cookies, then incrementCookieViaInput(100) adds another 100.
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(200));
+    EXPECT_EQ(inventory->getCookiesPerTap(), CookieNumber(10));
+}
+
+TEST_F(GameloopTestSuite, debugKeyEightDoublesCookies)
+{
+    wallet->incrementCookieAmount(CookieNumber(50));
+    game->processInputLine("8"); // adds double the current amount: 50 + 50*2
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(150));
+}
+#endif
+
+TEST_F(GameloopTestSuite, renderScreenProducesOutput)
+{
+    testing::internal::CaptureStdout();
+    game->renderScreenIfOutputChanged();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_FALSE(output.empty());
+}
+
+TEST_F(GameloopTestSuite, quitStopsAndShowsFinalScore)
+{
+    testing::internal::CaptureStdout();
+    game->quit();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_NE(output.find("Well done."), std::string::npos);
+}
+
+TEST_F(GameloopTestSuite, laterCookieTapShowsOnlyCookieNotice)
+{
+    // Once the 1-cookie achievement is already unlocked, a subsequent tap shows
+    // just the cookie notice — the stale achievement message is replaced.
+    game->handleCookieOrQuitChoice(game::cookieKey);
+    game->handleCookieOrQuitChoice(game::cookieKey);
+
+    testing::internal::CaptureStdout();
+    std::cout << *msg;
+    std::string output = testing::internal::GetCapturedStdout();
+
+    EXPECT_NE(output.find("Got 1 cookie!"), std::string::npos);
+    EXPECT_EQ(output.find("Achievement unlocked"), std::string::npos);
 }
 
 //TEST_F(GameloopTestSuite, maxItemAmount)

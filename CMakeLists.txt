@@ -31,7 +31,7 @@ endif()
 message(STATUS "Cmake Generator: ${CMAKE_GENERATOR}")
 
 if (USEBOOST_MPP)
-        include_directories("lib/boost_176_0/")
+        include_directories(SYSTEM "lib/boost_176_0/")
         set(BOOST_USE_STATIC_LIBS ON)
         set(BOOST_USE_MULTITHREADED ON)
         set(BOOST_USE_STATIC_RUNTIME ON)
@@ -56,6 +56,52 @@ if (BUILD_TESTS)
     set(GOOGLETEST_VERSION 3.14)
     enable_testing()
     add_subdirectory(lib/googletest-1.11.0)
+endif()
+
+if (COVERAGE AND BUILD_TESTS AND NOT ${CMAKE_GENERATOR} MATCHES "Visual Studio")
+    find_program(LCOV_BIN   lcov)
+    find_program(GENHTML_BIN genhtml)
+    if (NOT LCOV_BIN OR NOT GENHTML_BIN)
+        message(WARNING "Coverage requested but lcov/genhtml not found — install lcov and retry")
+    else()
+        message(STATUS "Coverage instrumentation: ON  (lcov + genhtml)")
+        set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   --coverage")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+
+        set(_COV_DIR "${CMAKE_BINARY_DIR}/coverage-report")
+
+        add_custom_target(coverage
+            COMMENT "Running tests and generating coverage report → ${_COV_DIR}/html/index.html"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${_COV_DIR}"
+            COMMAND ${LCOV_BIN} --directory "${CMAKE_BINARY_DIR}" --zerocounters --quiet
+            COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -j4
+            COMMAND ${LCOV_BIN}
+                --directory "${CMAKE_BINARY_DIR}"
+                --capture
+                --output-file "${_COV_DIR}/raw.info"
+                --ignore-errors inconsistent,inconsistent
+                --quiet
+            COMMAND ${LCOV_BIN}
+                --remove "${_COV_DIR}/raw.info"
+                "/usr/*"
+                "${CMAKE_SOURCE_DIR}/lib/*"
+                --output-file "${_COV_DIR}/filtered.info"
+                --ignore-errors inconsistent,inconsistent,unused,unused
+                --quiet
+            COMMAND ${GENHTML_BIN}
+                "${_COV_DIR}/filtered.info"
+                --output-directory "${_COV_DIR}/html"
+                --title "c_ookieclicker coverage"
+                --legend
+                --show-details
+                --quiet
+            COMMAND ${LCOV_BIN} --summary "${_COV_DIR}/filtered.info"
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+        )
+    endif()
+elseif (COVERAGE)
+    message(WARNING "COVERAGE=ON requires BUILD_TESTS=ON and a non-MSVC compiler")
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

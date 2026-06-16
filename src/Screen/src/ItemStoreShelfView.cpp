@@ -33,17 +33,22 @@ void ItemStoreShelfView::render()
 
 CookieNumber ItemStoreShelfView::getPriceOfItem(const CookieNumber &itemAmountInInventory, Item &item) const
 {
-    return ItemStore::getPriceOf(item, itemAmountInInventory, itemQuantity);
+    return itemstore->priceOf(item, itemAmountInInventory, itemQuantity);
 }
 
 void ItemStoreShelfView::renderNotEnoughMoneyButDoHaveItemsInInventoryOutput(Item &item, const CookieNumber &itemAmountInInventory) const
 {
+    std::string displayName = item.getDisplayName(itemAmountInInventory);
     std::cout << escapeCode.terminalDim;
-    std::cout << "[" << item.buyKey << "]: not enough cookies for " << std::to_string(itemQuantity) << " " << item.name;
-    if (itemQuantity > 1)
-        std::cout << "s";
+    std::cout << "[" << item.buyKey << "]: not enough cookies for ";
+    if (item.tiers.empty()) {
+        std::cout << std::to_string(itemQuantity) << " " << displayName;
+        if (itemQuantity > 1) std::cout << "s";
+    } else {
+        std::cout << displayName;
+    }
     std::cout << " (cost: ";
-    std::cout << cp.print(ItemStore::getPriceOf(item, itemAmountInInventory, itemQuantity));
+    std::cout << cp.print(itemstore->priceOf(item, itemAmountInInventory, itemQuantity));
     std::cout << " cookies);";
     std::cout << escapeCode.terminalReset;
     std::cout << std::endl;
@@ -93,11 +98,20 @@ void ItemStoreShelfView::buyItem(const CookieNumber &amountToBuy, Item &item)
 {
     if (canPayForItem(item) && amountToBuy > CookieNumber(0))
     {
-        auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, *inventory, *wallet, *itemstore);
-        buyCommand->execute();
-        msg->setLastItemBoughtName(item.name);
-        msg->setLastItemBoughtAmount(amountToBuy);
-        msg->setCurrentMessage(notifyMessage::msgType::BOUGHT_ITEM);
+        if (!item.tiers.empty()) {
+            CookieNumber tierIdx = inventory->getItemCount(item.name);
+            auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, *inventory, *wallet, *itemstore);
+            buyCommand->execute();
+            msg->setLastItemBoughtName(item.getDisplayName(tierIdx));
+            msg->setLastItemBoughtAmount(item.getTierBonus(tierIdx));
+            msg->setCurrentMessage(notifyMessage::msgType::BOUGHT_TAP_UPGRADE);
+        } else {
+            auto buyCommand = std::make_unique<BuyItemCommand>(item, amountToBuy, *inventory, *wallet, *itemstore);
+            buyCommand->execute();
+            msg->setLastItemBoughtName(item.name);
+            msg->setLastItemBoughtAmount(amountToBuy);
+            msg->setCurrentMessage(notifyMessage::msgType::BOUGHT_ITEM);
+        }
     }
     else
     {
@@ -109,18 +123,28 @@ void ItemStoreShelfView::buyItem(const CookieNumber &amountToBuy, Item &item)
 bool ItemStoreShelfView::canPayForItem(Item &item)
 {
     auto itemCount = inventory->getItemCount(item.name);
-    return wallet->getCookieAmount() >= ItemStore::getPriceOf(item, itemCount, itemQuantity);
+    return wallet->getCookieAmount() >= itemstore->priceOf(item, itemCount, itemQuantity);
 }
 
 void ItemStoreShelfView::renderCanBuy(Item &item, const CookieNumber &itemAmountInInventory, const CookieNumber &price) const
 {
-    CookieNumber cpsOfX = item.cps * CookieNumber(itemQuantity);
-    std::cout << "[" << item.buyKey << "]"
-              << ": buy " << itemQuantity << " " << item.name;
-    if (itemQuantity != 1)
-        std::cout << "s";
-    std::cout << "; cost: "
-              << cp.print(price) << " cookies; +"
-              << cp.print(cpsOfX) << " cps; ";
-    std::cout << std::endl;
+    std::string displayName = item.getDisplayName(itemAmountInInventory);
+    std::cout << "[" << item.buyKey << "]";
+    if (!item.tiers.empty()) {
+        CookieNumber bonus = item.getTierBonus(itemAmountInInventory);
+        std::string noun = (bonus == CookieNumber(1)) ? "cookie" : "cookies";
+        std::cout << ": upgrade to " << displayName
+                  << "; cost: " << cp.print(price) << " cookies"
+                  << "; +" << cp.print(bonus) << " " << noun << " per tap";
+    } else {
+        std::cout << ": buy " << itemQuantity << " " << displayName;
+        if (itemQuantity != 1)
+            std::cout << "s";
+        std::cout << "; cost: " << cp.print(price) << " cookies; +";
+        if (item.cookiesPerTap > CookieNumber(0))
+            std::cout << cp.print(item.cookiesPerTap * CookieNumber(itemQuantity)) << " cookies per tap";
+        else
+            std::cout << cp.print(item.cpsGain(CookieNumber(itemQuantity), inventory->getCpsMultiplier(item.name))) << " cps";
+    }
+    std::cout << "; " << std::endl;
 }

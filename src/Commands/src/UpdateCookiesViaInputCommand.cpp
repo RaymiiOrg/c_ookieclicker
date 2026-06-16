@@ -2,7 +2,7 @@
 
 #include <utility>
 
-UpdateCookiesViaInputCommand::UpdateCookiesViaInputCommand(CookieNumber amount, Wallet &wallet) :
+UpdateCookiesViaInputCommand::UpdateCookiesViaInputCommand(CookieNumber amount, IWalletMutator &wallet) :
     amount(std::move(amount)), m_Wallet(wallet)
 {
 }

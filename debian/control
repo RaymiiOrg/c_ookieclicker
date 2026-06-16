@@ -1,0 +1,26 @@
+Source: cookieclicker
+Section: games
+Priority: optional
+Maintainer: R. van Elst <debian@relst.nl>
+Build-Depends:
+ debhelper-compat (= 13),
+ cmake,
+ g++ (>= 7)
+Standards-Version: 4.7.0
+Homepage: https://github.com/RaymiiOrg/c_ookieclicker
+Rules-Requires-Root: no
+
+Package: cookieclicker
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: terminal clone of the Cookie Clicker idle game
+ c_ookieclicker is a terminal (text mode) clone of Orteil's Cookie Clicker
+ idle game, written in C++17 as a project to experiment with software
+ architecture, design patterns and arbitrary-precision arithmetic.
+ .
+ Tap cookies, buy buildings to raise your cookies-per-second, purchase
+ upgrades, and unlock achievements.
+ .
+ Savegames are written to .cookieclicker.save in the current directory.

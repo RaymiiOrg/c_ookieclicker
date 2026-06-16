@@ -9,8 +9,8 @@
 class CookiesPerSecondAchievement : public Achievement
 {
 public:
-    explicit CookiesPerSecondAchievement(const std::vector<std::string> &params, notifyMessage* msg);
-    bool hasAchieved() override;
+    CookiesPerSecondAchievement(const CookieNumber& amount, const std::string& name, notifyMessage* msg);
+    bool hasAchieved() const override;
     std::string name() override;
     std::string description() override;
     void update(Subject *subject) override;

@@ -2,10 +2,11 @@
 #define C_OOKIECLIKER_ACHIEVEMENTLISTVIEW_H
 #include "Achievement.h"
 #include "AchievementList.h"
+#include "AchievementRepository.h"
 #include "AchievementView.h"
+#include "IWalletReader.h"
+#include "Subject.h"
 #include "View.h"
-#include "Wallet.h"
-#include "filesystem.h"
 #include "Globals.h"
 #include "notifyMessage.h"
 
@@ -18,33 +19,28 @@
 class AchievementListView : public View
 {
     const std::string _name {"Achievements"};
-    Wallet *wallet;
+    Subject *walletSubject;
+    IWalletReader *walletReader;
     notifyMessage *msg;
     void listAchievementViews() const;
+    void renderBonusSummary() const;
 
     template <typename T>
-    void loadAchievementsFromCSV(T *achievementList, const std::string &filename)
+    void loadFromRepository(T *achievementList, const std::vector<AchievementMilestone> &milestones)
     {
-        if (wallet && msg)
+        if (walletSubject && msg)
         {
-            wallet->addObserver(achievementList);
-            std::string achievementsFile = fs::current_path().string() + filename;
-            if (fs::exists(achievementsFile))
-                achievementList->loadAchievementsFromCSV(achievementsFile);
-            else
-            {
-                msg->setLastError("Could not load achievementsfile from '" + filename + "'.");
-                msg->setCurrentMessage(notifyMessage::msgType::ERROR);
-            }
+            walletSubject->addObserver(achievementList);
+            achievementList->loadFromRepository(milestones);
         }
     }
 
     template <typename T, typename V>
-    void createAchievementView(T *achievementList, V *achievementView, const std::string &filename)
+    void createAchievementView(T *achievementList, V *achievementView, const std::vector<AchievementMilestone> &milestones)
     {
         if (achievementList && achievementView)
         {
-            loadAchievementsFromCSV(achievementList, filename);
+            loadFromRepository(achievementList, milestones);
             achievementView->setAchievementlist(achievementList);
         }
     }
@@ -69,7 +65,7 @@ public:
     void render() override;
     void handleInput(const std::string &input) override;
     const std::string &name() override;
-    explicit AchievementListView(Wallet *wallet, notifyMessage *msg);
+    explicit AchievementListView(Subject *walletSubject, IWalletReader *walletReader, notifyMessage *msg);
 };
 
 #endif //C_OOKIECLIKER_ACHIEVEMENTLISTVIEW_H

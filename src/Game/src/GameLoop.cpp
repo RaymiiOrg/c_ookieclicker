@@ -1,7 +1,7 @@
 #include "GameLoop.h"
 #include "filesystem.h"
 
-Gameloop::Gameloop(notifyMessage *msg, Wallet *wallet, Inventory *inventory, ItemStore *itemstore, MainView *mainview) :
+Gameloop::Gameloop(notifyMessage *msg, Wallet *wallet, Inventory *inventory, IResettable *itemstore, View *mainview) :
     wallet(wallet), msg(msg), inventory(inventory),
     itemstore(itemstore), gamescreen(mainview)
 {
@@ -25,7 +25,7 @@ Gameloop::~Gameloop()
         gameStepThread.join();
 }
 
-inline void Gameloop::quit()
+void Gameloop::quit()
 {
     running = false;
     showFinalScore();
@@ -38,17 +38,33 @@ void Gameloop::input()
         std::lock_guard<std::mutex> locker(inputMutex);
         std::string input;
         std::getline(std::cin, input);
-        for (char &c : input)
+        processInputLine(input);
+    }
+}
+
+void Gameloop::processInputLine(const std::string &input)
+{
+    bool cookieTappedThisLine = false;
+    for (const char &c : input)
+    {
+        std::string choice(1, c);
+        if (choice == game::cookieKey)
         {
-            std::string choice(1, c);
-            /** handles get cookie or quit **/
-            handleCookieOrQuitChoice(choice);
-#ifndef NDEBUG
-            handleDebugChoice(choice);
-#endif
-            if (gamescreen != nullptr)
-                gamescreen->handleInput(choice);
+            if (!cookieTappedThisLine)
+            {
+                handleCookieOrQuitChoice(choice);
+                cookieTappedThisLine = true;
+            }
         }
+        else
+        {
+            handleCookieOrQuitChoice(choice);
+        }
+#ifndef NDEBUG
+        handleDebugChoice(choice);
+#endif
+        if (gamescreen != nullptr)
+            gamescreen->handleInput(choice);
     }
 }
 
@@ -126,7 +142,7 @@ void Gameloop::incrementCookiesOnTime()
     step_stop = std::chrono::high_resolution_clock::now();
     auto step_duration = std::chrono::duration_cast<std::chrono::seconds>(step_stop - step_start).count();
     if (wallet != nullptr)
-        wallet->incrementCookieAmount(wallet->getCps() * CookieNumber(step_duration));
+        wallet->incrementCookieAmount(wallet->getEffectiveCps() * CookieNumber(step_duration));
     step_start = std::chrono::high_resolution_clock::now();
 }
 
@@ -141,9 +157,15 @@ void Gameloop::handleCookieOrQuitChoice(const std::string &input)
 {
     if (input == game::cookieKey)
     {
-        if (inventory && wallet)
+        if (inventory && wallet && msg)
         {
-            auto cmd = std::make_unique<UpdateCookiesViaInputCommand>(inventory->getCookiesPerTap(), *wallet);
+            CookieNumber perTap = inventory->getCookiesPerTap();
+            auto cmd = std::make_unique<UpdateCookiesViaInputCommand>(perTap, *wallet);
+            // Show the "got cookies" notice first (replacing any stale message);
+            // execute() then increments cookies, which may unlock achievements
+            // that append their own notices alongside this one.
+            msg->setLastItemBoughtAmount(perTap);
+            msg->setCurrentMessage(notifyMessage::msgType::COOKIES_PER_TAP);
             cmd->execute();
         }
     }
@@ -160,12 +182,21 @@ void Gameloop::handleDebugChoice(const std::string &input)
         if (input == "7")
         {
             wallet->incrementCookieAmount(CookieNumber(100));
+            wallet->incrementCookieViaInput(100);
+            if (inventory)
+            {
+                CookieNumber current = inventory->getCookiesPerTap();
+                if (current < CookieNumber(10))
+                    inventory->incrementCookiesPerTap(CookieNumber(10) - current);
+            }
             msg->setCurrentMessage(notifyMessage::msgType::DEBUG);
         }
         else if (input == "8")
         {
             wallet->incrementCookieAmount(wallet->getCookieAmount() * 2);
             wallet->incrementCps(wallet->getCps() * 2);
+            if (inventory)
+                inventory->incrementCookiesPerTap(inventory->getCookiesPerTap());
             msg->setCurrentMessage(notifyMessage::msgType::DEBUG);
         }
         else if (input == "9")
@@ -181,6 +212,7 @@ void Gameloop::handleDebugChoice(const std::string &input)
                 "816459487665078480150348801009011289080");
             wallet->incrementCookieAmount(a);
             wallet->incrementCps(a * 2);
+            wallet->incrementCookieViaInput(wallet->getCookiesViaInput() * 2);
 
         } else if (input == "0")
         {

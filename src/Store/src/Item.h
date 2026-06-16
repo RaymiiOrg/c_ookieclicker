@@ -5,11 +5,45 @@
 #include <string>
 #include <vector>
 
+struct ItemTier {
+    std::string name;
+    CookieNumber cost;
+    CookieNumber bonus;
+};
+
 struct Item {
     std::string name;
     std::string buyKey;
     CookieNumber baseCost{1};
-    CookieNumber cps{1};
+    CookieNumber cps{0};
+    CookieNumber cookiesPerTap{0};
+    std::vector<ItemTier> tiers{};
+
+    /** The index of the tier that becomes active when you own `count` of
+     * this item, or -1 if the item is not tiered or `count` is beyond the
+     * defined tiers. Single source of truth for tier lookups. */
+    int tierIndexFor(const CookieNumber &count) const {
+        for (size_t i = 0; i < tiers.size(); ++i)
+            if (count == CookieNumber(i)) return static_cast<int>(i);
+        return -1;
+    }
+
+    std::string getDisplayName(const CookieNumber &count) const {
+        int i = tierIndexFor(count);
+        return i >= 0 ? tiers[i].name : name;
+    }
+
+    CookieNumber getTierBonus(const CookieNumber &count) const {
+        int i = tierIndexFor(count);
+        return i >= 0 ? tiers[i].bonus : cookiesPerTap;
+    }
+
+    /** CPS gained from owning `amount` of this item under the given CPS
+     * multiplier. Single source of truth shared by the buy command and the
+     * store preview so the displayed gain always matches what is granted. */
+    CookieNumber cpsGain(const CookieNumber &amount, const CookieNumber &multiplier) const {
+        return cps * amount * multiplier;
+    }
 
     bool operator<(const Item &rhs) const {
         if (baseCost < rhs.baseCost)
@@ -126,6 +160,21 @@ private:
             CookieNumber("1100000000000"),
     };
 
+    Item CookieTap{
+            "Cookie Tap",
+            "w",
+            CookieNumber(0),
+            CookieNumber(0),
+            CookieNumber(0),
+            {
+                {"Cookie Upgrade",                CookieNumber(100),        CookieNumber(1)},
+                {"Pro Cookie Upgrade",            CookieNumber(1000),       CookieNumber(2)},
+                {"Pro Max Cookie Upgrade",        CookieNumber(15000),      CookieNumber(10)},
+                {"Cookie Monster Cookie Upgrade", CookieNumber(500000),     CookieNumber(100)},
+                {"Galactic Cookie Upgrade",       CookieNumber(25000000),   CookieNumber(1000)},
+            }
+    };
+
     std::vector<Item> allItems{
             Cursor,
             Grandma,
@@ -144,6 +193,7 @@ private:
             Chancemaker,
             FractalEngine,
             JavascriptConsole,
+            CookieTap,
     };
 
 public:

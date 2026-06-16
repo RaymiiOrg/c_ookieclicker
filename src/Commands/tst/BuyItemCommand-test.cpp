@@ -1,5 +1,7 @@
 #include "BuyItemCommand.h"
 #include "Inventory.h"
+#include "ItemStore.h"
+#include "Wallet.h"
 #include "gtest/gtest.h"
 #include <memory>
 
@@ -88,11 +90,30 @@ TEST_F(BuyItemCommandTestSuite, undo)
     buyCmd->undo();
 
     //assert
+    // undo refunds exactly the price paid by the execute it reverses (the 2nd
+    // execute: getPrice(2)+getPrice(3) = 20+23 = 43), not the price recomputed
+    // at the post-purchase count. 224 + 43 = 267, total 300 + 43 = 343.
     EXPECT_EQ(inventory->getItemCount(cursor.name), CookieNumber(2));
     EXPECT_EQ(inventory->getLastItemAdded(), cursor.name);
     EXPECT_EQ(inventory->getLastItemAddedAmount(), CookieNumber(2));
-    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(282));
-    EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(358));
+    EXPECT_EQ(wallet->getCookieAmount(), CookieNumber(267));
+    EXPECT_EQ(wallet->getTotalcookies(), CookieNumber(343));
     EXPECT_EQ(cp->print(wallet->getCps()), cp->print(CookieNumber(0.2)));
     EXPECT_EQ(store->getPrice(cursor, inventory->getItemCount(cursor.name)), 20);
+}
+
+TEST_F(BuyItemCommandTestSuite, undoRemovesExactCpsEvenAfterMultiplierChange)
+{
+    //arrange
+    auto cursor = store->getStoreInventory().at(0);
+    wallet->incrementCookieAmount(CookieNumber(1000));
+
+    //act: buy a cursor, then a CPS upgrade raises the cursor multiplier, then undo
+    auto buyCmd = std::make_unique<BuyItemCommand>(cursor, CookieNumber(1), *inventory, *wallet, *store);
+    buyCmd->execute();
+    inventory->applyCpsBoost(cursor.name, CookieNumber(100)); // multiplier doubles going forward
+    buyCmd->undo();
+
+    //assert: undo removes exactly the CPS execute added (pre-boost), so CPS is back to 0
+    EXPECT_EQ(wallet->getCps(), CookieNumber(0));
 }

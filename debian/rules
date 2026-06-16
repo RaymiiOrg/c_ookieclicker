@@ -1,0 +1,27 @@
+#!/usr/bin/make -f
+# Build the Debian package with: dpkg-buildpackage -b -us -uc
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@ --buildsystem=cmake
+
+# Build a Release binary with the vendored Boost.Multiprecision.
+# CMake reads these -D options (see CMakeLists.txt).
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DUSEBOOST_MPP=Y
+
+# The unit tests need -DBUILD_TESTS=Y (googletest) and are not part of the
+# package build.
+override_dh_auto_test:
+
+# Games belong in /usr/games per Debian Policy 11.11. CMake installs the
+# binary as /usr/bin/cookieclicker_linux; move and rename it.
+override_dh_auto_install:
+	dh_auto_install
+	mkdir -p debian/cookieclicker/usr/games
+	mv debian/cookieclicker/usr/bin/cookieclicker_linux \
+	   debian/cookieclicker/usr/games/cookieclicker
+	rmdir debian/cookieclicker/usr/bin 2>/dev/null || true

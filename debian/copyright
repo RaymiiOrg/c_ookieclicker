@@ -1,0 +1,48 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: c_ookieclicker
+Upstream-Contact: Remy van Elst <debian@relst.nl>
+Source: https://github.com/RaymiiOrg/c_ookieclicker
+
+Files: *
+Copyright: 2019-2026 Remy van Elst <debian@relst.nl>
+License: GPL-3+
+
+Files: lib/boost_176_0/*
+Copyright: Boost contributors
+License: BSL-1.0
+
+Files: lib/googletest-1.11.0/*
+Copyright: 2008 Google Inc.
+License: BSD-3-clause
+
+Files: debian/*
+Copyright: 2026 Remy van Elst <debian@relst.nl>
+License: GPL-3+
+
+License: GPL-3+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ .
+ On Debian systems, the complete text of the GNU General Public License
+ version 3 can be found in "/usr/share/common-licenses/GPL-3".
+
+License: BSL-1.0
+ The full text of the Boost Software License 1.0 can be found at
+ <https://www.boost.org/LICENSE_1_0.txt> and on Debian systems in
+ "/usr/share/common-licenses/BSL-1.0" where available.
+
+License: BSD-3-clause
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the conditions of the
+ 3-clause BSD license are met. The full text is distributed with the
+ googletest sources under lib/googletest-1.11.0.

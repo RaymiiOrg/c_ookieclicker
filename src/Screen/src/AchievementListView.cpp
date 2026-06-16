@@ -3,8 +3,24 @@
 void AchievementListView::render()
 {
     listAchievementViews();
+    renderBonusSummary();
     if (activeView != nullptr)
         activeView->render();
+}
+
+void AchievementListView::renderBonusSummary() const
+{
+    if (walletReader == nullptr)
+        return;
+
+    CookieNumber bonus = walletReader->getAchievementBonusMultiplier();
+    CookieNumber bonusPct = bonus * CookieNumber(100);
+    CookieNumber bonusCps = walletReader->getCps() * bonus;
+
+    std::cout << "Achievement bonus: +" << cp.print(bonusPct) << "% cps";
+    if (bonusCps > CookieNumber(0))
+        std::cout << " (+" << cp.print(bonusCps) << " cps)";
+    std::cout << std::endl;
 }
 
 void AchievementListView::listAchievementViews() const
@@ -53,10 +69,10 @@ const std::string &AchievementListView::name()
     return _name;
 }
 
-AchievementListView::AchievementListView(Wallet *wallet, notifyMessage *msg) :
-    wallet(wallet), msg(msg)
+AchievementListView::AchievementListView(Subject *walletSubject, IWalletReader *walletReader, notifyMessage *msg) :
+    walletSubject(walletSubject), walletReader(walletReader), msg(msg)
 {
-    createAchievementView(&cookieAmountAchievementList, &cookieAmountAchievementView, "/gamedata/achievements/CookieAmountAchievements.csv");
-    createAchievementView(&cookiesPerSecondAchievementList, &cookiesPerSecondView, "/gamedata/achievements/CookiesPerSecondAchievements.csv");
-    createAchievementView(&cookiesViaInputAchievementList, &cookiesViaInputView, "/gamedata/achievements/CookiesViaInputAchievements.csv");
+    createAchievementView(&cookieAmountAchievementList, &cookieAmountAchievementView, AchievementRepository::getCookieAmountMilestones());
+    createAchievementView(&cookiesPerSecondAchievementList, &cookiesPerSecondView, AchievementRepository::getCookiesPerSecondMilestones());
+    createAchievementView(&cookiesViaInputAchievementList, &cookiesViaInputView, AchievementRepository::getCookiesViaInputMilestones());
 }

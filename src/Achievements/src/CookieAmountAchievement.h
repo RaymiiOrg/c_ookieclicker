@@ -2,14 +2,14 @@
 #define C_OOKIECLIKER_COOKIEAMOUNTACHIEVEMENT_H
 #include "Achievement.h"
 #include "CookieNumbers.h"
+#include "IWalletReader.h"
 #include "notifyMessage.h"
-#include "Wallet.h"
 
 class CookieAmountAchievement : public Achievement
 {
 public:
-    explicit CookieAmountAchievement(const std::vector<std::string> &params, notifyMessage* msg);
-    bool hasAchieved() override;
+    CookieAmountAchievement(const CookieNumber& amount, const std::string& name, notifyMessage* msg);
+    bool hasAchieved() const override;
     std::string name() override;
     std::string description() override;
     void update(Subject *subject) override;

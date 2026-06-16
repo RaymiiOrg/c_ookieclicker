@@ -17,8 +17,8 @@ struct CookiesViaInputAchievementTestSuite : public ::testing::Test
 TEST_F(CookiesViaInputAchievementTestSuite, getAchievement)
 {
     // arrange
-    CookiesViaInputAchievement tenCookies = CookiesViaInputAchievement({"10", "Test 1"}, msg.get());
-    CookiesViaInputAchievement aHundredCookies = CookiesViaInputAchievement({"100", "Test 2"}, msg.get());
+    CookiesViaInputAchievement tenCookies = CookiesViaInputAchievement(CookieNumber(10), "Test 1", msg.get());
+    CookiesViaInputAchievement aHundredCookies = CookiesViaInputAchievement(CookieNumber(100), "Test 2", msg.get());
     wallet->addObserver(&tenCookies);
     wallet->addObserver(&aHundredCookies);
 

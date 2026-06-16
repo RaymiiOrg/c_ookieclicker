@@ -5,3 +5,15 @@ formatdiff.txt
 .cookieclicker.save
 out/*
 .vs/*
+build/*
+.idea/*
+.idea/misc.xml
+obj-x86_64-linux-gnu/*
+debian/.debhelper/
+debian/cookieclicker/
+debian/files
+debian/debhelper-build-stamp
+debian/*.substvars
+debian/*.debhelper.log
+debian/*.log
+.run/*

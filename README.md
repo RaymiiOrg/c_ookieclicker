@@ -54,7 +54,7 @@ How to build the game for yourself. Boost is a required dependency, but it is po
 to build without it. When you reach the limit of what fits in an `long double`, 
 the score (and other numbers, such as item amount or cost, will overflow).
 
-Install `boost` and build dependencies. On Ubuntu 18.04:
+Install `boost` and build dependencies. On Ubuntu:
 
     sudo apt install libboost-dev-all build-essential cmake
  
@@ -74,14 +74,9 @@ Build locally:
     
 The game executable is:
 
-    src/Game/src/cookieclicker_linux
-    
-Make sure to run it in the cloned folder, otherwise some game data might not load, like
-then achievements. Game data files are in:
-    
-    releases/$version/gamedata
-    
-and are symlinked in the main folder you cloned from github.
+    build/src/Game/src/cookieclicker_linux
+
+The savegame is written to `.cookieclicker.save` in the current working directory.
 
 ## Build on Windows
 
@@ -104,6 +99,36 @@ You can pass cmake options with the `-D` flag. An example to build the tests, wi
 
 See the `cmakeConfig.h.in` file and the `src/CmakeLists.txt` file to see how these options passed along
 to the C++ code.
+
+## Build a Debian package
+
+The `debian/` folder contains everything needed to build a `.deb`. Boost is
+vendored in `lib/`, so no `libboost-*` packages are required.
+
+Install the packaging tools:
+
+    sudo apt install build-essential cmake debhelper dpkg-dev
+
+From the repository root, build a binary-only package (unsigned):
+
+    dpkg-buildpackage -b -us -uc
+
+The resulting package is written to the parent directory, for example
+`../cookieclicker_1.0.6_amd64.deb`. Inspect and install it with:
+
+    dpkg-deb -c ../cookieclicker_1.0.6_amd64.deb     # list contents
+    sudo apt install ../cookieclicker_1.0.6_amd64.deb # or: sudo dpkg -i
+
+The package installs the game to `/usr/games/cookieclicker` (per Debian
+Policy for games) along with a man page (`man 6 cookieclicker`). Run it with:
+
+    cookieclicker
+
+The packaging builds a Release binary with Boost multiprecision enabled
+(`-DCMAKE_BUILD_TYPE=Release -DUSEBOOST_MPP=Y`); these options are set in
+`debian/rules`. To rebuild cleanly, run `dpkg-buildpackage` again (it runs
+`debian/rules clean` first), or remove the generated `obj-*` and
+`debian/cookieclicker/` directories.
 
 # Different parts of the game
 
@@ -147,10 +172,6 @@ The same from the original game.
 - Fractal Engines
 - Javascript Consoles
 
-## Builing Upgrades
-
-Not implemented yet.
-
 ## Achievements
 
 This was my first attempt at writing an Observer pattern style 
@@ -158,8 +179,6 @@ notification system. For the Cookie Amount & Cookies Per Second
 Achievements, the wallet notifies the observer (the achievement list)
 on a cookie increment.
 
-The achievements themself are in `.csv files` in the `gamedata` folder
-so you can add or remove achievements if you please.
 
 ## Wallet
 

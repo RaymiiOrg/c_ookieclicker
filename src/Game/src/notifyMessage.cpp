@@ -45,8 +45,24 @@ notifyMessage::msgType notifyMessage::getCurrentMessage() const
 
 void notifyMessage::setCurrentMessage(notifyMessage::msgType _currentMessage)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+    _messages.clear();
+    addMessageLocked(_currentMessage);
+}
+
+void notifyMessage::addMessage(notifyMessage::msgType type)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    addMessageLocked(type);
+}
+
+void notifyMessage::addMessageLocked(notifyMessage::msgType type)
+{
     setMessageTime();
-    currentMessage = _currentMessage;
+    currentMessage = type;
+    std::string body = renderBody(type);
+    if (!body.empty())
+        _messages.push_back(body);
 }
 
 void notifyMessage::setMessageTime(const std::string &timeString)
@@ -54,41 +70,60 @@ void notifyMessage::setMessageTime(const std::string &timeString)
     lastMessageTime = currentTime(timeString);
 }
 
-std::ostream &operator<<(std::ostream &os, const notifyMessage &message)
+std::string notifyMessage::renderBody(notifyMessage::msgType type) const
 {
-    if (!message.lastMessageTime.empty())
-        os << message.lastMessageTime << ": ";
-    switch (message.getCurrentMessage())
+    switch (type)
     {
     case notifyMessage::msgType::NOT_ENOUGH_MONEY_FOR_ITEM:
-        os << "Not enough money to buy " + message.lastItemFailedToBuy;
-        break;
-    case notifyMessage::msgType::BOUGHT_ITEM:
-        os << "You bought " + cp.print(message.lastItemBoughtAmount) + " " + message.lastItemBoughtName + "(s).";
-        break;
+        return "Not enough money to buy " + lastItemFailedToBuy;
+    case notifyMessage::msgType::BOUGHT_ITEM: {
+        std::string s = (lastItemBoughtAmount == CookieNumber(1)) ? "" : "s";
+        return "You bought " + cp.print(lastItemBoughtAmount) + " " + lastItemBoughtName + s + ".";
+    }
+    case notifyMessage::msgType::BOUGHT_TAP_UPGRADE: {
+        std::string noun = (lastItemBoughtAmount == CookieNumber(1)) ? "cookie" : "cookies";
+        return "Upgraded to " + lastItemBoughtName + "! +"
+               + cp.print(lastItemBoughtAmount) + " " + noun + " per tap.";
+    }
     case notifyMessage::msgType::MAGIC:
-        os << "The answer to life, the universe and everything!";
-        break;
+        return "The answer to life, the universe and everything!";
     case notifyMessage::msgType::DEBUG:
-        os << "A Debug Thing Happened!";
-        break;
+        return "A Debug Thing Happened!";
     case notifyMessage::msgType::SAVED:
-        os << "Game saved.";
-        break;
+        return "Game saved.";
     case notifyMessage::msgType::LOADED:
-        os << "Loaded saved game from file";
-        break;
+        return "Loaded saved game from file";
     case notifyMessage::msgType::ERROR:
-        os << "An error occured: " << message.lastError;
-        break;
+        return "An error occured: " + lastError;
     case notifyMessage::msgType::ACHIEVEMENT_UNLOCKED:
-        os << "Achievement unlocked: " << message.lastAchievement + "!";
-        break;
+        return "Achievement unlocked: " + lastAchievement + "!";
+    case notifyMessage::msgType::COOKIES_PER_TAP: {
+        std::string noun = (lastItemBoughtAmount == CookieNumber(1)) ? "cookie" : "cookies";
+        return "Got " + cp.print(lastItemBoughtAmount) + " " + noun + "!";
+    }
+    case notifyMessage::msgType::BOUGHT_CPS_UPGRADE:
+        return lastItemBoughtName + ": +" + cp.print(lastItemBoughtAmount) + "% cps!";
     case notifyMessage::msgType::NO_MSG:
     case notifyMessage::msgType::LAST_MSG:
     default:
-        os << "";
-        break;
+        return "";
+    }
+}
+
+std::ostream &operator<<(std::ostream &os, const notifyMessage &message)
+{
+    std::lock_guard<std::mutex> lock(message._mutex);
+    if (message._messages.empty())
+        return os;
+    if (!message.lastMessageTime.empty())
+        os << message.lastMessageTime << ": ";
+    bool first = true;
+    for (const auto &body : message._messages)
+    {
+        if (!first)
+            os << " | ";
+        os << body;
+        first = false;
     }
     return os;
 }

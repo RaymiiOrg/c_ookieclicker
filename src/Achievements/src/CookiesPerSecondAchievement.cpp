@@ -1,8 +1,9 @@
 #include "CookiesPerSecondAchievement.h"
-#include "Wallet.h"
+#include "IWalletReader.h"
+#include "Subject.h"
 #include <Game/src/notifyMessage.h>
 
-bool CookiesPerSecondAchievement::hasAchieved()
+bool CookiesPerSecondAchievement::hasAchieved() const
 {
     return _hasAchieved;
 }
@@ -22,11 +23,11 @@ std::string CookiesPerSecondAchievement::description()
 
 void CookiesPerSecondAchievement::update(Subject *subject)
 {
-    if (dynamic_cast<Wallet *>(subject) != nullptr)
+    if (dynamic_cast<IWalletReader *>(subject) != nullptr)
     {
         if (!_hasAchieved)
         {
-            if (dynamic_cast<Wallet *>(subject)->getCps() >= _amountRequired)
+            if (dynamic_cast<IWalletReader *>(subject)->getCps() >= _amountRequired)
             {
                 unlockAchievement();
             }
@@ -40,13 +41,11 @@ void CookiesPerSecondAchievement::unlockAchievement()
     if (msg)
     {
         msg->setLastAchievement(_name + ": " + description());
-        msg->setCurrentMessage(notifyMessage::msgType::ACHIEVEMENT_UNLOCKED);
+        msg->addMessage(notifyMessage::msgType::ACHIEVEMENT_UNLOCKED);
     }
 }
 
-CookiesPerSecondAchievement::CookiesPerSecondAchievement(const std::vector<std::string> &params, notifyMessage *msg) :
-    msg(msg)
+CookiesPerSecondAchievement::CookiesPerSecondAchievement(const CookieNumber& amount, const std::string& name, notifyMessage *msg) :
+    msg(msg), _amountRequired(amount), _name(name)
 {
-    _amountRequired = static_cast<CookieNumber>(params.front());
-    _name = params.back();
 }

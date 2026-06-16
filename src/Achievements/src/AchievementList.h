@@ -7,15 +7,26 @@
 #include "CookieAmountAchievement.h"
 #include "CookiesPerSecondAchievement.h"
 #include "CookiesViaInputAchievement.h"
+#include "AchievementRepository.h"
+#include "IAchievementRewarder.h"
 #include "Observer.h"
-#include "filesystem.h"
-#include <fstream>
+#include "Subject.h"
 
 template <typename T>
 class AchievementList : public Observer
 {
     std::vector<T *> achievements;
     notifyMessage* msg;
+    int _previousUnlockedCount = 0;
+
+    int countUnlocked() const
+    {
+        int count = 0;
+        for (const T* a : achievements)
+            if (a != nullptr && a->hasAchieved())
+                ++count;
+        return count;
+    }
 
 public:
     explicit AchievementList(std::vector<T *> achievements, notifyMessage* msg) :
@@ -23,7 +34,7 @@ public:
     void update(Subject *_s) override;
     ~AchievementList() override;
 
-    void loadAchievementsFromCSV(const std::string &filename);
+    void loadFromRepository(const std::vector<AchievementMilestone> &milestones);
     std::vector<T *> getAchievements() const { return achievements; };
 };
 
@@ -35,29 +46,25 @@ void AchievementList<T>::update(Subject *_s)
         if (a != nullptr)
             a->update(_s);
     }
+
+    auto *rewarder = dynamic_cast<IAchievementRewarder *>(_s);
+    if (rewarder != nullptr)
+    {
+        int nowUnlocked = countUnlocked();
+        int newlyUnlocked = nowUnlocked - _previousUnlockedCount;
+        if (newlyUnlocked > 0)
+        {
+            rewarder->addAchievementBonus(IAchievementRewarder::bonusPerAchievement * CookieNumber(newlyUnlocked));
+            _previousUnlockedCount = nowUnlocked;
+        }
+    }
 }
 
 template <typename T>
-void AchievementList<T>::loadAchievementsFromCSV(const std::string &filename)
+void AchievementList<T>::loadFromRepository(const std::vector<AchievementMilestone> &milestones)
 {
-    if (!fs::exists(filename))
-        throw std::runtime_error("File " + filename + " does not exist");
-
-    std::ifstream file(filename);
-    std::string line;
-    while (std::getline(file, line))
-    {
-        std::vector<std::string> params;
-        std::stringstream row(line);
-        std::string data;
-        while (std::getline(row, data, ';'))
-        {
-            if (!data.empty())
-                params.push_back(data);
-        }
-        if (!params.empty())
-            achievements.push_back(new T(params, msg));
-    }
+    for (const auto &m : milestones)
+        achievements.push_back(new T(m.amount, m.name, msg));
 }
 
 template <typename T>

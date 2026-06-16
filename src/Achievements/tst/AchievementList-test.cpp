@@ -2,21 +2,24 @@
 #include <memory>
 #define private public
 #include "AchievementList.h"
+#include "Wallet.h"
 
 struct AchievementsTestSuite : public ::testing::Test
 {
     notifyMessage msg;
     AchievementList<CookieAmountAchievement> cookieAmountAchievements = AchievementList<CookieAmountAchievement>(std::vector<CookieAmountAchievement *>(), &msg);
-    fs::path current_source_file = fs::path(__FILE__);
-    std::string testFileFolder = current_source_file.parent_path().string() + "/data/";
+    std::vector<AchievementMilestone> milestones{
+        { CookieNumber(1),    "Wake & Bake" },
+        { CookieNumber(1000), "Make some dough!" },
+    };
 };
 
-TEST_F(AchievementsTestSuite, loadCookieAchievementsfromCSV)
+TEST_F(AchievementsTestSuite, loadCookieAchievementsFromRepository)
 {
     // arrange
 
     // act
-    cookieAmountAchievements.loadAchievementsFromCSV(testFileFolder + "amountachievements.csv");
+    cookieAmountAchievements.loadFromRepository(milestones);
 
     // assert
     ASSERT_EQ(cookieAmountAchievements.getAchievements().size(), 2);
@@ -29,7 +32,7 @@ TEST_F(AchievementsTestSuite, loadCookieAchievementsfromCSV)
 TEST_F(AchievementsTestSuite, updateCookieAmountAchievements)
 {
     // arrange
-    cookieAmountAchievements.loadAchievementsFromCSV(testFileFolder + "amountachievements.csv");
+    cookieAmountAchievements.loadFromRepository(milestones);
     Wallet wallet;
     wallet.addObserver(&cookieAmountAchievements);
 

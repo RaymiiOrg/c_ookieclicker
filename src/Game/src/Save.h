@@ -1,13 +1,15 @@
 #ifndef C_OOKIECLIKER_SAVE_H
 #define C_OOKIECLIKER_SAVE_H
 
-#include "GameLoop.h"
+#include "Inventory.h"
+#include "ItemStore.h"
+#include "Wallet.h"
 #include <fstream>
 
 class Save
 {
 public:
-    Save(std::string filename, Inventory *Inventory, Wallet *wallet, ItemStore *store, int format);
+    Save(const std::string &filename, Inventory *Inventory, Wallet *wallet, ItemStore *store, int format);
     bool save();
     bool load();
 
@@ -32,6 +34,7 @@ private:
     void load_step_6_Items(std::vector<std::string> &inV);
     void load_step_7_CookiesViaInput(std::vector<std::string> &inV);
     void load_step_8_CookiesPerTap(std::vector<std::string> &inV);
+    void load_step_9_AppendedFields(std::vector<std::string> &inV);
 
     static void save_step_1_Header(std::ofstream &out) ;
     void save_step_2_Format(std::ofstream &out) const;
@@ -41,8 +44,12 @@ private:
     void save_step_6_Items(std::ofstream &out) const;
     void save_step_7_CookiesViaInput(std::ofstream &out);
     void save_step_8_CookiesPerTap(std::ofstream &out);
+    void save_step_9_AchievementBonus(std::ofstream &out) const;
+    void save_step_10_CpsMultipliers(std::ofstream &out) const;
+    void save_step_11_CpsUpgradeTiers(std::ofstream &out) const;
 
     static int loadAmountOfItems(std::vector<std::string> &inV) ;
+    static size_t firstAppendedFieldIndex(std::vector<std::string> &inV);
 };
 
 #endif //C_OOKIECLIKER_SAVE_H

@@ -1,4 +1,5 @@
 #include "UpdateCookiesViaInputCommand.h"
+#include "Wallet.h"
 #include "gtest/gtest.h"
 #include <memory>
 

@@ -57,3 +57,57 @@ TEST_F(WalletTestSuite, reset)
     ASSERT_EQ(wallet->getCookieAmount(), CookieNumber(0));
     ASSERT_EQ(wallet->getTotalcookies(), CookieNumber(0));
 }
+
+TEST_F(WalletTestSuite, achievementBonusStartsAtZero)
+{
+    ASSERT_EQ(wallet->getAchievementBonusMultiplier(), CookieNumber(0));
+}
+
+TEST_F(WalletTestSuite, achievementBonusAdds)
+{
+    wallet->addAchievementBonus(CookieNumber("0.01"));
+    ASSERT_EQ(wallet->getAchievementBonusMultiplier(), CookieNumber("0.01"));
+}
+
+TEST_F(WalletTestSuite, achievementBonusAccumulates)
+{
+    wallet->addAchievementBonus(CookieNumber("0.01"));
+    wallet->addAchievementBonus(CookieNumber("0.01"));
+    wallet->addAchievementBonus(CookieNumber("0.01"));
+    ASSERT_EQ(wallet->getAchievementBonusMultiplier(), CookieNumber("0.03"));
+}
+
+TEST_F(WalletTestSuite, achievementBonusCappedAtFiftyPercent)
+{
+    wallet->addAchievementBonus(CookieNumber("0.4"));
+    wallet->addAchievementBonus(CookieNumber("0.4"));
+    ASSERT_EQ(wallet->getAchievementBonusMultiplier(), CookieNumber("0.5"));
+}
+
+TEST_F(WalletTestSuite, effectiveCpsWithoutBonus)
+{
+    wallet->incrementCps(CookieNumber(100));
+    ASSERT_EQ(wallet->getEffectiveCps(), CookieNumber(100));
+}
+
+TEST_F(WalletTestSuite, effectiveCpsWithBonus)
+{
+    wallet->incrementCps(CookieNumber(100));
+    wallet->addAchievementBonus(CookieNumber("0.1"));
+    ASSERT_EQ(wallet->getEffectiveCps(), CookieNumber(110));
+}
+
+TEST_F(WalletTestSuite, effectiveCpsWithMaxBonus)
+{
+    wallet->incrementCps(CookieNumber(100));
+    wallet->addAchievementBonus(CookieNumber("1.0"));
+    ASSERT_EQ(wallet->getEffectiveCps(), CookieNumber(150));
+}
+
+TEST_F(WalletTestSuite, achievementBonusResetOnReset)
+{
+    wallet->addAchievementBonus(CookieNumber("0.1"));
+    wallet->reset();
+    ASSERT_EQ(wallet->getAchievementBonusMultiplier(), CookieNumber(0));
+    ASSERT_EQ(wallet->getEffectiveCps(), CookieNumber(0));
+}

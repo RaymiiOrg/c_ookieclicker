@@ -9,8 +9,8 @@
 class CookiesViaInputAchievement : public Achievement
 {
 public:
-    explicit CookiesViaInputAchievement(const std::vector<std::string> &params, notifyMessage* msg);
-    bool hasAchieved() override;
+    CookiesViaInputAchievement(const CookieNumber& amount, const std::string& name, notifyMessage* msg);
+    bool hasAchieved() const override;
     std::string name() override;
     std::string description() override;
     void update(Subject *subject) override;

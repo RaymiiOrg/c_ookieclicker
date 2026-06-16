@@ -1,8 +1,7 @@
 #include "Save.h"
 
-Save::Save(std::string filename, Inventory *Inventory, Wallet *wallet, ItemStore *store, int format) :
-    saveFileName(std::move(
-        filename)),
+Save::Save(const std::string &filename, Inventory *Inventory, Wallet *wallet, ItemStore *store, int format) :
+    saveFileName(filename),
     inventory(Inventory), wallet(wallet), itemstore(store), format(format) { }
 
 bool Save::save()
@@ -83,6 +82,7 @@ bool Save::loadFormatTwo()
     load_step_6_Items(inV);
     load_step_7_CookiesViaInput(inV);
     load_step_8_CookiesPerTap(inV);
+    load_step_9_AppendedFields(inV);
     return true;
 }
 
@@ -101,6 +101,9 @@ bool Save::saveFormatTwo()
     save_step_6_Items(out);
     save_step_7_CookiesViaInput(out);
     save_step_8_CookiesPerTap(out);
+    save_step_9_AchievementBonus(out);
+    save_step_10_CpsMultipliers(out);
+    save_step_11_CpsUpgradeTiers(out);
     return true;
 }
 
@@ -226,12 +229,85 @@ int Save::loadAmountOfItems(std::vector<std::string> &inV)
 
 void Save::load_step_7_CookiesViaInput(std::vector<std::string> &inV)
 {
-    int positionInSave = loadAmountOfItems(inV) + 1;
-    wallet->incrementCookieViaInput(CookieNumber(positionInSave));
+    int amountOfItems = loadAmountOfItems(inV);
+    if (amountOfItems < 0)
+        return;
+    // cookiesViaInput sits right after the items list.
+    size_t idx = static_cast<size_t>(6 + amountOfItems);
+    if (idx < inV.size())
+        wallet->_cookiesViaInput = CookieNumber(inV.at(idx));
 }
 
 void Save::load_step_8_CookiesPerTap(std::vector<std::string> &inV)
 {
-    int positionInSave = loadAmountOfItems(inV) + 2;
-    inventory->incrementCookiesPerTap(CookieNumber(positionInSave));
+    int amountOfItems = loadAmountOfItems(inV);
+    if (amountOfItems < 0)
+        return;
+    // cookiesPerTap follows cookiesViaInput.
+    size_t idx = static_cast<size_t>(6 + amountOfItems + 1);
+    if (idx < inV.size())
+        inventory->_cookiesPerTap = CookieNumber(inV.at(idx));
+}
+
+size_t Save::firstAppendedFieldIndex(std::vector<std::string> &inV)
+{
+    int amountOfItems = loadAmountOfItems(inV);
+    if (amountOfItems < 0)
+        return inV.size();
+    return static_cast<size_t>(6 + amountOfItems + 2);
+}
+
+void Save::save_step_9_AchievementBonus(std::ofstream &out) const
+{
+    out << wallet->getAchievementBonusMultiplier().str(0, std::ios_base::fixed) << ";";
+}
+
+void Save::save_step_10_CpsMultipliers(std::ofstream &out) const
+{
+    out << inventory->_cpsMultipliers.size() << ";";
+    for (const auto &entry : inventory->_cpsMultipliers)
+        out << entry.first << "," << entry.second.str(0, std::ios_base::fixed) << ";";
+}
+
+void Save::save_step_11_CpsUpgradeTiers(std::ofstream &out) const
+{
+    out << inventory->_cpsUpgradeTierCounts.size() << ";";
+    for (const auto &entry : inventory->_cpsUpgradeTierCounts)
+        out << entry.first << "," << entry.second << ";";
+}
+
+void Save::load_step_9_AppendedFields(std::vector<std::string> &inV)
+{
+    size_t cursor = firstAppendedFieldIndex(inV);
+    if (cursor >= inV.size())
+        return; // older save without the appended fields
+    wallet->setAchievementBonusMultiplier(CookieNumber(inV.at(cursor)));
+    ++cursor;
+
+    if (cursor >= inV.size())
+        return;
+    int multiplierCount = std::stoi(inV.at(cursor));
+    ++cursor;
+    for (int i = 0; i < multiplierCount && cursor < inV.size(); ++i, ++cursor)
+    {
+        const std::string &entry = inV.at(cursor);
+        auto comma = entry.find(',');
+        if (comma == std::string::npos)
+            continue;
+        inventory->_cpsMultipliers[entry.substr(0, comma)] = CookieNumber(entry.substr(comma + 1));
+    }
+
+    if (cursor >= inV.size())
+        return;
+    int tierCount = std::stoi(inV.at(cursor));
+    ++cursor;
+    for (int i = 0; i < tierCount && cursor < inV.size(); ++i, ++cursor)
+    {
+        const std::string &entry = inV.at(cursor);
+        auto comma = entry.find(',');
+        if (comma == std::string::npos)
+            continue;
+        inventory->_cpsUpgradeTierCounts[entry.substr(0, comma)] =
+            static_cast<size_t>(std::stoul(entry.substr(comma + 1)));
+    }
 }

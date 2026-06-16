@@ -30,9 +30,9 @@ private:
     /* lower part of screen, can switch between these views */
     ItemStoreView itemstoreview = ItemStoreView(msg, wallet, inventory, itemstore);
     InventoryView inventoryview = InventoryView(inventory);
-    UpgradeView upgradeview = UpgradeView(inventory);
+    UpgradeView upgradeview = UpgradeView(inventory, wallet, msg, itemstore);
     OptionsView optionsview = OptionsView(msg, wallet, inventory, itemstore, saveFile);
-    AchievementListView achievementlistview = AchievementListView(wallet, msg);
+    AchievementListView achievementlistview = AchievementListView(wallet, wallet, msg);
     View *activeView = dynamic_cast<View *>(&itemstoreview);
     std::vector<View *> allViews = {
         dynamic_cast<View *>(&itemstoreview),
@@ -45,7 +45,7 @@ private:
     /* top part of screen, status, messages and input. Always visible */
     StatusView statusview = StatusView(wallet);
     MessageView messageview = MessageView(msg);
-    InputModeView inputmodeview = InputModeView(allViews);
+    InputModeView inputmodeview = InputModeView(allViews, inventory);
 
 public:
     void render() override;

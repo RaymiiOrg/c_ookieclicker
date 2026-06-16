@@ -1,0 +1,5 @@
+cookieclicker (1.0.6) unstable; urgency=medium
+
+  * Initial Debian packaging.
+
+ -- R. van Elst <debian@relst.nl>  Sat, 13 Jun 2026 21:57:26 +0200

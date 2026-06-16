@@ -4,7 +4,6 @@
 
 #include "Achievement.h"
 #include "AchievementList.h"
-#include "Wallet.h"
 #include "notifyMessage.h"
 #include <utility>
 
@@ -18,8 +17,8 @@ public:
     void render() override;
     const std::string &name() override { return _name; };
     void handleInput(const std::string &input) override;
-    explicit AchievementView(std::string name) :
-        _name(std::move(name)) {};
+    explicit AchievementView(const std::string &name) :
+        _name(name) {};
 
     /** Due to threads, not everything is available at construction,
      * thus we can set it later.

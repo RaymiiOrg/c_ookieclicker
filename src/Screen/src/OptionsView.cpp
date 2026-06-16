@@ -1,6 +1,7 @@
 #include "OptionsView.h"
 #include "CookieNumbers.h"
 #include "Game/src/Save.h"
+#include "Globals.h"
 #include "cmakeConfig.h"
 #include <limits>
 

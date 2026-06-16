@@ -1,4 +1,5 @@
 #include "InputModeView.h"
+#include "CookieNumbers.h"
 #include "terminalCodes.h"
 
 void InputModeView::render()
@@ -8,12 +9,14 @@ void InputModeView::render()
     inputBar();
 }
 
-void InputModeView::renderGetCookie()
+void InputModeView::renderGetCookie() const
 {
+    CookieNumber perTap = (cookieStats != nullptr) ? cookieStats->getCookiesPerTap() : CookieNumber(1);
+    std::string noun = (perTap == CookieNumber(1)) ? "cookie" : "cookies";
     std::cout << escapeCode.cursorTo6x0;
     std::cout << escapeCode.eraseCurrentLine;
     std::cout << escapeCode.terminalBold;
-    std::cout << "[c]\t:\t get cookie \n";
+    std::cout << "[c]\t:\t get " << cp.print(perTap) << " " << noun << "\n";
     std::cout << escapeCode.terminalReset;
 }
 

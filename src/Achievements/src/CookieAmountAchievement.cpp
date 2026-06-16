@@ -1,6 +1,7 @@
 #include "CookieAmountAchievement.h"
+#include "Subject.h"
 
-bool CookieAmountAchievement::hasAchieved()
+bool CookieAmountAchievement::hasAchieved() const
 {
     return _hasAchieved;
 }
@@ -13,11 +14,9 @@ std::string CookieAmountAchievement::description()
         return "Bake " + cp.print(_amountRequired) + " cookies";
 }
 
-CookieAmountAchievement::CookieAmountAchievement(const std::vector<std::string> &params, notifyMessage *msg) :
-    msg(msg)
+CookieAmountAchievement::CookieAmountAchievement(const CookieNumber& amount, const std::string& name, notifyMessage *msg) :
+    msg(msg), _amountRequired(amount), _name(name)
 {
-    _amountRequired = static_cast<CookieNumber>(params.front());
-    _name = params.back();
 }
 
 std::string CookieAmountAchievement::name()
@@ -27,11 +26,11 @@ std::string CookieAmountAchievement::name()
 
 void CookieAmountAchievement::update(Subject *subject)
 {
-    if (dynamic_cast<Wallet *>(subject) != nullptr)
+    if (dynamic_cast<IWalletReader *>(subject) != nullptr)
     {
         if (!_hasAchieved)
         {
-            if (dynamic_cast<Wallet *>(subject)->getCookieAmount() >= _amountRequired)
+            if (dynamic_cast<IWalletReader *>(subject)->getCookieAmount() >= _amountRequired)
             {
                 unlockAchievement();
             }
@@ -45,6 +44,6 @@ void CookieAmountAchievement::unlockAchievement()
     if (msg)
     {
         msg->setLastAchievement(_name + ": " + description());
-        msg->setCurrentMessage(notifyMessage::msgType::ACHIEVEMENT_UNLOCKED);
+        msg->addMessage(notifyMessage::msgType::ACHIEVEMENT_UNLOCKED);
     }
 }
